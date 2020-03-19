@@ -1,0 +1,57 @@
+.que.tcs table.tcs-table.w100 {
+	width: 100%;
+}
+
+	.que.tcs table.tcs-table th.w30 {
+		width : 30%;
+	}
+
+	.que.tcs table.tcs-table th.w40 {
+		width : 40%;
+	}
+	
+	.que.tcs table.tcs-table td.cell {
+		background: #f3f3f3;
+		border-bottom-width: 2px;
+	}
+	
+        .que.tcs table.tcs-table div.answer {
+            min-width: 300px;
+        }
+        
+	.que.tcs table.tcs-table div.answer div.r0,
+	.que.tcs table.tcs-table div.answer div.r1 {
+		background-color: #f3f3f3;
+		vertical-align: middle;
+	}
+	
+		.que.tcs table.tcs-table div.answer div.r0 input,
+		.que.tcs table.tcs-table div.answer div.r1 input {
+			vertical-align: middle;
+		}
+		
+		.que.tcs table.tcs-table div.answer div.r0 label,
+		.que.tcs table.tcs-table div.answer div.r1 label {
+			vertical-align: middle;
+			width: 130px;
+			display: inline-block;
+		}
+		
+		.que.tcs table.tcs-table div.answer div.r0 span.gauge,
+		.que.tcs table.tcs-table div.answer div.r1 span.gauge {
+			vertical-align: middle;
+			background-color: #f3f3f3;
+			border: 1px solid #e0e0e0;
+			height: 17px;
+			margin-left: 0;
+			width: 115px;
+			display: inline-block;
+		}
+
+			.que.tcs table.tcs-table div.answer div.r0 span.gauge span,
+			.que.tcs table.tcs-table div.answer div.r1 span.gauge span{
+				background-color: #0071b9;
+				height: 15px;
+				margin: 0;
+				display: inline-block;
+			}
