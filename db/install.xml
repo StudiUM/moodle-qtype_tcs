@@ -10,7 +10,7 @@
         <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references question.id"/>
         <FIELD NAME="hypothisistext" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Hypothisis for the question."/>
         <FIELD NAME="hypothisistextformat" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="effecttext" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="effects on the hypothisis."/>
+        <FIELD NAME="effecttext" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Effects on the hypothisis."/>
         <FIELD NAME="effecttextformat" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="correctfeedback" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Feedback shown for any correct response."/>
         <FIELD NAME="correctfeedbackformat" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -18,9 +18,9 @@
         <FIELD NAME="partiallycorrectfeedbackformat" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="incorrectfeedback" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Feedback shown for any incorrect response."/>
         <FIELD NAME="incorrectfeedbackformat" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="labeleffecttext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="label of effects on the hypothisis."/>
-        <FIELD NAME="labelhypothisistext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="label of hypothisis."/>
-        <FIELD NAME="showquestiontext" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="If true, the text of question is display."/>
+        <FIELD NAME="labeleffecttext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of Effects on the hypothisis."/>
+        <FIELD NAME="labelhypothisistext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of Hypothisis."/>
+        <FIELD NAME="showquestiontext" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="If true, the text of question is displayed."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

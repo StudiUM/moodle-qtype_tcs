@@ -38,7 +38,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
     protected $order;
-    
+
     public function is_blank_answer($state) {
         // Blank tcs answers are not empty strings, they rather end in a colon.
         return empty($state->answer) || substr($state->answer, -1) == ':';
@@ -47,20 +47,21 @@ class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
     public function right_answer() {
         $max = 0;
         $rightanswer = null;
-        
-        foreach($this->question->options->answers as $answer) {
-            if($answer->fraction > $max) {
+
+        foreach ($this->question->options->answers as $answer) {
+            if ($answer->fraction > $max) {
                 $max = $answer->fraction;
                 $rightanswer = $answer;
             }
         }
-        
-        if(!empty($rightanswer))
+
+        if (!empty($rightanswer)) {
             return $this->to_text($rightanswer->answer);
-        
+        }
+
         return -1;
     }
-    
+
     protected function explode_answer($answer) {
         if (strpos($answer, ':') !== false) {
             list($order, $responses) = explode(':', $answer);
@@ -73,10 +74,10 @@ class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
             return $answer;
         }
     }
-    
+
     public function response_summary($state) {
         $responses = $this->explode_answer($state->answer);
-        
+
         if (is_numeric($responses)) {
             if (array_key_exists($responses, $this->question->options->answers)) {
                 return $this->to_text($this->question->options->answers[$responses]->answer);
@@ -90,7 +91,7 @@ class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
             return null;
         }
     }
-    
+
     public function was_answered($state) {
         $responses = $this->explode_answer($state->answer);
         return is_numeric($responses);
@@ -104,11 +105,11 @@ class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
         $data['_order'] = $order;
         $this->order = explode(',', $order);
     }
-    
+
     public function supply_missing_first_step_data(&$data) {
         $data['_order'] = implode(',', array_keys($this->question->options->answers));
     }
-    
+
     public function set_data_elements_for_step($state, &$data) {
         $responses = $this->explode_answer($state->answer);
         if (is_numeric($responses)) {

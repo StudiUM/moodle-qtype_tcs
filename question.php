@@ -8,36 +8,36 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
-* tcs question definition class.
-*
-* @package qtype
-* @subpackage tcs
-* @copyright 2014 Julien Girardot (julien.girardot@actimage.com)
+ * tcs question definition class.
+ *
+ * @package qtype
+ * @subpackage tcs
+ * @copyright 2014 Julien Girardot (julien.girardot@actimage.com)
 
-* @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 
 defined('MOODLE_INTERNAL') || die();
 
 
 /**
-* Represents a tcs question.
-*
-* @copyright 2014 Julien Girardot (julien.girardot@actimage.com)
+ * Represents a tcs question.
+ *
+ * @copyright 2014 Julien Girardot (julien.girardot@actimage.com)
 
-* @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class qtype_tcs_question extends question_graded_automatically {
     public $answers;
-    
+
     public $hypothisistext;
     public $hypothisistextformat;
     public $effecttext;
@@ -45,21 +45,22 @@ class qtype_tcs_question extends question_graded_automatically {
     public $labeleffecttext;
     public $labelhypothisistext;
     public $showquestiontext;
-    
+    public $shownumcorrect;
+
     public $correctfeedback;
     public $correctfeedbackformat;
     public $partiallycorrectfeedback;
     public $partiallycorrectfeedbackformat;
     public $incorrectfeedback;
     public $incorrectfeedbackformat;
-    
+
     protected $order = null;
 
     public function start_attempt(question_attempt_step $step, $variant) {
         $this->order = array_keys($this->answers);
         $step->set_qt_var('_order', implode(',', $this->order));
     }
-    
+
     public function apply_attempt_state(question_attempt_step $step) {
         $this->order = explode(',', $step->get_qt_var('_order'));
     }
@@ -74,20 +75,20 @@ class qtype_tcs_question extends question_graded_automatically {
             $this->order = explode(',', $qa->get_step(0)->get_qt_var('_order'));
         }
     }
-    
+
     public function get_expected_data() {
         return array('answer' => PARAM_INT);
     }
-    
+
     public function summarise_response(array $response) {
         if (!array_key_exists('answer', $response) || !array_key_exists($response['answer'], $this->order)) {
             return null;
         }
-        
+
         $ansid = $this->order[$response['answer']];
         return $this->html_to_text($this->answers[$ansid]->answer, $this->answers[$ansid]->answerformat);
     }
-    
+
     public function get_question_summary() {
         $question = $this->html_to_text($this->questiontext, $this->questiontextformat);
         $choices = array();
@@ -97,7 +98,7 @@ class qtype_tcs_question extends question_graded_automatically {
         }
         return $question . ': ' . implode('; ', $choices);
     }
-    
+
     public function prepare_simulated_post_data($simulatedresponse) {
         $ansnumbertoanswerid = array_keys($this->answers);
         $ansid = $ansnumbertoanswerid[$simulatedresponse['answer']];
@@ -115,14 +116,14 @@ class qtype_tcs_question extends question_graded_automatically {
     public function is_gradable_response(array $response) {
         return $this->is_complete_response($response);
     }
-    
+
     public function get_validation_error(array $response) {
         if ($this->is_gradable_response($response)) {
             return '';
         }
         return get_string('pleaseselectananswer', 'qtype_tcs');
     }
-    
+
     public function get_response(question_attempt $qa) {
         return $qa->get_last_qt_var('answer', -1);
     }
@@ -130,7 +131,7 @@ class qtype_tcs_question extends question_graded_automatically {
     public function is_choice_selected($response, $value) {
         return (string) $response === (string) $value;
     }
-    
+
     public function check_file_access($qa, $options, $component, $filearea, $args, $forcedownload) {
         if ($component == 'question' && in_array($filearea,
                 array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'))) {
@@ -164,7 +165,7 @@ class qtype_tcs_question extends question_graded_automatically {
                     $args, $forcedownload);
         }
     }
-    
+
     public function classify_response(array $response) {
         if (!array_key_exists('answer', $response) ||
                 !array_key_exists($response['answer'], $this->order)) {
@@ -175,40 +176,39 @@ class qtype_tcs_question extends question_graded_automatically {
         return array($this->id => new question_classified_response($choiceid,
                 $this->html_to_text($ans->answer, $ans->answerformat), $ans->fraction));
     }
-    
+
     public function get_correct_response() {
-        $max_fraction = $this->get_max_fraction($this->answers);
-        
+        $maxfraction = $this->get_max_fraction();
+
         foreach ($this->answers as $key => $answer) {
-            if ((string) $answer->fraction === (string) $max_fraction) {
+            if ((string) $answer->fraction === (string) $maxfraction) {
                 return array('answer' => $key);
             }
         }
-        
+
         return array();
     }
-    
-    public function get_max_fraction($arrAnswers) {
+
+    public function get_max_fraction() {
         $max = 0;
-        
-        foreach($arrAnswers as $answer) {
-            if($answer->fraction > $max) {
+
+        foreach ($this->answers as $answer) {
+            if ($answer->fraction > $max) {
                 $max = $answer->fraction;
             }
         }
-        
+
         return $max;
     }
-    
+
     public function make_html_inline($html) {
         $html = preg_replace('~\s*<p>\s*~u', '', $html);
         $html = preg_replace('~\s*</p>\s*~u', '<br />', $html);
         $html = preg_replace('~(<br\s*/?>)+$~u', '', $html);
         return trim($html);
     }
-    
-    
-    // Renvoit le pourcentage de la note à attribué
+
+    // Returns the percentage for the grade.
     public function grade_response(array $response) {
         if (array_key_exists('answer', $response) &&
                 array_key_exists($response['answer'], $this->order)) {
@@ -216,19 +216,19 @@ class qtype_tcs_question extends question_graded_automatically {
         } else {
             $fraction = 0;
         }
-        
-        $max_fraction = $this->get_max_fraction($this->answers);
-        $result = $fraction / $max_fraction;
-        
+
+        $maxfraction = $this->get_max_fraction();
+        $result = $fraction / $maxfraction;
+
         return array($result, question_state::graded_state_for_fraction($result));
     }
-    
+
     public function compute_final_grade($responses, $totaltries) {
-        
+
         die('compute_final_grade');
-        var_dump($responses); 
+        var_dump($responses);
         var_dump($totaltries);die;
-        
+
         return 0;
     }
 }
