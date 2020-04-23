@@ -42,7 +42,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool
  */
 function qtype_tcs_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
-    global $DB, $CFG;
+    global $CFG;
     require_once($CFG->libdir . '/questionlib.php');
     question_pluginfile($course, $context, 'qtype_tcs', $filearea, $args, $forcedownload, $options);
 }

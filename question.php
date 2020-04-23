@@ -135,7 +135,7 @@ class qtype_tcs_question extends question_graded_automatically {
     public function check_file_access($qa, $options, $component, $filearea, $args, $forcedownload) {
         if ($component == 'question' && in_array($filearea,
                 array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'))) {
-            return $this->check_combined_feedback_file_access($qa, $options, $filearea);
+            return $this->check_combined_feedback_file_access($qa, $options, $filearea, $args);
 
         } else if ($component == 'question' && $filearea == 'answer') {
             $answerid = reset($args); // Itemid is answer id.
@@ -159,6 +159,12 @@ class qtype_tcs_question extends question_graded_automatically {
 
         } else if ($component == 'question' && $filearea == 'hint') {
             return $this->check_hint_file_access($qa, $options, $args);
+
+        } else if ($component == 'qtype_tcs' && $filearea == 'hypothisistext') {
+            return $qa->get_question()->hypothisistext && $args[0] == $this->id;
+
+        } else if ($component == 'qtype_tcs' && $filearea == 'effecttext') {
+            return $qa->get_question()->effecttext && $args[0] == $this->id;
 
         } else {
             return parent::check_file_access($qa, $options, $component, $filearea,
@@ -218,7 +224,11 @@ class qtype_tcs_question extends question_graded_automatically {
         }
 
         $maxfraction = $this->get_max_fraction();
-        $result = $fraction / $maxfraction;
+        if ($maxfraction == 0) {
+            $result = 0;
+        } else {
+            $result = $fraction / $maxfraction;
+        }
 
         return array($result, question_state::graded_state_for_fraction($result));
     }

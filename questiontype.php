@@ -85,7 +85,7 @@ class qtype_tcs extends question_type {
             $answer->answer = $this->import_or_save_files($answerdata,
                     $context, 'question', 'answer', $answer->id);
             $answer->answerformat = $answerdata['format'];
-            $answer->fraction = $question->fraction[$key];
+            $answer->fraction = (float) $question->fraction[$key];
             $answer->feedback = $this->import_or_save_files($question->feedback[$key],
                     $context, 'question', 'answerfeedback', $answer->id);
             $answer->feedbackformat = $question->feedback[$key]['format'];
@@ -120,9 +120,11 @@ class qtype_tcs extends question_type {
             $options->id = $DB->insert_record('qtype_tcs_options', $options);
         }
 
-        $options->hypothisistext = $question->hypothisistext['text'];
+        $options->hypothisistext = $this->import_or_save_files($question->hypothisistext,
+                $context, 'qtype_tcs', 'hypothisistext', $question->id);
         $options->hypothisistextformat = $question->hypothisistext['format'];
-        $options->effecttext = $question->effecttext['text'];
+        $options->effecttext = $this->import_or_save_files($question->effecttext,
+                $context, 'qtype_tcs', 'effecttext', $question->id);
         $options->effecttextformat = $question->effecttext['format'];
         $options->labeleffecttext = $question->labeleffecttext;
         $options->labelhypothisistext = $question->labelhypothisistext;
@@ -169,15 +171,16 @@ class qtype_tcs extends question_type {
     }
 
     public function get_possible_responses($questiondata) {
-        $response = array();
+        $responses = array();
 
         foreach ($questiondata->options->answers as $aid => $answer) {
-            $response[$aid] = array($aid => new question_possible_response(
+            $responses[$aid] = new question_possible_response(
                     question_utils::to_plain_text($answer->answer, $answer->answerformat),
-                    $answer->fraction));
+                    $answer->fraction);
         }
 
-        return $response;
+        $responses[null] = question_possible_response::no_response();
+        return array($questiondata->id => $responses);
     }
 
     public function move_files($questionid, $oldcontextid, $newcontextid) {
@@ -185,6 +188,9 @@ class qtype_tcs extends question_type {
         $this->move_files_in_answers($questionid, $oldcontextid, $newcontextid, true);
         $this->move_files_in_combined_feedback($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
+        $fs = get_file_storage();
+        $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_tcs', 'hypothisistext', $questionid);
+        $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_tcs', 'effecttext', $questionid);
     }
 
     protected function delete_files($questionid, $contextid) {
@@ -192,5 +198,8 @@ class qtype_tcs extends question_type {
         $this->delete_files_in_answers($questionid, $contextid, true);
         $this->delete_files_in_combined_feedback($questionid, $contextid);
         $this->delete_files_in_hints($questionid, $contextid);
+        $fs = get_file_storage();
+        $fs->delete_area_files($contextid, 'qtype_tcs', 'hypothisistext', $questionid);
+        $fs->delete_area_files($contextid, 'qtype_tcs', 'effecttext', $questionid);
     }
 }

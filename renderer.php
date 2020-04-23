@@ -70,9 +70,14 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::start_tag('tbody', array('class' => ''));
         $result .= html_writer::start_tag('tr', array('class' => ''));
         // Show hypothesis.
-        $result .= html_writer::tag('td', $question->hypothisistext, array('class' => 'leftalign cell'));
+        $hypothisistext = $question->format_text($question->hypothisistext, $question->hypothisistext, $qa, 'qtype_tcs',
+            'hypothisistext', $question->id);
+        $result .= html_writer::tag('td', $hypothisistext, array('class' => 'leftalign cell'));
+
         // Show effect on hypothesis.
-        $result .= html_writer::tag('td', $question->effecttext, array('class' => 'leftalign cell'));
+        $effecttext = $question->format_text($question->effecttext, $question->effecttext, $qa, 'qtype_tcs', 'effecttext',
+            $question->id);
+        $result .= html_writer::tag('td', $effecttext, array('class' => 'leftalign cell'));
 
         // Show answers.
         $result .= html_writer::start_tag('td', array('class' => 'leftalign cell'));

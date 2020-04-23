@@ -58,7 +58,7 @@ class qtype_tcs_edit_form extends question_edit_form {
 
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_tcs', '{no}'), 0, 5, 0);
 
-        $this->add_combined_feedback_fields(true);
+        $this->add_combined_feedback_fields(false);
     }
 
     protected function data_preprocessing($question) {
@@ -77,7 +77,7 @@ class qtype_tcs_edit_form extends question_edit_form {
             $hypothisistext = $hypothisistext['text'];
         }
         $hypothisistext = file_prepare_draft_area($draftid, $this->context->id,
-                'question', 'hypothisistext', empty($question->id) ? null : (int) $question->id,
+                'qtype_tcs', 'hypothisistext', empty($question->id) ? null : (int) $question->id,
                 $this->fileoptions, $hypothisistext);
 
         $question->hypothisistext = array();
@@ -96,7 +96,7 @@ class qtype_tcs_edit_form extends question_edit_form {
             $effecttext = $effecttext['text'];
         }
         $effecttext = file_prepare_draft_area($draftid, $this->context->id,
-                'question', 'effecttext', empty($question->id) ? null : (int) $question->id,
+                'qtype_tcs', 'effecttext', empty($question->id) ? null : (int) $question->id,
                 $this->fileoptions, $effecttext);
 
         $question->effecttext = array();
@@ -132,9 +132,10 @@ class qtype_tcs_edit_form extends question_edit_form {
         $errors = parent::validation($data, $files);
         $answers = $data['answer'];
         $answercount = 0;
+        $totalfraction = 0;
 
         foreach ($answers as $key => $answer) {
-            // Check no of choices.
+            // Check number of choices, total fraction, etc.
             $trimmedanswer = trim($answer['text']);
             $fraction = (float) $data['fraction'][$key];
 
@@ -145,15 +146,28 @@ class qtype_tcs_edit_form extends question_edit_form {
                 $errors['fraction['.$key.']'] = get_string('errgradesetanswerblank', 'qtype_tcs');
             }
 
+            if (!is_numeric($data['fraction'][$key])) {
+                $errors['fraction['.$key.']'] = get_string('fractionshouldbenumber', 'qtype_tcs');
+            }
+            $totalfraction += $fraction;
+
             $answercount++;
         }
 
+        // Number of choices.
         if ($answercount < 5) {
             $errors['answer[0]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
             $errors['answer[1]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
             $errors['answer[2]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
             $errors['answer[3]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
             $errors['answer[4]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
+        }
+
+        // Total fraction.
+        if ($totalfraction <= 0) {
+            foreach ($answers as $key => $answer) {
+                $errors['fraction['.$key.']'] = get_string('totalfractionmorezero', 'qtype_tcs');
+            }
         }
 
         return $errors;
