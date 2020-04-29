@@ -29,6 +29,7 @@ $string['choiceno'] = 'Choice {$a}';
 $string['correctansweris'] = 'The correct answer is: {$a}';
 $string['effecttext'] = 'Effect';
 $string['errgradesetanswerblank'] = 'The number of experts should be 0 since the choice is empty';
+$string['feedback'] = 'Feedback';
 $string['fraction'] = 'Number of experts';
 $string['fractionshouldbenumber'] = 'The number of experts should be a number.';
 $string['hypothisistext'] = 'Hypothisis';

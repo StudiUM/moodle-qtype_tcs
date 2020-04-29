@@ -100,3 +100,7 @@ body#page-question-type-tcs div[id^=fitem_id_][id*=feedback_] {
     border: 1px solid #bbb;
     border-top: 0;
 }
+
+.tcs p.whitebackground {
+    background-color: #fff;
+}

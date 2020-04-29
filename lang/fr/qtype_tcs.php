@@ -29,6 +29,7 @@ $string['choiceno'] = 'Réponse {$a}';
 $string['correctansweris'] = 'La réponse correcte est : {$a}';
 $string['effecttext'] = 'Effet sur hypothèses';
 $string['errgradesetanswerblank'] = 'Le nombre d\'experts devrait être de 0 puisque la réponse est vide';
+$string['feedback'] = 'Rétroaction';
 $string['fraction'] = "Nombre d'experts";
 $string['fractionshouldbenumber'] = 'Le nombre d\'experts doit être un nombre.';
 $string['hypothisistext'] = 'Hypothèse';

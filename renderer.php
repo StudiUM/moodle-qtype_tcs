@@ -48,7 +48,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
 
         $question   = $qa->get_question();
-
+        $responseoutput = $question->get_format_renderer($this->page);
         $questiontext = $question->format_questiontext($qa);
 
         $result = '';
@@ -87,8 +87,23 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::end_tag('td');
         $result .= html_writer::end_tag('tr');
         $result .= html_writer::end_tag('tbody');
-
         $result .= html_writer::end_tag('table');
+
+        // Show answer feedback.
+        $inputname = $qa->get_qt_field_name('answerfeedback');
+        $result .= html_writer::label(get_string('feedback', 'qtype_tcs'), $inputname);
+        $step = $qa->get_last_step_with_qt_var('answerfeedback');
+        if (!$step->has_qt_var('answerfeedback') && empty($options->readonly)) {
+            $step = new question_attempt_step(array('answerfeedback' => ''));
+        }
+        if (empty($options->readonly)) {
+            $answer = $responseoutput->response_area_input('answerfeedback', $qa, $step);
+        } else {
+            $answer = html_writer::tag('p', $step->get_qt_var('answerfeedback'),
+                    ['id' => $inputname, 'class' => 'small p-2 whitebackground']);
+        }
+
+        $result .= html_writer::tag('div', $answer, array('class' => 'answerfeedback'));
 
         return $result;
     }
@@ -200,5 +215,55 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         }
 
         return $max;
+    }
+}
+
+/**
+ * An tcs format renderer for tcs where the student should use a plain input box.
+ *
+ * @package qtype
+ * @subpackage tcs
+ * @copyright  2020 Université  de Montréal.
+ * @author     Issam Taboubi <issam.taboubi@umontreal.ca>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class qtype_tcs_format_plain_renderer extends plugin_renderer_base {
+
+    /**
+     * Return the HTML for the textarea.
+     *
+     * @param string $response content of the textarea
+     * @param array $attributes textarea attributes
+     * @return string the HTML for the textarea.
+     */
+    protected function textarea($response, $attributes) {
+        $attributes['class'] = $this->class_name() . ' qtype_tcs_response';
+        $attributes['rows'] = 7;
+        $attributes['cols'] = 45;
+        return html_writer::tag('textarea', s($response), $attributes);
+    }
+
+    /**
+     * Return class name.
+     *
+     * @return string class name
+     */
+    protected function class_name() {
+        return 'qtype_tcs_plain';
+    }
+
+    /**
+     * Return the HTML for the textarea.
+     *
+     * @param string $name the name of the textarea
+     * @param question_attempt $qa
+     * @param question_attempt_step $step
+     * @return string the HTML for the textarea.
+     */
+    public function response_area_input($name, $qa, $step) {
+        $inputname = $qa->get_qt_field_name($name);
+        return $this->textarea($step->get_qt_var($name), array('name' => $inputname, 'id' => $inputname)) .
+                html_writer::empty_tag('input', array('type' => 'hidden',
+                    'name' => $inputname . 'format', 'value' => FORMAT_PLAIN));
     }
 }

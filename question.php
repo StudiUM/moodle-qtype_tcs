@@ -77,7 +77,7 @@ class qtype_tcs_question extends question_graded_automatically {
     }
 
     public function get_expected_data() {
-        return array('answer' => PARAM_INT);
+        return array('answer' => PARAM_INT, 'answerfeedback' => PARAM_RAW);
     }
 
     public function summarise_response(array $response) {
@@ -240,5 +240,15 @@ class qtype_tcs_question extends question_graded_automatically {
         var_dump($totaltries);die;
 
         return 0;
+    }
+
+    /**
+     * Get tcs format renderer.
+     *
+     * @param moodle_page $page the page we are outputting to.
+     * @return qtype_tcs_format_renderer_base the response-format-specific renderer.
+     */
+    public function get_format_renderer(moodle_page $page) {
+        return $page->get_renderer('qtype_tcs', 'format_plain');
     }
 }
