@@ -56,7 +56,8 @@ class qtype_tcs_edit_form extends question_edit_form {
 
         $mform->addElement('select', 'showquestiontext', get_string('showquestiontext', 'qtype_tcs'), $menu);
 
-        $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_tcs', '{no}'), 0, 5, 0);
+        $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_tcs', '{no}'),
+                0, max(5, QUESTION_NUMANS_START));
 
         $this->add_combined_feedback_fields(false);
     }
@@ -114,16 +115,26 @@ class qtype_tcs_edit_form extends question_edit_form {
     }
 
     protected function get_per_answer_fields($mform, $label, $gradeoptions, &$repeatedoptions, &$answersoption) {
+        global $PAGE;
         $repeated = array();
         $repeated[] = $mform->createElement('editor', 'answer', $label, array('rows' => 3), $this->editoroptions);
         $repeated[] = $mform->createElement('text', 'fraction', get_string('fraction', 'qtype_tcs'), $gradeoptions);
         $repeated[] = $mform->createElement('editor', 'feedback', get_string('feedback', 'question'), array('rows' => 3),
             $this->editoroptions);
-
         $repeatedoptions['answer']['type'] = PARAM_RAW;
         $repeatedoptions['fraction']['type'] = PARAM_TEXT;
         $repeatedoptions['fraction']['default'] = 0;
         $answersoption = 'answers';
+        // Fill default values for answers.
+        $renderer = $PAGE->get_renderer('core');
+        if (!isset($this->question->options)) {
+            $nbanswers = max(5, QUESTION_NUMANS_START);
+            for ($i = 0; $i < $nbanswers; $i++) {
+                $htmllikertscale = $renderer->render_from_template('qtype_tcs/texteditor_wrapper',
+                        ['text' => get_string('likertscale' . ($i + 1), 'qtype_tcs')]);
+                $mform->setDefault("answer[$i]", ['text' => $htmllikertscale]);
+            }
+        }
 
         return $repeated;
     }
@@ -155,18 +166,18 @@ class qtype_tcs_edit_form extends question_edit_form {
         }
 
         // Number of choices.
-        if ($answercount < 5) {
-            $errors['answer[0]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
-            $errors['answer[1]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
-            $errors['answer[2]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
-            $errors['answer[3]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
-            $errors['answer[4]'] = get_string('notenoughanswers', 'qtype_tcs', 5);
+        if ($answercount == 0) {
+            $errors['answer[0]'] = get_string('notenoughanswers', 'qtype_tcs', 2);
+            $errors['answer[1]'] = get_string('notenoughanswers', 'qtype_tcs', 2);
+        } else if ($answercount == 1) {
+            $errors['answer[1]'] = get_string('notenoughanswers', 'qtype_tcs', 2);
+
         }
 
         // Total fraction.
         if ($totalfraction <= 0) {
-            foreach ($answers as $key => $answer) {
-                $errors['fraction['.$key.']'] = get_string('totalfractionmorezero', 'qtype_tcs');
+            for ($i = 0; $i < $answercount; $i++) {
+                $errors['fraction[' . $i . ']'] = get_string('totalfractionmorezero', 'qtype_tcs');
             }
         }
 

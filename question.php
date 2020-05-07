@@ -233,15 +233,6 @@ class qtype_tcs_question extends question_graded_automatically {
         return array($result, question_state::graded_state_for_fraction($result));
     }
 
-    public function compute_final_grade($responses, $totaltries) {
-
-        die('compute_final_grade');
-        var_dump($responses);
-        var_dump($totaltries);die;
-
-        return 0;
-    }
-
     /**
      * Get tcs format renderer.
      *
