@@ -47,5 +47,6 @@ $string['pluginnameadding'] = "Adding  a SCT question";
 $string['pluginnameediting'] = "Editing a SCT question";
 $string['pluginnamesummary'] = "The script concordance test ( SCT) is a technique of evaluation of the clinical reasoning in context of uncertainty by a simulation of situations.";
 $string['pluginname_help'] = 'In response to a question (that may include a image) the respondent chooses from multiple answers.';
+$string['privacy:metadata'] = 'The Script concordance test question type plugin does not store any personal data.';
 $string['showquestiontext'] = 'Display the clinic case';
 $string['totalfractionmorezero'] = 'The total number of experts should be more than 0.';

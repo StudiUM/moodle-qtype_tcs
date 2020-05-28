@@ -47,5 +47,6 @@ $string['pluginnameadding'] = "Ajout d'une question TCS";
 $string['pluginnameediting'] = "Edition d'une question TCS";
 $string['pluginnamesummary'] = "Le test de concordance de script (TCS) est une technique d'évaluation du raisonnement professionnel en contexte d'incertitude à l'aide de simulation de situations.";
 $string['pluginname_help'] = 'En réponse à une question (qui peut inclure une image), la personne interrogée choisit une réponse parmi de multiples réponses.';
+$string['privacy:metadata'] = 'Le plugin de type de question Test de concordance de script n\'enregistre aucune donnée personnelle.';
 $string['showquestiontext'] = 'Affichage du cas clinique';
 $string['totalfractionmorezero'] = 'Le nombre total d\'experts doit être supérieur à 0.';
