@@ -50,6 +50,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $question   = $qa->get_question();
         $responseoutput = $question->get_format_renderer($this->page);
         $questiontext = $question->format_questiontext($qa);
+        $showeffect = !empty($question->labeleffecttext) && !empty($question->effecttext);
 
         $result = '';
 
@@ -61,9 +62,12 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
 
         $result .= html_writer::start_tag('thead', array('class' => ''));
         $result .= html_writer::start_tag('tr', array('class' => ''));
-        $result .= html_writer::tag('th', $question->labelhypothisistext, array('class' => 'w30 header'));
-        $result .= html_writer::tag('th', $question->labeleffecttext, array('class' => 'w40 header'));
-        $result .= html_writer::tag('th', 'Cette nouvelle information rend votre hypothèse', array('class' => 'w30 header'));
+        $labelclass = $showeffect ? 'w30' : 'w50';
+        $result .= html_writer::tag('th', $question->labelhypothisistext, array('class' => $labelclass.' header'));
+        if ($showeffect) {
+            $result .= html_writer::tag('th', $question->labeleffecttext, array('class' => 'w40 header'));
+        }
+        $result .= html_writer::tag('th', get_string('newinformationeffect', 'qtype_tcs'), array('class' => 'header'));
         $result .= html_writer::end_tag('tr');
         $result .= html_writer::end_tag('thead');
 
@@ -75,9 +79,11 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::tag('td', $hypothisistext, array('class' => 'leftalign cell'));
 
         // Show effect on hypothesis.
-        $effecttext = $question->format_text($question->effecttext, $question->effecttext, $qa, 'qtype_tcs', 'effecttext',
-            $question->id);
-        $result .= html_writer::tag('td', $effecttext, array('class' => 'leftalign cell'));
+        if ($showeffect) {
+            $effecttext = $question->format_text($question->effecttext, $question->effecttext, $qa, 'qtype_tcs', 'effecttext',
+                $question->id);
+            $result .= html_writer::tag('td', $effecttext, array('class' => 'leftalign cell'));
+        }
 
         // Show answers.
         $result .= html_writer::start_tag('td', array('class' => 'leftalign cell'));
@@ -142,11 +148,12 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 unset($inputattributes['checked']);
             }
 
+            $labelclass = $options->correctness ? 'withgauge' : '';
             $label = html_writer::tag('label',
                     $question->make_html_inline(
                         $question->format_text($ans->answer, $ans->answerformat, $qa, 'question', 'answer', $ansid)
                     ),
-                    array('for' => $inputattributes['id'])
+                    array('for' => $inputattributes['id'], 'class' => $labelclass)
                 );
             $radiobuttons[] = html_writer::empty_tag('input', $inputattributes) . $label;
 
@@ -155,7 +162,11 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             // avoid refering to it here.
             $classes[] = 'r' . ($value % 2);
             if ($options->correctness) {
-                $percent = round(($ans->fraction / $maxfraction) * 100);
+                if ($maxfraction == 0) {
+                    $percent = 0;
+                } else {
+                    $percent = round(($ans->fraction / $maxfraction) * 100);
+                }
                 $feedbackstruct  = html_writer::start_tag('span', array('class' => 'gauge'));
                 $feedbackstruct .= html_writer::tag('span', '', array('style' => 'width:'.$percent.'%'));
                 $feedbackstruct .= html_writer::end_tag('span');

@@ -44,7 +44,36 @@ class qtype_tcs extends question_type {
         global $DB, $OUTPUT;
         $question->options = $DB->get_record('qtype_tcs_options',
                 array('questionid' => $question->id), '*', MUST_EXIST);
+
         parent::get_question_options($question);
+    }
+
+    /**
+     * Redefines the parent function : Set any missing settings for this question to the default values. This is
+     * called before displaying the question editing form.
+     *
+     * @param object $questiondata the question data, loaded from the databsae,
+     *      or more likely a newly created question object that is only partially
+     *      initialised.
+     */
+    public function set_default_options($questiondata) {
+        if (empty($questiondata->options)) {
+            // Sets the default values for the different fields.
+            $questiondata->options = new \stdClass();
+            $questiondata->options->hypothisistext = '';
+            $questiondata->options->hypothisistextformat = FORMAT_HTML;
+            $questiondata->options->effecttext = '';
+            $questiondata->options->effecttextformat = FORMAT_HTML;
+            $questiondata->options->correctfeedback = '';
+            $questiondata->options->correctfeedbackformat = FORMAT_HTML;
+            $questiondata->options->partiallycorrectfeedback = '';
+            $questiondata->options->partiallycorrectfeedbackformat = FORMAT_HTML;
+            $questiondata->options->incorrectfeedback = '';
+            $questiondata->options->incorrectfeedbackformat = FORMAT_HTML;
+            $questiondata->options->labeleffecttext = get_string('newinformation', 'qtype_tcs');
+            $questiondata->options->labelhypothisistext = get_string('hypothisistext', 'qtype_tcs');
+            $questiondata->options->showquestiontext = 1;
+        }
     }
 
     public function save_question_options($question) {
@@ -129,7 +158,6 @@ class qtype_tcs extends question_type {
         $options->labeleffecttext = $question->labeleffecttext;
         $options->labelhypothisistext = $question->labelhypothisistext;
         $options->showquestiontext = (int) $question->showquestiontext;
-
         $options = $this->save_combined_feedback_helper($options, $question, $context, false);
         $DB->update_record('qtype_tcs_options', $options);
 

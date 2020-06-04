@@ -38,23 +38,23 @@ defined('MOODLE_INTERNAL') || die();
 class qtype_tcs_edit_form extends question_edit_form {
 
     protected function definition_inner($mform) {
-        $mform->addElement('editor', 'hypothisistext', get_string('hypothisistext', 'qtype_tcs'), array('rows' => 5),
-            $this->editoroptions);
-
-        $mform->addElement('text', 'labelhypothisistext', get_string('labelhypothisistext', 'qtype_tcs'), array('size' => 40));
-        $mform->setType('labelhypothisistext', PARAM_TEXT);
-
-        $mform->addElement('editor', 'effecttext', get_string('effecttext', 'qtype_tcs'), array('rows' => 5), $this->editoroptions);
-
-        $mform->addElement('text', 'labeleffecttext', get_string('labeleffecttext', 'qtype_tcs'), array('size' => 40));
-        $mform->setType('labeleffecttext', PARAM_TEXT);
 
         $menu = array(
             get_string('caseno', 'qtype_tcs'),
             get_string('caseyes', 'qtype_tcs')
         );
+        $mform->addElement('selectyesno', 'showquestiontext', get_string('showquestiontext', 'qtype_tcs'));
 
-        $mform->addElement('select', 'showquestiontext', get_string('showquestiontext', 'qtype_tcs'), $menu);
+        $mform->addElement('text', 'labelhypothisistext', get_string('labelhypothisistext', 'qtype_tcs'), array('size' => 40));
+        $mform->setType('labelhypothisistext', PARAM_TEXT);
+
+        $mform->addElement('editor', 'hypothisistext', get_string('hypothisistext', 'qtype_tcs'), array('rows' => 5),
+            $this->editoroptions);
+
+        $mform->addElement('text', 'labeleffecttext', get_string('labeleffecttext', 'qtype_tcs'), array('size' => 40));
+        $mform->setType('labeleffecttext', PARAM_TEXT);
+
+        $mform->addElement('editor', 'effecttext', get_string('effecttext', 'qtype_tcs'), array('rows' => 5), $this->editoroptions);
 
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_tcs', '{no}'),
                 0, max(5, QUESTION_NUMANS_START));
@@ -172,13 +172,6 @@ class qtype_tcs_edit_form extends question_edit_form {
         } else if ($answercount == 1) {
             $errors['answer[1]'] = get_string('notenoughanswers', 'qtype_tcs', 2);
 
-        }
-
-        // Total fraction.
-        if ($totalfraction <= 0) {
-            for ($i = 0; $i < $answercount; $i++) {
-                $errors['fraction[' . $i . ']'] = get_string('totalfractionmorezero', 'qtype_tcs');
-            }
         }
 
         return $errors;
