@@ -66,6 +66,13 @@
     display: inline-block;
 }
 
+.que.tcs .answerspecificfeedback {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
 /* Editing form. */
 body#page-question-type-tcs div[id^=fitem_id_][id*=answer_] {
     background: #eee;

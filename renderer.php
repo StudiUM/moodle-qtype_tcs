@@ -191,8 +191,72 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         return $result;
     }
 
+    /**
+     * Returns the specific feedbacks of all answers.
+     *
+     * @param question_attempt $qa the question attempt to display.
+     * @return string HTML fragment.
+     */
     public function specific_feedback(question_attempt $qa) {
-        return $this->combined_feedback($qa);
+        $strfeedback = html_writer::nonempty_tag('p', $this->combined_feedback($qa));
+
+        $question = $qa->get_question();
+
+        foreach ($question->get_order($qa) as $value => $ansid) {
+            $answer = $question->answers[$ansid];
+            $trimmedfeedback = $question->make_html_inline($answer->feedback);
+            $trimmedanswer = $question->make_html_inline($answer->answer);
+            if (!empty($trimmedfeedback)) {
+                $str = $question->format_text($trimmedanswer, $answer->answerformat, $qa, 'question', 'answer', $answer->id);
+                $strfeedback .= html_writer::tag('p', html_writer::tag('strong', $str));
+                // Do not use $trimmedfeedback here, just a regular trim.
+                $strfeedback .= html_writer::start_tag('div', array('class' => 'answerspecificfeedback'));
+                $strfeedback .= $question->format_text(trim($answer->feedback), $answer->feedbackformat,
+                    $qa, 'question', 'answerfeedback', $answer->id);
+                $strfeedback .= html_writer::end_tag('div');
+            }
+        }
+        return $strfeedback;
+    }
+
+    /**
+     * Redefines the parent function to change the order of the feedbacks.
+     *
+     * @param question_attempt $qa the question attempt to display.
+     * @param question_display_options $options controls what should and should not be displayed.
+     * @return string HTML fragment.
+     */
+    public function feedback(question_attempt $qa, question_display_options $options) {
+        $output = '';
+        $hint = null;
+
+        if ($options->numpartscorrect) {
+            $output .= html_writer::nonempty_tag('div', $this->num_parts_correct($qa),
+                    array('class' => 'numpartscorrect'));
+        }
+
+        if ($hint) {
+            $output .= $this->hint($qa, $hint);
+        }
+
+        if ($options->generalfeedback) {
+            $output .= html_writer::nonempty_tag('div', $this->general_feedback($qa),
+                    array('class' => 'generalfeedback'));
+        }
+
+        if ($options->rightanswer) {
+            $output .= html_writer::nonempty_tag('div', $this->correct_response($qa),
+                    array('class' => 'rightanswer'));
+        }
+
+        // The specific feedback goes at the end.
+        if ($options->feedback) {
+            $output .= html_writer::nonempty_tag('div', $this->specific_feedback($qa),
+                    array('class' => 'specificfeedback'));
+            $hint = $qa->get_applicable_hint();
+        }
+
+        return $output;
     }
 
     public function correct_response(question_attempt $qa) {
