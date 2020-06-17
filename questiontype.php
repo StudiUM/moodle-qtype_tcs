@@ -70,8 +70,8 @@ class qtype_tcs extends question_type {
             $questiondata->options->partiallycorrectfeedbackformat = FORMAT_HTML;
             $questiondata->options->incorrectfeedback = '';
             $questiondata->options->incorrectfeedbackformat = FORMAT_HTML;
-            $questiondata->options->labeleffecttext = get_string('newinformation', 'qtype_tcs');
-            $questiondata->options->labelhypothisistext = get_string('hypothisistext', 'qtype_tcs');
+            $questiondata->options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
+            $questiondata->options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_tcs');
             $questiondata->options->showquestiontext = 1;
         }
     }
@@ -143,8 +143,8 @@ class qtype_tcs extends question_type {
             $options->partiallycorrectfeedbackformat = FORMAT_HTML;
             $options->incorrectfeedback = '';
             $options->incorrectfeedbackformat = FORMAT_HTML;
-            $options->labeleffecttext = get_string('newinformation', 'qtype_tcs');
-            $options->labelhypothisistext = get_string('hypothisistext', 'qtype_tcs');
+            $options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
+            $options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_tcs');
             $options->showquestiontext = 1;
             $options->id = $DB->insert_record('qtype_tcs_options', $options);
         }

@@ -53,6 +53,7 @@ class qtype_tcs_edit_form extends question_edit_form {
 
         $mform->addElement('text', 'labeleffecttext', get_string('labeleffecttext', 'qtype_tcs'), array('size' => 40));
         $mform->setType('labeleffecttext', PARAM_TEXT);
+        $mform->addHelpButton('labeleffecttext', 'labeleffecttext', 'qtype_tcs');
 
         $mform->addElement('editor', 'effecttext', get_string('effecttext', 'qtype_tcs'), array('rows' => 5), $this->editoroptions);
 
