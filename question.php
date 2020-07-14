@@ -46,6 +46,10 @@ class qtype_tcs_question extends question_graded_automatically {
     public $labelhypothisistext;
     public $showquestiontext;
     public $shownumcorrect;
+    public $labelnewinformationeffect;
+    public $labelsituation;
+    public $labelfeedback;
+    public $showfeedback;
 
     public $correctfeedback;
     public $correctfeedbackformat;

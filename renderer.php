@@ -55,6 +55,9 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result = '';
 
         if (!empty($question->showquestiontext)) {
+            $labelsituation = ($question->labelsituation === null) ? get_string('situation', 'qtype_tcs') :
+                $question->labelsituation;
+            $result .= html_writer::tag('p', html_writer::tag('strong', $labelsituation));
             $result .= html_writer::tag('div', $questiontext, array('class' => 'qtext'));
         }
 
@@ -67,7 +70,9 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         if ($showeffect) {
             $result .= html_writer::tag('th', $question->labeleffecttext, array('class' => 'w40 header'));
         }
-        $result .= html_writer::tag('th', get_string('newinformationeffect', 'qtype_tcs'), array('class' => 'header'));
+        $newinformationeffect = ($question->labelnewinformationeffect === null) ? get_string('newinformationeffect', 'qtype_tcs') :
+            $question->labelnewinformationeffect;
+        $result .= html_writer::tag('th', $newinformationeffect, array('class' => 'header'));
         $result .= html_writer::end_tag('tr');
         $result .= html_writer::end_tag('thead');
 
@@ -96,20 +101,24 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::end_tag('table');
 
         // Show answer feedback.
-        $inputname = $qa->get_qt_field_name('answerfeedback');
-        $result .= html_writer::label(get_string('feedback', 'qtype_tcs'), $inputname);
-        $step = $qa->get_last_step_with_qt_var('answerfeedback');
-        if (!$step->has_qt_var('answerfeedback') && empty($options->readonly)) {
-            $step = new question_attempt_step(array('answerfeedback' => ''));
-        }
-        if (empty($options->readonly)) {
-            $answer = $responseoutput->response_area_input('answerfeedback', $qa, $step);
-        } else {
-            $answer = html_writer::tag('p', $step->get_qt_var('answerfeedback'),
-                    ['id' => $inputname, 'class' => 'small p-2 whitebackground']);
-        }
+        if (intval($question->showfeedback) === 1) {
+            $inputname = $qa->get_qt_field_name('answerfeedback');
+            $labelfeedback = ($question->labelfeedback === null) ? get_string('feedback', 'qtype_tcs') :
+                $question->labelfeedback;
+            $result .= html_writer::label($labelfeedback, $inputname);
+            $step = $qa->get_last_step_with_qt_var('answerfeedback');
+            if (!$step->has_qt_var('answerfeedback') && empty($options->readonly)) {
+                $step = new question_attempt_step(array('answerfeedback' => ''));
+            }
+            if (empty($options->readonly)) {
+                $answer = $responseoutput->response_area_input('answerfeedback', $qa, $step);
+            } else {
+                $answer = html_writer::tag('p', $step->get_qt_var('answerfeedback'),
+                        ['id' => $inputname, 'class' => 'small p-2 whitebackground']);
+            }
 
-        $result .= html_writer::tag('div', $answer, array('class' => 'answerfeedback'));
+            $result .= html_writer::tag('div', $answer, array('class' => 'answerfeedback'));
+        }
 
         return $result;
     }

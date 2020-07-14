@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_tcs';
-$plugin->version   = 2013110500;
+$plugin->version   = 2020071300;
 
 $plugin->requires  = 2013110500;
 

@@ -72,7 +72,11 @@ class qtype_tcs extends question_type {
             $questiondata->options->incorrectfeedbackformat = FORMAT_HTML;
             $questiondata->options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
             $questiondata->options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_tcs');
+            $questiondata->options->labelnewinformationeffect = get_string('newinformationeffect', 'qtype_tcs');
+            $questiondata->options->labelfeedback = get_string('feedback', 'qtype_tcs');
+            $questiondata->options->labelsituation = get_string('situation', 'qtype_tcs');
             $questiondata->options->showquestiontext = 1;
+            $questiondata->options->showfeedback = 1;
         }
     }
 
@@ -145,6 +149,10 @@ class qtype_tcs extends question_type {
             $options->incorrectfeedbackformat = FORMAT_HTML;
             $options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
             $options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_tcs');
+            $options->labelnewinformationeffect = get_string('newinformationeffect', 'qtype_tcs');
+            $options->labelfeedback = get_string('feedback', 'qtype_tcs');
+            $options->labelsituation = get_string('situation', 'qtype_tcs');
+            $options->showfeedback = 1;
             $options->showquestiontext = 1;
             $options->id = $DB->insert_record('qtype_tcs_options', $options);
         }
@@ -158,6 +166,10 @@ class qtype_tcs extends question_type {
         $options->labeleffecttext = $question->labeleffecttext;
         $options->labelhypothisistext = $question->labelhypothisistext;
         $options->showquestiontext = (int) $question->showquestiontext;
+        $options->labelnewinformationeffect = $question->labelnewinformationeffect;
+        $options->labelfeedback = $question->labelfeedback;
+        $options->labelsituation = $question->labelsituation;
+        $options->showfeedback = (int) $question->showfeedback;
         $options = $this->save_combined_feedback_helper($options, $question, $context, false);
         $DB->update_record('qtype_tcs_options', $options);
 
@@ -180,6 +192,10 @@ class qtype_tcs extends question_type {
         $question->labeleffecttext = $questiondata->options->labeleffecttext;
         $question->labelhypothisistext = $questiondata->options->labelhypothisistext;
         $question->showquestiontext = $questiondata->options->showquestiontext;
+        $question->labelnewinformationeffect = $questiondata->options->labelnewinformationeffect;
+        $question->labelfeedback = $questiondata->options->labelfeedback;
+        $question->labelsituation = $questiondata->options->labelsituation;
+        $question->showfeedback = $questiondata->options->showfeedback;
 
         $this->initialise_combined_feedback($question, $questiondata, false);
 

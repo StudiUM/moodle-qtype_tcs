@@ -45,6 +45,9 @@ class qtype_tcs_edit_form extends question_edit_form {
         );
         $mform->addElement('selectyesno', 'showquestiontext', get_string('showquestiontext', 'qtype_tcs'));
 
+        $mform->addElement('text', 'labelsituation', get_string('labelsituation', 'qtype_tcs'), array('size' => 40));
+        $mform->setType('labelsituation', PARAM_TEXT);
+
         $mform->addElement('text', 'labelhypothisistext', get_string('labelhypothisistext', 'qtype_tcs'), array('size' => 40));
         $mform->setType('labelhypothisistext', PARAM_TEXT);
 
@@ -57,10 +60,22 @@ class qtype_tcs_edit_form extends question_edit_form {
 
         $mform->addElement('editor', 'effecttext', get_string('effecttext', 'qtype_tcs'), array('rows' => 5), $this->editoroptions);
 
+        $mform->addElement('text', 'labelnewinformationeffect',
+                get_string('labelnewinformationeffect', 'qtype_tcs'), array('size' => 40));
+        $mform->setType('labelnewinformationeffect', PARAM_TEXT);
+
+        $mform->addElement('selectyesno', 'showfeedback', get_string('labelshowquestionfeedback', 'qtype_tcs'));
+
+        $mform->addElement('text', 'labelfeedback', get_string('labelquestionfeedback', 'qtype_tcs'), array('size' => 40));
+        $mform->setType('labelfeedback', PARAM_TEXT);
+
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_tcs', '{no}'),
                 0, max(5, QUESTION_NUMANS_START));
 
         $this->add_combined_feedback_fields(false);
+
+        $mform->disabledIf('labelfeedback', 'showfeedback', 'eq', 0);
+        $mform->disabledIf('labelsituation', 'showquestiontext', 'eq', 0);
     }
 
     protected function data_preprocessing($question) {
@@ -110,7 +125,14 @@ class qtype_tcs_edit_form extends question_edit_form {
         $question->labeleffecttext = empty($question->options->labeleffecttext) ? '' : $question->options->labeleffecttext;
         $question->labelhypothisistext = empty($question->options->labelhypothisistext) ?
             '' : $question->options->labelhypothisistext;
+        $question->labelnewinformationeffect = empty($question->options->labelnewinformationeffect) ?
+            '' : $question->options->labelnewinformationeffect;
+        $question->labelfeedback = empty($question->options->labelfeedback) ?
+            '' : $question->options->labelfeedback;
+        $question->labelsituation = empty($question->options->labelsituation) ?
+            '' : $question->options->labelsituation;
         $question->showquestiontext = empty($question->options->showquestiontext) ? '' : $question->options->showquestiontext;
+        $question->showfeedback = empty($question->options->showfeedback) ? '' : $question->options->showfeedback;
 
         return $question;
     }

@@ -63,7 +63,8 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
             'showquestiontext', 'shownumcorrect',
             'correctfeedback', 'correctfeedbackformat',
             'partiallycorrectfeedback', 'partiallycorrectfeedbackformat',
-            'incorrectfeedback', 'incorrectfeedbackformat'));
+            'incorrectfeedback', 'incorrectfeedbackformat',
+            'showfeedback', 'labelfeedback', 'labelnewinformationeffect', 'labelsituation'));
 
         // Now the own qtype tree.
         $pluginwrapper->add_child($tcs);

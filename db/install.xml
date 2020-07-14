@@ -21,6 +21,10 @@
         <FIELD NAME="labeleffecttext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of Effects on the hypothisis."/>
         <FIELD NAME="labelhypothisistext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of Hypothisis."/>
         <FIELD NAME="showquestiontext" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="If true, the text of question is displayed."/>
+        <FIELD NAME="showfeedback" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="If true, the textarea feedback of question is displayed."/>
+        <FIELD NAME="labelfeedback" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of feedback."/>
+        <FIELD NAME="labelnewinformationeffect" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of new information effect."/>
+        <FIELD NAME="labelsituation" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of situation."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
