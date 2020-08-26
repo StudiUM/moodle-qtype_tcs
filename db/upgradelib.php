@@ -19,7 +19,9 @@
  *
  * @package    qtype
  * @subpackage tcs
- * @copyright  2014 Julien Girardot (julien.girardot@actimage.com)
+ * @copyright  2020 Université de Montréal
+ * @author     Marie-Eve Lévesque <marie-eve.levesque.8@umontreal.ca>
+ * @copyright  based on work by 2014 Julien Girardot <julien.girardot@actimage.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -33,7 +35,9 @@ defined('MOODLE_INTERNAL') || die();
  *
  * This class is used by the code in question/engine/upgrade/upgradelib.php.
  *
- * @copyright  2014 Julien Girardot (julien.girardot@actimage.com)
+ * @copyright  2020 Université de Montréal
+ * @author     Marie-Eve Lévesque <marie-eve.levesque.8@umontreal.ca>
+ * @copyright  based on work by 2014 Julien Girardot <julien.girardot@actimage.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {

@@ -19,7 +19,9 @@
  *
  * @since 2.0
  * @package qtype_tcs
- * @copyright 2014 Julien GIRARDOT (julien.girardot@actimage.com)
+ * @copyright  2020 Université de Montréal
+ * @author     Marie-Eve Lévesque <marie-eve.levesque.8@umontreal.ca>
+ * @copyright  based on work by 2014 Julien Girardot <julien.girardot@actimage.com>
 
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
