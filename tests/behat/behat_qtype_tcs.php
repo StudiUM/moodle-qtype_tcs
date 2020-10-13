@@ -45,8 +45,8 @@ class behat_qtype_tcs extends behat_base {
      * @param int $questionnb The question number.
      */
     public function i_should_see_that_panelists_have_answered_for_question($nbpanelists, $answer, $questionnb) {
-        $xpath = "(//div[contains(@class,'tcs')])[$questionnb]//div[contains(@class,'formulation')]//div[contains(@class,'answer')]"
-            . "//label[.='$answer']/following::span[not(contains(@class,'gauge'))][2]";
+        $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'formulation')]"
+            . "//div[contains(@class,'answer')]//label[.='$answer']/following::span[not(contains(@class,'gauge'))][2]";
         $this->execute("behat_general::assert_element_contains_text",
             array($nbpanelists, $xpath, "xpath_element")
         );
@@ -61,8 +61,8 @@ class behat_qtype_tcs extends behat_base {
      * @param int $questionnb The question number.
      */
     public function i_should_see_for_answer_of_question($comment, $answer, $questionnb) {
-        $xpath = "(//div[contains(@class,'tcs')])[$questionnb]//div[contains(@class,'specificfeedback')]/p[contains(.,'$answer')]"
-            . "/following::div[1]";
+        $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'specificfeedback')]"
+            . "/p[contains(.,'$answer')]/following::div[1]";
         $this->execute("behat_general::assert_element_contains_text",
             array($comment, $xpath, "xpath_element")
         );
@@ -76,7 +76,8 @@ class behat_qtype_tcs extends behat_base {
      * @param int $questionnb The question number.
      */
     public function i_should_see_no_comments_for_answer_of_question($answer, $questionnb) {
-        $xpath = "(//div[contains(@class,'tcs')])[$questionnb]//div[contains(@class,'specificfeedback')]/p[contains(.,'$answer')]";
+        $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'specificfeedback')]"
+            . "/p[contains(.,'$answer')]";
         $this->execute("behat_general::should_not_exist", array($xpath, "xpath_element"));
     }
 }

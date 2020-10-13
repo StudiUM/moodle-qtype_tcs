@@ -1,53 +1,53 @@
-.que.tcs table.tcs-table.w100 {
+table.tcs-table.w100 {
     width: 100%;
 }
 
-.que.tcs table.tcs-table th.w30 {
+table.tcs-table th.w30 {
     width: 30%;
 }
 
-.que.tcs table.tcs-table th.w40 {
+table.tcs-table th.w40 {
     width: 40%;
 }
 
-.que.tcs table.tcs-table th.w50 {
+table.tcs-table th.w50 {
     width: 50%;
 }
 
-.que.tcs table.tcs-table td.cell {
+table.tcs-table td.cell {
     background: #f3f3f3;
     border-bottom-width: 2px;
 }
 
-.que.tcs table.tcs-table div.answer {
+table.tcs-table div.answer {
     min-width: 300px;
 }
 
-.que.tcs table.tcs-table div.answer div.r0,
-.que.tcs table.tcs-table div.answer div.r1 {
+table.tcs-table div.answer div.r0,
+table.tcs-table div.answer div.r1 {
     background-color: #f3f3f3;
     vertical-align: middle;
 }
 
-.que.tcs table.tcs-table div.answer div.r0 input,
-.que.tcs table.tcs-table div.answer div.r1 input {
+table.tcs-table div.answer div.r0 input,
+table.tcs-table div.answer div.r1 input {
     vertical-align: middle;
 }
 
-.que.tcs table.tcs-table div.answer div.r0 label,
-.que.tcs table.tcs-table div.answer div.r1 label {
+table.tcs-table div.answer div.r0 label,
+table.tcs-table div.answer div.r1 label {
     vertical-align: middle;
     display: inline-block;
     padding-left: 5px;
 }
 
-.que.tcs table.tcs-table div.answer div.r0 label.withgauge,
-.que.tcs table.tcs-table div.answer div.r1 label.withgauge {
+table.tcs-table div.answer div.r0 label.withgauge,
+table.tcs-table div.answer div.r1 label.withgauge {
     width: 130px;
 }
 
-.que.tcs table.tcs-table div.answer div.r0 span.gauge,
-.que.tcs table.tcs-table div.answer div.r1 span.gauge {
+table.tcs-table div.answer div.r0 span.gauge,
+table.tcs-table div.answer div.r1 span.gauge {
     vertical-align: middle;
     background-color: #f3f3f3;
     border: 1px solid #e0e0e0;
@@ -58,15 +58,15 @@
     line-height: 0px;
 }
 
-.que.tcs table.tcs-table div.answer div.r0 span.gauge span,
-.que.tcs table.tcs-table div.answer div.r1 span.gauge span {
+table.tcs-table div.answer div.r0 span.gauge span,
+table.tcs-table div.answer div.r1 span.gauge span {
     background-color: #0071b9;
     height: 15px;
     margin: 0;
     display: inline-block;
 }
 
-.que.tcs .answerspecificfeedback {
+.tcs-answerspecificfeedback {
     background-color: white;
     border: 1px solid #e0e0e0;
     padding: 10px;
@@ -116,6 +116,6 @@ body#page-question-type-tcs div[id^=fitem_id_][id*=feedback_] {
     border-top: 0;
 }
 
-.tcs p.whitebackground {
+p.whitebackground {
     background-color: #fff;
 }

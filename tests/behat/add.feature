@@ -20,7 +20,7 @@ Feature: Test creating a TCS question
 
   Scenario: Create a TCS reasoning question, created with all default values.
     Given I press "Create a new question ..."
-    And I set the field "Script concordance test" to "1"
+    And I set the field "Concordance of reasoning" to "1"
     When I click on "Add" "button"
     Then the following fields match these values:
       | id_labelsituation               | Situation                     |
@@ -49,8 +49,8 @@ Feature: Test creating a TCS question
     And I press "id_submitbutton"
     And I should see "TCS-001"
 
-  Scenario: Create a TCS judgment question.
-    When I add a "Script concordance test" question filling the form with:
+  Scenario: Create a TCS judgment-like question using the main tcs plugin.
+    When I add a "Concordance of reasoning" question filling the form with:
       | Question name            | TCS-002                            |
       | Question text            | Here is the question               |
       | General feedback         | General feedback for the question  |

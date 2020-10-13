@@ -238,7 +238,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $str = $question->format_text($trimmedanswer, $answer->answerformat, $qa, 'question', 'answer', $answer->id);
                 $strfeedback .= html_writer::tag('p', html_writer::tag('strong', $str));
                 // Do not use $trimmedfeedback here, just a regular trim.
-                $strfeedback .= html_writer::start_tag('div', array('class' => 'answerspecificfeedback'));
+                $strfeedback .= html_writer::start_tag('div', array('class' => 'tcs-answerspecificfeedback'));
                 $strfeedback .= $question->format_text(trim($answer->feedback), $answer->feedbackformat,
                     $qa, 'question', 'answerfeedback', $answer->id);
                 $strfeedback .= html_writer::end_tag('div');
