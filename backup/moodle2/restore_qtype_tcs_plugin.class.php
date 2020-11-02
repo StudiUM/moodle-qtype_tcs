@@ -40,6 +40,21 @@ defined('MOODLE_INTERNAL') || die();
 class restore_qtype_tcs_plugin extends restore_qtype_plugin {
 
     /**
+     * @var string The qtype name.
+     */
+    protected static $qtypename = 'tcs';
+
+    /**
+     * @var string The tcs table name.
+     */
+    protected static $tablename = 'qtype_tcs';
+
+    /**
+     * @var array The name of columns for decoding content.
+     */
+    protected static $optionsdecodecontent = ['hypothisistext', 'effecttext'];
+
+    /**
      * Returns the paths to be handled by the plugin at question level
      */
     protected function define_question_plugin_structure() {
@@ -49,9 +64,9 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
         $this->add_question_question_answers($paths);
 
         // Add own qtype stuff.
-        $elename = 'tcs';
+        $elename = static::$qtypename;
         // We used get_recommended_name() so this works.
-        $elepath = $this->get_pathfor('/tcs');
+        $elepath = $this->get_pathfor('/' . $elename);
         $paths[] = new restore_path_element($elename, $elepath);
 
         return $paths; // And we return the interesting paths.
@@ -80,9 +95,9 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
 
             // It is possible for old backup files to contain unique key violations.
             // We need to check to avoid that.
-            if (!$DB->record_exists('qtype_tcs_options', array('questionid' => $data->questionid))) {
-                $newitemid = $DB->insert_record('qtype_tcs_options', $data);
-                $this->set_mapping('qtype_tcs_options', $oldid, $newitemid);
+            if (!$DB->record_exists(static::$tablename . '_options', array('questionid' => $data->questionid))) {
+                $newitemid = $DB->insert_record(static::$tablename . '_options', $data);
+                $this->set_mapping(static::$tablename . '_options', $oldid, $newitemid);
             }
         }
     }
@@ -170,11 +185,9 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
         $contents = array();
 
         $fields = array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback');
-        $contents[] = new restore_decode_content('qtype_tcs_options',
+        $contents[] = new restore_decode_content(static::$tablename . '_options',
                 $fields, 'qtype_tcs_options');
-        $contents[] = new restore_decode_content('qtype_tcs_options',
-                array('hypothisistext', 'effecttext'), 'qtype_tcs');
-
+        $contents[] = new restore_decode_content(static::$tablename . '_options', static::$optionsdecodecontent, 'qtype_tcs');
         return $contents;
     }
 }

@@ -45,6 +45,16 @@ require_once($CFG->dirroot . '/question/type/tcs/question.php');
 class qtype_tcs extends question_type {
 
     /**
+     * @var string The qtype name.
+     */
+    protected static $qtypename = 'tcs';
+
+    /**
+     * @var string The qtype table name.
+     */
+    protected static $tablename = 'qtype_tcs';
+
+    /**
      * Loads the question type specific options for the question.
      *
      * This function loads any question type specific options for the
@@ -58,7 +68,7 @@ class qtype_tcs extends question_type {
      */
     public function get_question_options($question) {
         global $DB, $OUTPUT;
-        $question->options = $DB->get_record('qtype_tcs_options',
+        $question->options = $DB->get_record(static::$tablename . '_options',
                 array('questionid' => $question->id), '*', MUST_EXIST);
 
         parent::get_question_options($question);
@@ -78,17 +88,19 @@ class qtype_tcs extends question_type {
             $questiondata->options = new \stdClass();
             $questiondata->options->hypothisistext = '';
             $questiondata->options->hypothisistextformat = FORMAT_HTML;
-            $questiondata->options->effecttext = '';
-            $questiondata->options->effecttextformat = FORMAT_HTML;
+            if (static::$qtypename == 'tcs') {
+                $questiondata->options->effecttext = '';
+                $questiondata->options->effecttextformat = FORMAT_HTML;
+                $questiondata->options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
+            }
             $questiondata->options->correctfeedback = '';
             $questiondata->options->correctfeedbackformat = FORMAT_HTML;
             $questiondata->options->partiallycorrectfeedback = '';
             $questiondata->options->partiallycorrectfeedbackformat = FORMAT_HTML;
             $questiondata->options->incorrectfeedback = '';
             $questiondata->options->incorrectfeedbackformat = FORMAT_HTML;
-            $questiondata->options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
-            $questiondata->options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_tcs');
-            $questiondata->options->labelnewinformationeffect = get_string('newinformationeffect', 'qtype_tcs');
+            $questiondata->options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_' . static::$qtypename);
+            $questiondata->options->labelnewinformationeffect = get_string('newinformationeffect', 'qtype_' . static::$qtypename);
             $questiondata->options->labelfeedback = get_string('feedback', 'qtype_tcs');
             $questiondata->options->labelsituation = get_string('situation', 'qtype_tcs');
             $questiondata->options->showquestiontext = 1;
@@ -157,37 +169,42 @@ class qtype_tcs extends question_type {
             $DB->delete_records('question_answers', array('id' => $oldanswer->id));
         }
 
-        $options = $DB->get_record('qtype_tcs_options', array('questionid' => $question->id));
+        $options = $DB->get_record(static::$tablename . '_options', array('questionid' => $question->id));
         if (!$options) {
             $options = new stdClass();
             $options->questionid = $question->id;
             $options->hypothisistext = '';
             $options->hypothisistextformat = FORMAT_HTML;
-            $options->effecttext = '';
-            $options->effecttextformat = FORMAT_HTML;
+            if (static::$qtypename == 'tcs') {
+                $options->effecttext = '';
+                $options->effecttextformat = FORMAT_HTML;
+                $options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
+            }
             $options->correctfeedback = '';
             $options->correctfeedbackformat = FORMAT_HTML;
             $options->partiallycorrectfeedback = '';
             $options->partiallycorrectfeedbackformat = FORMAT_HTML;
             $options->incorrectfeedback = '';
             $options->incorrectfeedbackformat = FORMAT_HTML;
-            $options->labeleffecttext = get_string('effecttextdefault', 'qtype_tcs');
-            $options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_tcs');
-            $options->labelnewinformationeffect = get_string('newinformationeffect', 'qtype_tcs');
+
+            $options->labelhypothisistext = get_string('hypothisistextdefault', 'qtype_' . static::$qtypename);
+            $options->labelnewinformationeffect = get_string('newinformationeffect', 'qtype_' . static::$qtypename);
             $options->labelfeedback = get_string('feedback', 'qtype_tcs');
             $options->labelsituation = get_string('situation', 'qtype_tcs');
             $options->showfeedback = 1;
             $options->showquestiontext = 1;
-            $options->id = $DB->insert_record('qtype_tcs_options', $options);
+            $options->id = $DB->insert_record(static::$tablename . '_options', $options);
         }
 
         $options->hypothisistext = $this->import_or_save_files($question->hypothisistext,
-                $context, 'qtype_tcs', 'hypothisistext', $question->id);
+                $context, 'qtype_' . static::$qtypename, 'hypothisistext', $question->id);
         $options->hypothisistextformat = $question->hypothisistext['format'];
-        $options->effecttext = $this->import_or_save_files($question->effecttext,
-                $context, 'qtype_tcs', 'effecttext', $question->id);
-        $options->effecttextformat = $question->effecttext['format'];
-        $options->labeleffecttext = $question->labeleffecttext;
+        if (static::$qtypename == 'tcs') {
+            $options->effecttext = $this->import_or_save_files($question->effecttext,
+                    $context, 'qtype_tcs', 'effecttext', $question->id);
+            $options->effecttextformat = $question->effecttext['format'];
+            $options->labeleffecttext = $question->labeleffecttext;
+        }
         $options->labelhypothisistext = $question->labelhypothisistext;
         $options->showquestiontext = (int) $question->showquestiontext;
         $options->labelnewinformationeffect = $question->labelnewinformationeffect;
@@ -195,7 +212,7 @@ class qtype_tcs extends question_type {
         $options->labelsituation = $question->labelsituation;
         $options->showfeedback = (int) $question->showfeedback;
         $options = $this->save_combined_feedback_helper($options, $question, $context, false);
-        $DB->update_record('qtype_tcs_options', $options);
+        $DB->update_record(static::$tablename . '_options', $options);
 
         $this->save_hints($question, true);
     }
@@ -230,8 +247,10 @@ class qtype_tcs extends question_type {
     protected function initialise_question_instance(question_definition $question, $questiondata) {
         parent::initialise_question_instance($question, $questiondata);
         $question->hypothisistext = $questiondata->options->hypothisistext;
-        $question->effecttext = $questiondata->options->effecttext;
-        $question->labeleffecttext = $questiondata->options->labeleffecttext;
+        if (static::$qtypename == 'tcs') {
+            $question->effecttext = $questiondata->options->effecttext;
+            $question->labeleffecttext = $questiondata->options->labeleffecttext;
+        }
         $question->labelhypothisistext = $questiondata->options->labelhypothisistext;
         $question->showquestiontext = $questiondata->options->showquestiontext;
         $question->labelnewinformationeffect = $questiondata->options->labelnewinformationeffect;
@@ -251,7 +270,7 @@ class qtype_tcs extends question_type {
      */
     public function delete_question($questionid, $contextid) {
         global $DB;
-        $DB->delete_records('qtype_tcs_options', array('questionid' => $questionid));
+        $DB->delete_records(static::$tablename . '_options', array('questionid' => $questionid));
 
         parent::delete_question($questionid, $contextid);
     }
@@ -301,8 +320,11 @@ class qtype_tcs extends question_type {
         $this->move_files_in_combined_feedback($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
         $fs = get_file_storage();
-        $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_tcs', 'hypothisistext', $questionid);
-        $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_tcs', 'effecttext', $questionid);
+        $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_' . static::$qtypename,
+                'hypothisistext', $questionid);
+        if (static::$qtypename == 'tcs') {
+            $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_tcs', 'effecttext', $questionid);
+        }
     }
 
     /**
@@ -316,7 +338,9 @@ class qtype_tcs extends question_type {
         $this->delete_files_in_combined_feedback($questionid, $contextid);
         $this->delete_files_in_hints($questionid, $contextid);
         $fs = get_file_storage();
-        $fs->delete_area_files($contextid, 'qtype_tcs', 'hypothisistext', $questionid);
-        $fs->delete_area_files($contextid, 'qtype_tcs', 'effecttext', $questionid);
+        $fs->delete_area_files($contextid, 'qtype_' . static::$qtypename, 'hypothisistext', $questionid);
+        if (static::$qtypename == 'tcs') {
+            $fs->delete_area_files($contextid, 'qtype_tcs', 'effecttext', $questionid);
+        }
     }
 }

@@ -39,6 +39,12 @@ defined('MOODLE_INTERNAL') || die();
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
+
+    /**
+     * @var string The qtype name.
+     */
+    protected static $qtypename = 'tcs';
+
     /**
      * Whether a choice should be considered right, wrong or partially right.
      * @param question_answer $ans representing one of the choices.
@@ -92,8 +98,8 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::start_tag('tbody', array('class' => ''));
         $result .= html_writer::start_tag('tr', array('class' => ''));
         // Show hypothesis.
-        $hypothisistext = $question->format_text($question->hypothisistext, $question->hypothisistext, $qa, 'qtype_tcs',
-            'hypothisistext', $question->id);
+        $hypothisistext = $question->format_text($question->hypothisistext, $question->hypothisistext, $qa,
+            'qtype_' . static::$qtypename, 'hypothisistext', $question->id);
         $result .= html_writer::tag('td', $hypothisistext, array('class' => 'leftalign cell'));
 
         // Show effect on hypothesis.

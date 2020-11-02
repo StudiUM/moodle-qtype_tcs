@@ -40,12 +40,32 @@ defined('MOODLE_INTERNAL') || die();
 class backup_qtype_tcs_plugin extends backup_qtype_plugin {
 
     /**
+     * @var string The qtype name.
+     */
+    protected static $qtypename = 'tcs';
+
+    /**
+     * @var string The tcs table name.
+     */
+    protected static $tablename = 'qtype_tcs';
+
+    /**
+     * @var array The additional columns names.
+     */
+    protected static $additionalcolumnsnames = ['effecttext', 'effecttextformat', 'labeleffecttext'];
+
+    /**
+     * @var array The additional file area mapping names.
+     */
+    protected static $additionalfileareamappingnames = ['effecttext' => 'question_created'];
+
+    /**
      * Returns the qtype information to attach to question element
      */
     protected function define_question_plugin_structure() {
 
         // Define the virtual plugin element with the condition to fulfill.
-        $plugin = $this->get_plugin_element(null, '../../qtype', 'tcs');
+        $plugin = $this->get_plugin_element(null, '../../qtype', static::$qtypename);
 
         // Create one standard named plugin element (the visible container).
         $pluginwrapper = new backup_nested_element($this->get_recommended_name());
@@ -57,20 +77,22 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
         // to the tree before any other information that will use them.
         $this->add_question_question_answers($pluginwrapper);
 
-        // Now create the qtype own structures.
-        $tcs = new backup_nested_element('tcs', array('id'), array(
-            'hypothisistext', 'hypothisistextformat', 'effecttext', 'effecttextformat', 'labeleffecttext', 'labelhypothisistext',
+        $columnsnames = [
+            'hypothisistext', 'hypothisistextformat', 'labelhypothisistext',
             'showquestiontext', 'shownumcorrect',
             'correctfeedback', 'correctfeedbackformat',
             'partiallycorrectfeedback', 'partiallycorrectfeedbackformat',
             'incorrectfeedback', 'incorrectfeedbackformat',
-            'showfeedback', 'labelfeedback', 'labelnewinformationeffect', 'labelsituation'));
+            'showfeedback', 'labelfeedback', 'labelnewinformationeffect', 'labelsituation'];
+        $columnsnames = array_unique(array_merge($columnsnames, static::$additionalcolumnsnames));
+        // Now create the qtype own structures.
+        $tcs = new backup_nested_element(static::$qtypename, array('id'), $columnsnames);
 
         // Now the own qtype tree.
         $pluginwrapper->add_child($tcs);
 
         // Set source to populate the data.
-        $tcs->set_source_table('qtype_tcs_options',
+        $tcs->set_source_table(static::$tablename . '_options',
                 array('questionid' => backup::VAR_PARENTID));
 
         // Don't need to annotate ids nor files.
@@ -85,9 +107,7 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
      * files to be processed both in backup and restore.
      */
     public static function get_qtype_fileareas() {
-        return array(
-            'hypothisistext' => 'question_created',
-            'effecttext' => 'question_created',
-        );
+        $fileareamappingnames = ['hypothisistext' => 'question_created'];
+        return $fileareamappingnames + static::$additionalfileareamappingnames;
     }
 }

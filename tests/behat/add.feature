@@ -64,12 +64,14 @@ Feature: Test creating a TCS question
       | Choice 1                 | Answer 1                           |
       | Choice 2                 | Answer 2                           |
       | Choice 3                 | Answer 3                           |
-      | Choice 4                 |                                    |
+      | Choice 4                 | Answer 4                           |
       | Choice 5                 |                                    |
-      | id_fraction_0            | 2                                  |
+      | id_fraction_0            | 1                                  |
       | id_fraction_1            | 2                                  |
-      | id_fraction_2            | 0                                  |
+      | id_fraction_2            | 3                                  |
+      | id_fraction_3            | 4                                  |
       | id_feedback_0            | Feedback for answer 1              |
       | id_feedback_1            | Feedback for answer 2              |
-      | id_feedback_2            |                                    |
+      | id_feedback_2            | Feedback for answer 3              |
+      | id_feedback_3            | Feedback for answer 4              |
     Then I should see "TCS-002"

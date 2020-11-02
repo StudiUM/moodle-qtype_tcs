@@ -121,6 +121,11 @@ class qtype_tcs_question extends question_graded_automatically {
     protected $order = null;
 
     /**
+     * @var string The qtype name.
+     */
+    protected static $qtypename = 'tcs';
+
+    /**
      * Start attempt.
      *
      * @param question_attempt_step $step
@@ -317,10 +322,10 @@ class qtype_tcs_question extends question_graded_automatically {
         } else if ($component == 'question' && $filearea == 'hint') {
             return $this->check_hint_file_access($qa, $options, $args);
 
-        } else if ($component == 'qtype_tcs' && $filearea == 'hypothisistext') {
+        } else if ($component == 'qtype_' . static::$qtypename && $filearea == 'hypothisistext') {
             return $qa->get_question()->hypothisistext && $args[0] == $this->id;
 
-        } else if ($component == 'qtype_tcs' && $filearea == 'effecttext') {
+        } else if (static::$qtypename == 'tcs' && $component == 'qtype_tcs' && $filearea == 'effecttext') {
             return $qa->get_question()->effecttext && $args[0] == $this->id;
 
         } else {
@@ -424,6 +429,6 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return qtype_tcs_format_renderer_base the response-format-specific renderer.
      */
     public function get_format_renderer(moodle_page $page) {
-        return $page->get_renderer('qtype_tcs', 'format_plain');
+        return $page->get_renderer('qtype_' . static::$qtypename, 'format_plain');
     }
 }

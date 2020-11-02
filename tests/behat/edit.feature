@@ -20,7 +20,6 @@ Feature: Test editing a tCS question
     And the following "questions" exist:
       | questioncategory | qtype       | name                   | template    |
       | Test questions   | tcs         | TCS-001 for editing    | reasoning   |
-      | Test questions   | tcs         | TCS-002 for editing    | judgment    |
     And I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to "Question bank" in current page administration
@@ -39,14 +38,3 @@ Feature: Test editing a tCS question
       | Question name | Edited TCS1 name |
     And I press "id_submitbutton"
     And I should see "Edited TCS1 name"
-
-  Scenario: Edit a TCS judgment question
-    When I choose "Edit question" action for "TCS-002 for editing" in the question bank
-    Then the following fields match these values:
-      | id_labelsituation               | Situation label                     |
-      | id_labelhypothisistext          | Hypothesis label                        |
-      | id_labeleffecttext              |                                     |
-    And I set the following fields to these values:
-      | Question name | Edited TCS2 name |
-    And I press "id_submitbutton"
-    And I should see "Edited TCS2 name"

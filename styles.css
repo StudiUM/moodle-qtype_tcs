@@ -74,7 +74,7 @@ table.tcs-table div.answer div.r1 span.gauge span {
 }
 
 /* Editing form. */
-body#page-question-type-tcs div[id^=fitem_id_][id*=answer_] {
+body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=answer_] {
     background: #eee;
     margin-top: 0;
     margin-bottom: 0;
@@ -84,18 +84,18 @@ body#page-question-type-tcs div[id^=fitem_id_][id*=answer_] {
     border-bottom: 0;
 }
 
-body#page-question-type-tcs div[id^=fitem_id_][id*=answer_] .fitemtitle {
+body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=answer_] .fitemtitle {
     font-weight: bold;
 }
 
-body#page-question-type-tcs div[id^=fitem_id_] .fitemtitle {
+body[id^=page-question-type-tcs] div[id^=fitem_id_] .fitemtitle {
     margin-left: 0;
     margin-right: 0;
     padding-left: 6px;
     padding-right: 0;
 }
 
-body#page-question-type-tcs div[id^=fitem_id_][id*=fraction_] {
+body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=fraction_] {
     background: #eee;
     margin-bottom: 0;
     margin-top: 0;
@@ -106,7 +106,7 @@ body#page-question-type-tcs div[id^=fitem_id_][id*=fraction_] {
     border-bottom: 0;
 }
 
-body#page-question-type-tcs div[id^=fitem_id_][id*=feedback_] {
+body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=feedback_] {
     background: #eee;
     margin-bottom: 2em;
     margin-top: 0;
