@@ -17,8 +17,7 @@
 /**
  * tcs question renderer class.
  *
- * @package qtype
- * @subpackage tcs
+ * @package qtype_tcs
  * @copyright  2020 Université de Montréal
  * @author     Marie-Eve Lévesque <marie-eve.levesque.8@umontreal.ca>
  * @copyright  based on work by 2014 Julien Girardot <julien.girardot@actimage.com>
@@ -49,6 +48,16 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         return $ans->fraction;
     }
 
+    /**
+     * Generate the display of the formulation part of the question. This is the
+     * area that contains the quetsion text, and the controls for students to
+     * input their answers. Some question types also embed bits of feedback, for
+     * example ticks and crosses, in this area.
+     *
+     * @param question_attempt $qa the question attempt to display.
+     * @param question_display_options $options controls what should and should not be displayed.
+     * @return string HTML fragment.
+     */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
 
         $question   = $qa->get_question();
@@ -127,6 +136,12 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         return $result;
     }
 
+    /**
+     * Get answers result.
+     * @param question_attempt $qa
+     * @param question_display_options $options
+     * @return string HTML answers
+     */
     public function get_answers_result(question_attempt $qa, question_display_options $options) {
         $radiobuttons = array();
         $feedbackimg = array();
@@ -272,6 +287,14 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         return $output;
     }
 
+    /**
+     * Gereate an automatic description of the correct response to this question.
+     * Not all question types can do this. If it is not possible, this method
+     * should just return an empty string.
+     *
+     * @param question_attempt $qa the question attempt to display.
+     * @return string HTML fragment.
+     */
     public function correct_response(question_attempt $qa) {
         $question = $qa->get_question();
 
@@ -293,6 +316,11 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         return '';
     }
 
+    /**
+     * Get max fraction.
+     * @param array $arranswers
+     * @return int
+     */
     public function get_max_fraction($arranswers) {
         $max = 0;
 
@@ -309,8 +337,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
 /**
  * An tcs format renderer for tcs where the student should use a plain input box.
  *
- * @package qtype
- * @subpackage tcs
+ * @package qtype_tcs
  * @copyright  2020 Université  de Montréal.
  * @author     Issam Taboubi <issam.taboubi@umontreal.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

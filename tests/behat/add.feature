@@ -49,7 +49,6 @@ Feature: Test creating a TCS question
     And I press "id_submitbutton"
     And I should see "TCS-001"
 
-
   Scenario: Create a TCS judgment question.
     When I add a "Script concordance test" question filling the form with:
       | Question name            | TCS-002                            |

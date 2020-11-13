@@ -53,7 +53,6 @@ Feature: Preview a TCS question
     And I should see no comments for answer "Strongly reinforced" of question "1"
     And I switch to the main window
 
-
   @javascript @_switch_window
   Scenario: Preview a TCS judgment question.
     Given I choose "Preview" action for "TCS-002" in the question bank

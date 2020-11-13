@@ -17,8 +17,7 @@
 /**
  * Question type class for the tcs question type.
  *
- * @package qtype
- * @subpackage tcs
+ * @package qtype_tcs
  * @copyright  2020 Université de Montréal
  * @author     Marie-Eve Lévesque <marie-eve.levesque.8@umontreal.ca>
  * @copyright  based on work by 2014 Julien Girardot <julien.girardot@actimage.com>
@@ -44,6 +43,19 @@ require_once($CFG->dirroot . '/question/type/tcs/question.php');
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_tcs extends question_type {
+
+    /**
+     * Loads the question type specific options for the question.
+     *
+     * This function loads any question type specific options for the
+     * question from the database into the question object. This information
+     * is placed in the $question->options field. A question type is
+     * free, however, to decide on a internal structure of the options field.
+     * @return bool            Indicates success or failure.
+     * @param object $question The question object for the question. This object
+     *                         should be updated to include the question type
+     *                         specific information (it is passed by reference).
+     */
     public function get_question_options($question) {
         global $DB, $OUTPUT;
         $question->options = $DB->get_record('qtype_tcs_options',
@@ -84,6 +96,14 @@ class qtype_tcs extends question_type {
         }
     }
 
+    /**
+     * Saves question-type specific options
+     *
+     * This is called by save_question() to save the question-type specific data
+     * @return object $result->error or $result->notice
+     * @param object $question  This holds the information from the editing form,
+     *      it is not a standard question object.
+     */
     public function save_question_options($question) {
         global $DB;
         $context = $question->context;
@@ -180,15 +200,33 @@ class qtype_tcs extends question_type {
         $this->save_hints($question, true);
     }
 
+    /**
+     * Create an appropriate question_definition for the question of this type
+     * using data loaded from the database.
+     * @param object $questiondata the question data loaded from the database.
+     * @return question_definition an instance of the appropriate question_definition subclass.
+     *      Still needs to be initialised.
+     */
     protected function make_question_instance($questiondata) {
         question_bank::load_question_definition_classes($this->name());
         return new qtype_tcs_question();
     }
 
+    /**
+     * Create a question_hint, or an appropriate subclass for this question,
+     * from a row loaded from the database.
+     * @param object $hint the DB row from the question hints table.
+     * @return question_hint
+     */
     protected function make_hint($hint) {
         return question_hint_with_parts::load_from_record($hint);
     }
 
+    /**
+     * Initialize the common question_definition fields.
+     * @param question_definition $question the question_definition we are creating.
+     * @param object $questiondata the question data loaded from the database.
+     */
     protected function initialise_question_instance(question_definition $question, $questiondata) {
         parent::initialise_question_instance($question, $questiondata);
         $question->hypothisistext = $questiondata->options->hypothisistext;
@@ -206,6 +244,11 @@ class qtype_tcs extends question_type {
         $this->initialise_question_answers($question, $questiondata, false);
     }
 
+    /**
+     * Deletes the question-type specific data when a question is deleted.
+     * @param int $questionid the question being deleted.
+     * @param int $contextid the context this quesiotn belongs to.
+     */
     public function delete_question($questionid, $contextid) {
         global $DB;
         $DB->delete_records('qtype_tcs_options', array('questionid' => $questionid));
@@ -213,11 +256,26 @@ class qtype_tcs extends question_type {
         parent::delete_question($questionid, $contextid);
     }
 
+    /**
+     * Calculate the score a monkey would get on a question by clicking randomly.
+     *
+     * @param stdClass $questiondata data defining a question, as returned by
+     *      question_bank::load_question_data().
+     * @return number|null either a fraction estimating what the student would
+     *      score by guessing, or null, if it is not possible to estimate.
+     */
     public function get_random_guess_score($questiondata) {
         // TODO.
         return 0;
     }
 
+    /**
+     * This method should return all the possible types of response that are
+     * recognised for this question.
+     * @param object $questiondata the question definition data.
+     * @return array keys are subquestionid, values are arrays of possible
+     *      responses to that subquestion.
+     */
     public function get_possible_responses($questiondata) {
         $responses = array();
 
@@ -231,6 +289,12 @@ class qtype_tcs extends question_type {
         return array($questiondata->id => $responses);
     }
 
+    /**
+     * Move all the files belonging to this question from one context to another.
+     * @param int $questionid the question being moved.
+     * @param int $oldcontextid the context it is moving from.
+     * @param int $newcontextid the context it is moving to.
+     */
     public function move_files($questionid, $oldcontextid, $newcontextid) {
         parent::move_files($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_answers($questionid, $oldcontextid, $newcontextid, true);
@@ -241,6 +305,11 @@ class qtype_tcs extends question_type {
         $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_tcs', 'effecttext', $questionid);
     }
 
+    /**
+     * Delete all the files belonging to this question.
+     * @param int $questionid the question being deleted.
+     * @param int $contextid the context the question is in.
+     */
     protected function delete_files($questionid, $contextid) {
         parent::delete_files($questionid, $contextid);
         $this->delete_files_in_answers($questionid, $contextid, true);

@@ -17,8 +17,7 @@
 /**
  * Defines the editing form for the tcs question type.
  *
- * @package qtype
- * @subpackage tcs
+ * @package qtype_tcs
  * @copyright  2020 Université de Montréal
  * @author     Marie-Eve Lévesque <marie-eve.levesque.8@umontreal.ca>
  * @copyright  based on work by 2014 Julien Girardot <julien.girardot@actimage.com>
@@ -41,6 +40,11 @@ defined('MOODLE_INTERNAL') || die();
  */
 class qtype_tcs_edit_form extends question_edit_form {
 
+    /**
+     * Add any question-type specific form fields.
+     *
+     * @param object $mform the form being built.
+     */
     protected function definition_inner($mform) {
 
         $menu = array(
@@ -82,6 +86,12 @@ class qtype_tcs_edit_form extends question_edit_form {
         $mform->disabledIf('labelsituation', 'showquestiontext', 'eq', 0);
     }
 
+    /**
+     * Perform an preprocessing needed on the data passed to set_data()
+     * before it is used to initialize the form.
+     * @param object $question the data being passed to the form.
+     * @return object $question the modified data.
+     */
     protected function data_preprocessing($question) {
         $question = parent::data_preprocessing($question);
         $question = $this->data_preprocessing_answers($question, true);
@@ -141,6 +151,16 @@ class qtype_tcs_edit_form extends question_edit_form {
         return $question;
     }
 
+    /**
+     * Get the list of form elements to repeat, one for each answer.
+     * @param object $mform the form being built.
+     * @param string $label the label to use for each option.
+     * @param array $gradeoptions the possible grades for each answer.
+     * @param array $repeatedoptions reference to array of repeated options to fill
+     * @param array $answersoption reference to return the name of $question->options
+     *      field holding an array of answers
+     * @return array of form fields.
+     */
     protected function get_per_answer_fields($mform, $label, $gradeoptions, &$repeatedoptions, &$answersoption) {
         global $PAGE;
         $repeated = array();
@@ -166,6 +186,14 @@ class qtype_tcs_edit_form extends question_edit_form {
         return $repeated;
     }
 
+    /**
+     * Server side rules do not work for uploaded files, implement serverside rules here if needed.
+     *
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *         or an empty array if everything is OK (true allowed for backwards compatibility too).
+     */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         $answers = $data['answer'];
@@ -204,6 +232,10 @@ class qtype_tcs_edit_form extends question_edit_form {
         return $errors;
     }
 
+    /**
+     * Get qtype.
+     * @return string
+     */
     public function qtype() {
         return 'tcs';
     }

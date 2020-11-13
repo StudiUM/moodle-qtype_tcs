@@ -17,8 +17,7 @@
 /**
  * Version information for the sct question type.
  *
- * @package    qtype
- * @subpackage tcs
+ * @package    qtype_tcs
  * @copyright  2020 Université de Montréal
  * @author     Marie-Eve Lévesque <marie-eve.levesque.8@umontreal.ca>
  * @copyright  based on work by 2014 Julien Girardot <julien.girardot@actimage.com>
@@ -28,8 +27,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_tcs';
-$plugin->version   = 2020071300;
-$plugin->release = '1.0.0 (Build 2020071300)';
+$plugin->version   = 2020111300;
+$plugin->release = '1.0.1 (Build 2020111300)';
 
 $plugin->requires  = 2013110500;
 

@@ -3,15 +3,15 @@
 }
 
 .que.tcs table.tcs-table th.w30 {
-    width : 30%;
+    width: 30%;
 }
 
 .que.tcs table.tcs-table th.w40 {
-    width : 40%;
+    width: 40%;
 }
 
 .que.tcs table.tcs-table th.w50 {
-    width : 50%;
+    width: 50%;
 }
 
 .que.tcs table.tcs-table td.cell {
@@ -59,7 +59,7 @@
 }
 
 .que.tcs table.tcs-table div.answer div.r0 span.gauge span,
-.que.tcs table.tcs-table div.answer div.r1 span.gauge span{
+.que.tcs table.tcs-table div.answer div.r1 span.gauge span {
     background-color: #0071b9;
     height: 15px;
     margin: 0;

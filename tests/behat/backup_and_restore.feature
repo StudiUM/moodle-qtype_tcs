@@ -53,4 +53,3 @@ Feature: Test duplicating a quiz containing a TCS question
       | id_feedback_2                 |                                    |
       | id_feedback_3                 | Feedback for choice 4              |
       | id_feedback_4                 |                                    |
-
