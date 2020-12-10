@@ -18,8 +18,7 @@
 /**
  * Unit tests for the tcs question definition class.
  *
- * @package    qtype
- * @subpackage tcs
+ * @package    qtype_tcs
  * @copyright  2020 Université de Montréal
  * @author     Issam Taboubi <issa.taboubi@umontreal.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,8 +32,7 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
 /**
  * Unit tests for qtype_tcs_definition.
  *
- * @package    qtype
- * @subpackage tcs
+ * @package    qtype_tcs
  * @copyright  2020 Université de Montréal
  * @author     Issam Taboubi <issa.taboubi@umontreal.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
