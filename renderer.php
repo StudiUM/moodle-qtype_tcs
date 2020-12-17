@@ -153,6 +153,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $feedbackimg = array();
         $feedback = array();
         $classes = array();
+        $displayfeedback = false;
 
         $question = $qa->get_question();
         $response = $question->get_response($qa);
@@ -206,11 +207,16 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $feedbackstruct .= html_writer::end_tag('span');
                 $feedbackstruct .= html_writer::tag('span', (int)$ans->fraction);
                 $feedback[] = $feedbackstruct;
+                if ($displayfeedback === false && $percent > 0) {
+                    $displayfeedback = true;
+                }
             } else {
                 $feedback[] = '';
             }
         }
-
+        if (!$displayfeedback) {
+            $feedback = array_fill_keys(array_keys($feedback), '');
+        }
         $result = '';
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
 
