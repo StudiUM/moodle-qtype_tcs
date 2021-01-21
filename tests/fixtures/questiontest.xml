@@ -1,0 +1,74 @@
+<!-- question: 123  -->
+  <question type="tcs">
+    <name>
+      <text>TCS-001</text>
+    </name>
+    <questiontext format="html">
+      <text>Here is the question</text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text>General feedback for the question</text>
+    </generalfeedback>
+    <defaultgrade>1</defaultgrade>
+    <penalty>0</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <hypothisistext>
+      <text>The hypothesis is...</text>
+    </hypothisistext>
+    <labelhypothisistext>Hypothesis label</labelhypothisistext>
+    <effecttext>
+      <text>The new information is...</text>
+    </effecttext>
+    <labeleffecttext>New information label</labeleffecttext>
+    <showquestiontext>1</showquestiontext>
+    <labelnewinformationeffect>Your hypothesis or option is</labelnewinformationeffect>
+    <labelfeedback>Comments label</labelfeedback>
+    <labelsituation>Situation label</labelsituation>
+    <showfeedback>1</showfeedback>
+    <answer format="html">
+      <text>Severely weakened</text>
+      <fractionimport>1</fractionimport>
+      <feedback format="html">
+        <text>Feedback for choice 1</text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text>Weakened</text>
+      <fractionimport>2</fractionimport>
+      <feedback format="html">
+        <text>Feedback for choice 2</text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text>Unchanged</text>
+      <fractionimport>3</fractionimport>
+      <feedback format="html">
+        <text>Feedback for choice 3</text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text>Reinforced</text>
+      <fractionimport>4</fractionimport>
+      <feedback format="html">
+        <text>Feedback for choice 4</text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text>Strongly reinforced</text>
+      <fractionimport>5</fractionimport>
+      <feedback format="html">
+        <text>Feedback for choice 5</text>
+      </feedback>
+    </answer>
+    <correctfeedback format="html">
+      <text>Well done!</text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text>Parts, but only parts, of your response are correct.</text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text>That is not right at all.</text>
+    </incorrectfeedback>
+    <shownumcorrect/>
+  </question>

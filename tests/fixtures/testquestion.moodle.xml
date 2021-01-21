@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- question: 0  -->
+  <question type="category">
+    <category>
+        <text>$course$/Default for C1</text>
+
+    </category>
+  </question>
+
+<!-- question: 8343  -->
+  <question type="tcs">
+    <name>
+      <text>My TCS question</text>
+    </name>
+    <questiontext format="html">
+      <text><![CDATA[<p>Find the capital cities in Europe.<br></p>]]></text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <defaultgrade>1.0000000</defaultgrade>
+    <penalty>0.0000000</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+    <hypothisistext>
+      <text></text>
+    </hypothisistext>
+    <labelhypothisistext>Option</labelhypothisistext>
+    <effecttext>
+      <text></text>
+    </effecttext>
+    <labeleffecttext>New information</labeleffecttext>
+    <showquestiontext>1</showquestiontext>
+    <labelnewinformationeffect>Your hypothesis or option is</labelnewinformationeffect>
+    <labelfeedback>Comments</labelfeedback>
+    <labelsituation>Situation</labelsituation>
+    <showfeedback>1</showfeedback>
+    <answer format="html">
+      <text><![CDATA[<p>Severely weakened<br></p>]]></text>
+      <fractionimport>0.0000000</fractionimport>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text><![CDATA[<p>Weakened<br></p>]]></text>
+      <fractionimport>0.0000000</fractionimport>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text><![CDATA[<p>Unchanged<br></p>]]></text>
+      <fractionimport>0.0000000</fractionimport>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text><![CDATA[<p>Reinforced<br></p>]]></text>
+      <fractionimport>0.0000000</fractionimport>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <answer format="html">
+      <text><![CDATA[<p>Strongly reinforced<br></p>]]></text>
+      <fractionimport>0.0000000</fractionimport>
+      <feedback format="html">
+        <text></text>
+      </feedback>
+    </answer>
+    <correctfeedback format="html">
+      <text></text>
+    </correctfeedback>
+    <partiallycorrectfeedback format="html">
+      <text></text>
+    </partiallycorrectfeedback>
+    <incorrectfeedback format="html">
+      <text></text>
+    </incorrectfeedback>
+  </question>
+
+</quiz>

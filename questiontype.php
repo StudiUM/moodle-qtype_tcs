@@ -154,7 +154,11 @@ class qtype_tcs extends question_type {
             $answer->answer = $this->import_or_save_files($answerdata,
                     $context, 'question', 'answer', $answer->id);
             $answer->answerformat = $answerdata['format'];
-            $answer->fraction = (float) $question->fraction[$key];
+            if (isset($question->fractionimport[$key])) {
+                $answer->fraction = (float) $question->fractionimport[$key];
+            } else {
+                $answer->fraction = (float) $question->fraction[$key];
+            }
             $answer->feedback = $this->import_or_save_files($question->feedback[$key],
                     $context, 'question', 'answerfeedback', $answer->id);
             $answer->feedbackformat = $question->feedback[$key]['format'];
@@ -342,5 +346,138 @@ class qtype_tcs extends question_type {
         if (static::$qtypename == 'tcs') {
             $fs->delete_area_files($contextid, 'qtype_tcs', 'effecttext', $questionid);
         }
+    }
+
+    /**
+     * Exports the question to Moodle XML format.
+     *
+     * @param object $question question to be exported into XML format
+     * @param qformat_xml $format format class exporting the question
+     * @param object $extra extra information (not required for exporting this question in this format)
+     * @return string containing the question data in XML format
+     */
+    public function export_to_xml($question, qformat_xml $format, $extra = null) {
+        $output = '';
+        $component = 'qtype_' . static::$qtypename;
+        $contextid = $question->contextid;
+        $fs = get_file_storage();
+        // Hypothisistext.
+        $files = $fs->get_area_files($contextid, $component,
+                'hypothisistext', $question->id);
+        $output .= "    <hypothisistext>\n";
+        $output .= $format->writetext($question->options->hypothisistext, 3);
+        $output .= $format->write_files($files);
+        $output .= "    </hypothisistext>\n";
+        $output .= "    <labelhypothisistext>{$question->options->labelhypothisistext}</labelhypothisistext>\n";
+
+        // Effecttext.
+        if (static::$qtypename == 'tcs') {
+            $files = $fs->get_area_files($contextid, $component,
+                    'effecttext', $question->id);
+            $output .= "    <effecttext>\n";
+            $output .= $format->writetext($question->options->effecttext, 3);
+            $output .= $format->write_files($files);
+            $output .= "    </effecttext>\n";
+
+            $output .= "    <labeleffecttext>{$question->options->labeleffecttext}</labeleffecttext>\n";
+        }
+        // Showquestiontext.
+        $output .= "    <showquestiontext>{$question->options->showquestiontext}</showquestiontext>\n";
+        // Labelnewinformationeffect.
+        $output .= "    <labelnewinformationeffect>{$question->options->labelnewinformationeffect}</labelnewinformationeffect>\n";
+        // Labelfeedback.
+        $output .= "    <labelfeedback>{$question->options->labelfeedback}</labelfeedback>\n";
+        // Labelsituation.
+        $output .= "    <labelsituation>{$question->options->labelsituation}</labelsituation>\n";
+        // Showfeedback.
+        $output .= "    <showfeedback>{$question->options->showfeedback}</showfeedback>\n";
+
+        foreach ($question->options->answers as $answer) {
+            $output .= "    <answer {$format->format($answer->answerformat)}>\n";
+            $output .= $format->writetext($answer->answer, 3);
+            $output .= $format->write_files($answer->answerfiles);
+            $output .= "      <fractionimport>{$answer->fraction}</fractionimport>\n";
+            $output .= "      <feedback {$format->format($answer->feedbackformat)}>\n";
+            $output .= $format->writetext($answer->feedback, 4);
+            $output .= $format->write_files($answer->feedbackfiles);
+            $output .= "      </feedback>\n";
+            $output .= $extra;
+            $output .= "    </answer>\n";
+        }
+
+        $output .= $format->write_combined_feedback($question->options, $question->id, $question->contextid);
+
+        return $output;
+    }
+
+    /**
+     * Imports the question from Moodle XML format.
+     *
+     * @param array $data structure containing the XML data
+     * @param object $question question object to fill: ignored by this function (assumed to be null)
+     * @param qformat_xml $format format class exporting the question
+     * @param object $extra extra information (not required for importing this question in this format)
+     * @return object question object
+     */
+    public function import_from_xml($data, $question, qformat_xml $format, $extra = null) {
+        if (!isset($data['@']['type']) || $data['@']['type'] != static::$qtypename) {
+            return false;
+        }
+
+        $question = $format->import_headers($data);
+        $question->qtype = static::$qtypename;
+
+        // Hypothisistext.
+        $question->hypothisistext['text'] = '';
+        $question->hypothisistext['format'] = FORMAT_HTML;
+        $hypothisistext = $format->getpath($data, array('#', 'hypothisistext'), array());
+        if (!empty($hypothisistext)) {
+            $question->hypothisistext = $format->import_text_with_files($hypothisistext,
+                    array('0'), '', $format->get_format($question->questiontextformat));
+        }
+
+        // Effecttext.
+        if (static::$qtypename == 'tcs') {
+            $question->effecttext['text'] = '';
+            $question->effecttext['format'] = FORMAT_HTML;
+            $effecttext = $format->getpath($data, array('#', 'effecttext'), array());
+            if (!empty($effecttext)) {
+                $question->effecttext = $format->import_text_with_files($effecttext,
+                        array('0'), '', $format->get_format($question->questiontextformat));
+            }
+            $question->labeleffecttext = $format->getpath($data,
+                array('#', 'labeleffecttext', 0, '#'), get_string('effecttextdefault', 'qtype_tcs'));
+        }
+
+        $question->labelhypothisistext = $format->getpath($data,
+                array('#', 'labelhypothisistext', 0, '#'), get_string('hypothisistextdefault', 'qtype_' . static::$qtypename));
+        $question->labelnewinformationeffect = $format->getpath($data,
+                array('#', 'labelnewinformationeffect', 0, '#'), get_string('newinformationeffect', 'qtype_' . static::$qtypename));
+        $question->labelfeedback = $format->getpath($data,
+                array('#', 'labelfeedback', 0, '#'), get_string('feedback', 'qtype_tcs'));
+        $question->labelsituation = $format->getpath($data,
+                array('#', 'labelsituation', 0, '#'), get_string('situation', 'qtype_tcs'));
+        $question->showfeedback = $format->getpath($data,
+                array('#', 'showfeedback', 0, '#'), 1);
+        $question->showquestiontext = $format->getpath($data,
+                array('#', 'showquestiontext', 0, '#'), 1);
+
+        // Run through the answers.
+        $answers = $data['#']['answer'];
+        $acount = 0;
+        foreach ($answers as $answer) {
+            $question->answer[$acount] = $format->import_text_with_files($answer, array(), '',
+                    $format->get_format($question->questiontextformat));
+            $question->feedback[$acount] = $format->import_text_with_files($answer, array('#', 'feedback', 0), '',
+                    $format->get_format($question->questiontextformat));
+            $question->fractionimport[$acount] = (float) $format->getpath($answer, array('#', 'fractionimport', 0, '#'), 0);
+            ++$acount;
+        }
+
+        $format->import_combined_feedback($question, $data, true);
+        $format->import_hints($question, $data, true, false,
+                $format->get_format($question->questiontextformat));
+
+        return $question;
     }
 }
