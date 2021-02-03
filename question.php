@@ -328,25 +328,10 @@ class qtype_tcs_question extends question_graded_automatically {
                 array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'))) {
             return $this->check_combined_feedback_file_access($qa, $options, $filearea, $args);
 
-        } else if ($component == 'question' && $filearea == 'answer') {
+        } else if (($component == 'question' && $filearea == 'answer') ||
+                ($component == 'question' && $filearea == 'answerfeedback')) {
             $answerid = reset($args); // Itemid is answer id.
             return  in_array($answerid, $this->order);
-
-        } else if ($component == 'question' && $filearea == 'answerfeedback') {
-            $answerid = reset($args); // Itemid is answer id.
-            $response = $this->get_response($qa);
-            $isselected = false;
-            foreach ($this->order as $value => $ansid) {
-                if ($ansid == $answerid) {
-                    $isselected = $this->is_choice_selected($response, $value);
-                    break;
-                }
-            }
-            // Param $options->suppresschoicefeedback is a hack specific to the
-            // oumultiresponse question type. It would be good to refactor to
-            // avoid refering to it here.
-            return $options->feedback && empty($options->suppresschoicefeedback) &&
-                    $isselected;
 
         } else if ($component == 'question' && $filearea == 'hint') {
             return $this->check_hint_file_access($qa, $options, $args);
