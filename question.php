@@ -226,7 +226,33 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return boolean
      */
     public function is_same_response(array $prevresponse, array $newresponse) {
-        return question_utils::arrays_same_at_key($prevresponse, $newresponse, 'answer');
+        return question_utils::arrays_same_at_key($prevresponse, $newresponse, 'answer')
+            && question_utils::arrays_same_at_key($prevresponse, $newresponse, 'answerfeedback');
+    }
+
+    /**
+     * Return true if the answer is completed, false otherwise.
+     *
+     * @param array $response
+     * @return boolean
+     */
+    private function is_answer_completed(array $response) {
+        return array_key_exists('answer', $response) && $response['answer'] !== '';
+    }
+
+    /**
+     * Return true if the answer's feedback is completed, false otherwise.
+     * If the feedback is not necessary, it also returns true.
+     *
+     * @param array $response
+     * @return boolean
+     */
+    private function is_feedback_completed(array $response) {
+        $feedbackcomplete = true;
+        if (array_key_exists('answerfeedback', $response) && $response['answerfeedback'] == '') {
+            $feedbackcomplete = false;
+        }
+        return $feedbackcomplete;
     }
 
     /**
@@ -236,7 +262,7 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return boolean
      */
     public function is_complete_response(array $response) {
-        return array_key_exists('answer', $response) && $response['answer'] !== '';
+        return $this->is_feedback_completed($response) && $this->is_answer_completed($response);
     }
 
     /**
@@ -246,7 +272,7 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return boolean
      */
     public function is_gradable_response(array $response) {
-        return $this->is_complete_response($response);
+        return $this->is_feedback_completed($response) || $this->is_answer_completed($response);
     }
 
     /**
@@ -256,10 +282,13 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return string
      */
     public function get_validation_error(array $response) {
-        if ($this->is_gradable_response($response)) {
-            return '';
+        if (!$this->is_answer_completed($response)) {
+            return get_string('errnoanswer', 'qtype_tcs');
         }
-        return get_string('pleaseselectananswer', 'qtype_tcs');
+        if (!$this->is_feedback_completed($response)) {
+            return get_string('errnofeedback', 'qtype_tcs');
+        }
+        return '';
     }
 
     /**

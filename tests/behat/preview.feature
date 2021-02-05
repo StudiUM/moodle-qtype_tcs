@@ -39,6 +39,7 @@ Feature: Preview a TCS question
     And I should see "The new information is..."
     And I should see "Comments label"
     And I click on "Severely weakened" "radio"
+    And I set the field "Comments label" to "Comment 1"
     And I press "Check"
     And I should see "The most popular answer is: Strongly reinforced"
     And I should see that "1" panelists have answered "Severely weakened" for question "1"

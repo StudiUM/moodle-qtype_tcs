@@ -139,6 +139,12 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             $result .= html_writer::tag('div', $answer, array('class' => 'answerfeedback'));
         }
 
+        if ($qa->get_state() == question_state::$invalid) {
+            $result .= html_writer::nonempty_tag('div',
+                    $question->get_validation_error($qa->get_last_qt_data()),
+                    array('class' => 'validationerror'));
+        }
+
         return $result;
     }
 
