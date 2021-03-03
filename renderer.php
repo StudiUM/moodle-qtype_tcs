@@ -65,7 +65,6 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
      * @return string HTML fragment.
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
-
         $question   = $qa->get_question();
         $responseoutput = $question->get_format_renderer($this->page);
         $questiontext = $question->format_questiontext($qa);
@@ -78,6 +77,45 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $question->labelsituation;
             $result .= html_writer::tag('p', html_writer::tag('strong', $labelsituation));
             $result .= html_writer::tag('div', $questiontext, array('class' => 'qtext'));
+        }
+
+        // Show "This question is outside my field of competence" field.
+        $isoutsidefieldcompetencechecked = false;
+        if (intval($question->showoutsidefieldcompetence) === 1) {
+            $inputname = $qa->get_qt_field_name('outsidefieldcompetence');
+            $inputattributeshidden = [];
+            $inputattributeshidden['type']    = 'hidden';
+            $inputattributeshidden['name']    = $inputname;
+            $inputattributeshidden['id']      = $inputname;
+            $inputattributeshidden['class']   = 'm-r-1 outsidefieldcompetence';
+
+            $inputattributes = [];
+            if ($options->readonly) {
+                $inputattributes['disabled'] = 'disabled';
+                $inputattributeshidden['disabled'] = 'disabled';
+            }
+            $labeltext = get_string('labeloutsidefieldcompetence', 'qtype_tcs');
+            $step = $qa->get_last_step_with_qt_var('outsidefieldcompetence');
+            if (!$step->has_qt_var('outsidefieldcompetence')) {
+                $step = new question_attempt_step(array('outsidefieldcompetence' => 0));
+            }
+            $isoutsidefieldcompetencechecked = $step->get_qt_var('outsidefieldcompetence');
+            if ($isoutsidefieldcompetencechecked) {
+                $inputattributes['checked'] = 'checked';
+                $inputattributeshidden['value']   = 1;
+            } else {
+                unset($inputattributes['checked']);
+                $inputattributeshidden['value']   = 0;
+            }
+            $inputattributes['type']    = 'checkbox';
+            $inputattributes['value']   = 1;
+            $inputattributes['id']      = $inputname . '-control';
+            $inputattributes['class']   = 'm-r-1 outsidefieldcompetence';
+            $label = html_writer::tag('label', $labeltext, ['for' => $inputattributes['id']]);
+            $result .= html_writer::empty_tag('input', $inputattributes) . $label;
+            $result .= html_writer::empty_tag('input', $inputattributeshidden);
+            $this->page->requires->js_call_amd('qtype_tcs/tcs', 'init',
+                ['outsidefieldcompetenceid' => $inputattributes['id'], $inputattributeshidden['id']]);
         }
 
         $result .= html_writer::start_tag('table', array('class' => 'w100 tcs-table generaltable'));
@@ -112,7 +150,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         // Show answers.
         $result .= html_writer::start_tag('td', array('class' => 'leftalign cell'));
 
-        $result .= $this->get_answers_result($qa, $options);
+        $result .= $this->get_answers_result($qa, $options, $isoutsidefieldcompetencechecked);
 
         $result .= html_writer::end_tag('td');
         $result .= html_writer::end_tag('tr');
@@ -130,7 +168,8 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $step = new question_attempt_step(array('answerfeedback' => ''));
             }
             if (empty($options->readonly)) {
-                $answer = $responseoutput->response_area_input('answerfeedback', $qa, $step);
+                $attributes = $isoutsidefieldcompetencechecked ? ['disabled' => true] : [];
+                $answer = $responseoutput->response_area_input('answerfeedback', $qa, $step, $attributes);
             } else {
                 $answer = html_writer::tag('p', $step->get_qt_var('answerfeedback'),
                         ['id' => $inputname, 'class' => 'small p-2 whitebackground']);
@@ -152,9 +191,10 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
      * Get answers result.
      * @param question_attempt $qa
      * @param question_display_options $options
+     * @param int $disabled
      * @return string HTML answers
      */
-    public function get_answers_result(question_attempt $qa, question_display_options $options) {
+    public function get_answers_result(question_attempt $qa, question_display_options $options, $disabled = 0) {
         $radiobuttons = array();
         $feedbackimg = array();
         $feedback = array();
@@ -170,7 +210,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             'name' => $inputname,
         );
 
-        if ($options->readonly) {
+        if ($options->readonly || $disabled) {
             $inputattributes['disabled'] = 'disabled';
         }
 
@@ -391,11 +431,13 @@ class qtype_tcs_format_plain_renderer extends plugin_renderer_base {
      * @param string $name the name of the textarea
      * @param question_attempt $qa
      * @param question_attempt_step $step
+     * @param array $attributes textarea attributes
      * @return string the HTML for the textarea.
      */
-    public function response_area_input($name, $qa, $step) {
+    public function response_area_input($name, $qa, $step, $attributes = []) {
         $inputname = $qa->get_qt_field_name($name);
-        return $this->textarea($step->get_qt_var($name), array('name' => $inputname, 'id' => $inputname)) .
+        $attributes += ['name' => $inputname, 'id' => $inputname];
+        return $this->textarea($step->get_qt_var($name), $attributes) .
                 html_writer::empty_tag('input', array('type' => 'hidden',
                     'name' => $inputname . 'format', 'value' => FORMAT_PLAIN));
     }

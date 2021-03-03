@@ -26,6 +26,7 @@
     <labelfeedback>Comments label</labelfeedback>
     <labelsituation>Situation label</labelsituation>
     <showfeedback>1</showfeedback>
+    <showoutsidefieldcompetence>1</showoutsidefieldcompetence>
     <answer format="html">
       <text>Severely weakened</text>
       <fractionimport>1</fractionimport>

@@ -92,6 +92,10 @@ class qtype_tcs_question extends question_graded_automatically {
      */
     public $showfeedback;
     /**
+     * @var boolean
+     */
+    public $showoutsidefieldcompetence;
+    /**
      * @var string
      */
     public $correctfeedback;
@@ -173,7 +177,7 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return array answers and feedbacks.
      */
     public function get_expected_data() {
-        return array('answer' => PARAM_INT, 'answerfeedback' => PARAM_RAW);
+        return array('answer' => PARAM_INT, 'answerfeedback' => PARAM_RAW, 'outsidefieldcompetence' => PARAM_INT);
     }
 
     /**
@@ -227,7 +231,8 @@ class qtype_tcs_question extends question_graded_automatically {
      */
     public function is_same_response(array $prevresponse, array $newresponse) {
         return question_utils::arrays_same_at_key($prevresponse, $newresponse, 'answer')
-            && question_utils::arrays_same_at_key($prevresponse, $newresponse, 'answerfeedback');
+            && question_utils::arrays_same_at_key($prevresponse, $newresponse, 'answerfeedback')
+            && question_utils::arrays_same_at_key($prevresponse, $newresponse, 'outsidefieldcompetence');
     }
 
     /**
@@ -237,6 +242,9 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return boolean
      */
     private function is_answer_completed(array $response) {
+        if (array_key_exists('outsidefieldcompetence', $response) && $response['outsidefieldcompetence']) {
+            return true;
+        }
         return array_key_exists('answer', $response) && $response['answer'] !== '';
     }
 
@@ -248,6 +256,9 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return boolean
      */
     private function is_feedback_completed(array $response) {
+        if (array_key_exists('outsidefieldcompetence', $response) && $response['outsidefieldcompetence']) {
+            return true;
+        }
         $feedbackcomplete = true;
         if (array_key_exists('answerfeedback', $response) && $response['answerfeedback'] == '') {
             $feedbackcomplete = false;

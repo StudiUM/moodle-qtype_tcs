@@ -25,6 +25,7 @@
         <FIELD NAME="labelfeedback" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of feedback."/>
         <FIELD NAME="labelnewinformationeffect" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of new information effect."/>
         <FIELD NAME="labelsituation" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Label of situation."/>
+        <FIELD NAME="showoutsidefieldcompetence" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="If true, the checkbox 'This question is outside my field of competence' is displayed."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

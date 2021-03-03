@@ -43,6 +43,7 @@ Feature: Test duplicating a quiz containing a TCS question
       | id_labelnewinformationeffect  | Your hypothesis or option is       |
       | id_labelfeedback              | Comments label                     |
       | showfeedback                  | Yes                                |
+      | showoutsidefieldcompetence    | Yes                                |
       | id_fraction_0                 | 1                                  |
       | id_fraction_1                 | 2                                  |
       | id_fraction_2                 | 3                                  |

@@ -33,6 +33,7 @@ Feature: Preview a TCS question
     And I press "Start again with these options"
     Then I should see "Situation"
     And I should see "Here is the question"
+    And I should see "This question is outside my field of competence"
     And I should see "Hypothesis label"
     And I should see "The hypothesis is..."
     And I should see "New information label"
@@ -51,6 +52,20 @@ Feature: Preview a TCS question
     And I should see that "4" panelists have answered "Reinforced" for question "1"
     And I should see "Feedback for choice 4" for answer "Reinforced" of question "1"
     And I should see that "5" panelists have answered "Strongly reinforced" for question "1"
+    And I should see no comments for answer "Strongly reinforced" of question "1"
+    And I press "Start again"
+    And I click on "This question is outside my field of competence" "checkbox"
+    And the "Severely weakened" "radio" should be disabled
+    And the "Weakened" "radio" should be disabled
+    And the "Unchanged" "radio" should be disabled
+    And the "Reinforced" "radio" should be disabled
+    And the "Strongly reinforced" "radio" should be disabled
+    And the "Comments label" "field" should be disabled
+    And I press "Check"
+    And I should see no comments for answer "Severely weakenedd" of question "1"
+    And I should see no comments for answer "Weakened" of question "1"
+    And I should see no comments for answer "Unchanged" of question "1"
+    And I should see no comments for answer "Reinforced" of question "1"
     And I should see no comments for answer "Strongly reinforced" of question "1"
     And I switch to the main window
 

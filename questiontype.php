@@ -105,6 +105,7 @@ class qtype_tcs extends question_type {
             $questiondata->options->labelsituation = get_string('situation', 'qtype_tcs');
             $questiondata->options->showquestiontext = 1;
             $questiondata->options->showfeedback = 1;
+            $questiondata->options->showoutsidefieldcompetence = 0;
         }
     }
 
@@ -196,6 +197,7 @@ class qtype_tcs extends question_type {
             $options->labelfeedback = get_string('feedback', 'qtype_tcs');
             $options->labelsituation = get_string('situation', 'qtype_tcs');
             $options->showfeedback = 1;
+            $options->showoutsidefieldcompetence = 0;
             $options->showquestiontext = 1;
             $options->id = $DB->insert_record(static::$tablename . '_options', $options);
         }
@@ -215,7 +217,9 @@ class qtype_tcs extends question_type {
         $options->labelfeedback = $question->labelfeedback;
         $options->labelsituation = $question->labelsituation;
         $options->showfeedback = (int) $question->showfeedback;
+        $options->showoutsidefieldcompetence = (int) $question->showoutsidefieldcompetence;
         $options = $this->save_combined_feedback_helper($options, $question, $context, false);
+
         $DB->update_record(static::$tablename . '_options', $options);
 
         $this->save_hints($question, true);
@@ -261,6 +265,7 @@ class qtype_tcs extends question_type {
         $question->labelfeedback = $questiondata->options->labelfeedback;
         $question->labelsituation = $questiondata->options->labelsituation;
         $question->showfeedback = $questiondata->options->showfeedback;
+        $question->showoutsidefieldcompetence = $questiondata->options->showoutsidefieldcompetence;
 
         $this->initialise_combined_feedback($question, $questiondata, false);
 
@@ -391,6 +396,10 @@ class qtype_tcs extends question_type {
         $output .= "    <labelsituation>{$question->options->labelsituation}</labelsituation>\n";
         // Showfeedback.
         $output .= "    <showfeedback>{$question->options->showfeedback}</showfeedback>\n";
+        // Show outside field competence.
+        $showoutsidefieldcompetence = isset($question->options->showoutsidefieldcompetence) ?
+                $question->options->showoutsidefieldcompetence : 0;
+        $output .= "    <showoutsidefieldcompetence>{$showoutsidefieldcompetence}</showoutsidefieldcompetence>\n";
 
         foreach ($question->options->answers as $answer) {
             $output .= "    <answer {$format->format($answer->answerformat)}>\n";
@@ -459,6 +468,8 @@ class qtype_tcs extends question_type {
                 array('#', 'labelsituation', 0, '#'), get_string('situation', 'qtype_tcs'));
         $question->showfeedback = $format->getpath($data,
                 array('#', 'showfeedback', 0, '#'), 1);
+        $question->showoutsidefieldcompetence = $format->getpath($data,
+                array('#', 'showoutsidefieldcompetence', 0, '#'), 0);
         $question->showquestiontext = $format->getpath($data,
                 array('#', 'showquestiontext', 0, '#'), 1);
 

@@ -119,3 +119,7 @@ body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=feedback_] {
 p.whitebackground {
     background-color: #fff;
 }
+
+.outsidefieldcompetence {
+    margin-bottom: 1.5em;
+}

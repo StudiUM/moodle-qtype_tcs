@@ -29,5 +29,5 @@ Feature: Test exporting tcs questions
     When I navigate to "Question bank > Export" in current page administration
     And I set the field "id_format_xml" to "1"
     And I press "Export questions to file"
-    Then following "click here" should download between "4650" and "4750" bytes
+    Then following "click here" should download between "4650" and "4900" bytes
     And I log out

@@ -57,6 +57,8 @@ class qtype_tcs_edit_form extends question_edit_form {
             get_string('caseyes', 'qtype_tcs')
         );
         $mform->addElement('selectyesno', 'showquestiontext', get_string('showquestiontext', 'qtype_tcs'));
+        $mform->addElement('selectyesno', 'showoutsidefieldcompetence',
+                get_string('labelshowoutsidefieldcompetence', 'qtype_tcs'));
 
         $mform->addElement('text', 'labelsituation', get_string('labelsituation', 'qtype_tcs'), array('size' => 40));
         $mform->setType('labelsituation', PARAM_TEXT);
@@ -158,6 +160,8 @@ class qtype_tcs_edit_form extends question_edit_form {
             '' : $question->options->labelsituation;
         $question->showquestiontext = empty($question->options->showquestiontext) ? '' : $question->options->showquestiontext;
         $question->showfeedback = empty($question->options->showfeedback) ? '' : $question->options->showfeedback;
+        $question->showoutsidefieldcompetence = empty($question->options->showoutsidefieldcompetence) ? ''
+                : $question->options->showoutsidefieldcompetence;
 
         return $question;
     }

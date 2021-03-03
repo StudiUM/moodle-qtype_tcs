@@ -89,6 +89,7 @@ class qtype_tcs_test_helper extends question_test_helper {
         $qdata->labelnewinformationeffect = 'Your hypothesis or option is';
         $qdata->labelfeedback = 'Comments label';
         $qdata->showfeedback = true;
+        $qdata->showoutsidefieldcompetence = true;
 
         $qdata->options = new stdClass();
         $qdata->options->correctfeedback =
@@ -139,6 +140,7 @@ class qtype_tcs_test_helper extends question_test_helper {
         $qdata->labelnewinformationeffect = 'Your hypothesis or option is';
         $qdata->labelfeedback = 'Comments label';
         $qdata->showfeedback = true;
+        $qdata->showoutsidefieldcompetence = true;
 
         $qdata->correctfeedback = array('text' => test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK,
                                                  'format' => FORMAT_HTML);

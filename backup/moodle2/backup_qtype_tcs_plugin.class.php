@@ -83,7 +83,7 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
             'correctfeedback', 'correctfeedbackformat',
             'partiallycorrectfeedback', 'partiallycorrectfeedbackformat',
             'incorrectfeedback', 'incorrectfeedbackformat',
-            'showfeedback', 'labelfeedback', 'labelnewinformationeffect', 'labelsituation'];
+            'showfeedback', 'labelfeedback', 'labelnewinformationeffect', 'labelsituation', 'showoutsidefieldcompetence'];
         $columnsnames = array_unique(array_merge($columnsnames, static::$additionalcolumnsnames));
         // Now create the qtype own structures.
         $tcs = new backup_nested_element(static::$qtypename, array('id'), $columnsnames);

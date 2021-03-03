@@ -68,5 +68,20 @@ function xmldb_qtype_tcs_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2020071300, 'qtype', 'tcs');
     }
 
+    if ($oldversion < 2021030100) {
+
+        // Labelfeedback.
+        $table = new xmldb_table('qtype_tcs_options');
+
+        // Showoutsidefieldcompetence.
+        $field = new xmldb_field('showoutsidefieldcompetence', XMLDB_TYPE_INTEGER, '1', null, null, null, '0');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Tcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2021030100, 'qtype', 'tcs');
+    }
+
     return true;
 }

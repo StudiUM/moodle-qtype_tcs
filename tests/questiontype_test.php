@@ -123,7 +123,7 @@ class qtype_tcs_test extends question_testcase {
         $qdata->options->labelnewinformationeffect = 'Your hypothesis or option is';
         $qdata->options->labelfeedback = 'Comments label';
         $qdata->options->showfeedback = true;
-
+        $qdata->options->showoutsidefieldcompetence = true;
         $qdata->options->correctfeedback = test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK;
         $qdata->options->correctfeedbackformat = FORMAT_HTML;
         $qdata->options->partiallycorrectfeedback = test_question_maker::STANDARD_OVERALL_PARTIALLYCORRECT_FEEDBACK;

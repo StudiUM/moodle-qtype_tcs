@@ -36,6 +36,7 @@
     <labelfeedback>Comments</labelfeedback>
     <labelsituation>Situation</labelsituation>
     <showfeedback>1</showfeedback>
+    <showoutsidefieldcompetence>1</showoutsidefieldcompetence>
     <answer format="html">
       <text><![CDATA[<p>Severely weakened<br></p>]]></text>
       <fractionimport>0.0000000</fractionimport>
