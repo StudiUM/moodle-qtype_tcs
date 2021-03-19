@@ -187,12 +187,36 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return string
      */
     public function summarise_response(array $response) {
-        if (!array_key_exists('answer', $response) || !array_key_exists($response['answer'], $this->order)) {
-            return null;
+        $hasanswer = array_key_exists('answer', $response) && array_key_exists($response['answer'], $this->order);
+        $hasfeedback = array_key_exists('answerfeedback', $response) && !empty($response['answerfeedback']);
+
+        if (!$hasfeedback && !$hasanswer) {
+            // This might be for the correct answer as returned by get_correct_response.
+            $selectedchoices = array();
+            foreach ($this->order as $key => $ans) {
+                $fieldname = $this->field($key);
+                if (array_key_exists($fieldname, $response) && $response[$fieldname]) {
+                    $selectedchoices[] = trim($this->html_to_text($this->answers[$ans]->answer,
+                            $this->answers[$ans]->answerformat));
+                }
+            }
+            if (empty($selectedchoices)) {
+                return null;
+            }
+            return implode('; ', $selectedchoices);
         }
 
-        $ansid = $this->order[$response['answer']];
-        return $this->html_to_text($this->answers[$ansid]->answer, $this->answers[$ansid]->answerformat);
+        // This is for an answer (and/or feedback) submitted by a user.
+        if ($hasanswer) {
+            $ansid = $this->order[$response['answer']];
+            $retval = trim($this->html_to_text($this->answers[$ansid]->answer, $this->answers[$ansid]->answerformat));
+            if ($hasfeedback) {
+                $retval .= ":\n \n".$response['answerfeedback'];
+            }
+        } else {
+            $retval = $response['answerfeedback'];
+        }
+        return $retval;
     }
 
     /**
@@ -377,6 +401,16 @@ class qtype_tcs_question extends question_graded_automatically {
     }
 
     /**
+     * For use by get_correct_response and summarise_response. Similar to multichoice.
+     *
+     * @param int $key choice number
+     * @return string the question-type variable name.
+     */
+    protected function field($key) {
+        return 'choice' . $key;
+    }
+
+    /**
      * Get correct response.
      *
      * @return array
@@ -384,13 +418,13 @@ class qtype_tcs_question extends question_graded_automatically {
     public function get_correct_response() {
         $maxfraction = $this->get_max_fraction();
 
-        foreach ($this->answers as $key => $answer) {
-            if ((string) $answer->fraction === (string) $maxfraction) {
-                return array('answer' => $key);
+        $response = array();
+        foreach ($this->order as $key => $answerid) {
+            if ((string) $this->answers[$answerid]->fraction === (string) $maxfraction) {
+                $response[$this->field($key)] = 1;
             }
         }
-
-        return array();
+        return $response;
     }
 
     /**
