@@ -218,18 +218,22 @@ class qtype_tcs_edit_form extends question_edit_form {
         foreach ($answers as $key => $answer) {
             // Check number of choices, total fraction, etc.
             $trimmedanswer = trim($answer['text']);
-            $fraction = (float) $data['fraction'][$key];
+            $fractionstring = ltrim($data['fraction'][$key], "0");
+            $fraction = intval($fractionstring);
+            $fractionconverted = strval($fraction);
 
-            if ($trimmedanswer === '' && empty($fraction)) {
+            if ($trimmedanswer === '' && empty($fractionstring)) {
                 continue;
             }
             if ($trimmedanswer === '') {
                 $errors['fraction['.$key.']'] = get_string('errgradesetanswerblank', 'qtype_tcs');
             }
 
-            if (!is_numeric($data['fraction'][$key])) {
+            if ((strlen($fractionstring) !== strlen($fractionconverted) || $fraction < 0)
+                    && $fractionstring !== '') {
                 $errors['fraction['.$key.']'] = get_string('fractionshouldbenumber', 'qtype_tcs');
             }
+
             $totalfraction += $fraction;
 
             $answercount++;

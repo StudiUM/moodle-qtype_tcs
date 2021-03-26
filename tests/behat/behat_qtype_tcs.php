@@ -46,7 +46,7 @@ class behat_qtype_tcs extends behat_base {
      */
     public function i_should_see_that_panelists_have_answered_for_question($nbpanelists, $answer, $questionnb) {
         $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'formulation')]"
-            . "//div[contains(@class,'answer')]//label[.='$answer']/following::span[not(contains(@class,'gauge'))][2]";
+            . "//div[contains(@class,'answer-item') and contains(.//label, '$answer')]/following::span[1]";
         $this->execute("behat_general::assert_element_contains_text",
             array($nbpanelists, $xpath, "xpath_element")
         );

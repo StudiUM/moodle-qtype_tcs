@@ -71,7 +71,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $showeffect = !empty($question->labeleffecttext) && !empty($question->effecttext);
 
         $result = '';
-
+        $result .= html_writer::start_div('tcs-container');
         if (!empty($question->showquestiontext)) {
             $labelsituation = ($question->labelsituation === null) ? get_string('situation', 'qtype_tcs') :
                 $question->labelsituation;
@@ -118,44 +118,29 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 ['outsidefieldcompetenceid' => $inputattributes['id'], $inputattributeshidden['id']]);
         }
 
-        $result .= html_writer::start_tag('table', array('class' => 'w100 tcs-table generaltable'));
-
-        $result .= html_writer::start_tag('thead', array('class' => ''));
-        $result .= html_writer::start_tag('tr', array('class' => ''));
-        $labelclass = $showeffect ? 'w30' : 'w50';
-        $result .= html_writer::tag('th', $question->labelhypothisistext, array('class' => $labelclass.' header'));
-        if ($showeffect) {
-            $result .= html_writer::tag('th', $question->labeleffecttext, array('class' => 'w40 header'));
-        }
         $newinformationeffect = ($question->labelnewinformationeffect === null) ? get_string('newinformationeffect', 'qtype_tcs') :
             $question->labelnewinformationeffect;
-        $result .= html_writer::tag('th', $newinformationeffect, array('class' => 'header'));
-        $result .= html_writer::end_tag('tr');
-        $result .= html_writer::end_tag('thead');
-
-        $result .= html_writer::start_tag('tbody', array('class' => ''));
-        $result .= html_writer::start_tag('tr', array('class' => ''));
         // Show hypothesis.
         $hypothisistext = $question->format_text($question->hypothisistext, $question->hypothisistext, $qa,
             'qtype_' . static::$qtypename, 'hypothisistext', $question->id);
-        $result .= html_writer::tag('td', $hypothisistext, array('class' => 'leftalign cell'));
 
+        $result .= html_writer::start_div('Rtable Rtable--2cols Rtable--collapse');
+        $result .= html_writer::div($question->labelhypothisistext, 'Rtable-cell Rtable-cell--head', ['style' => 'order:0;']);
+        $result .= html_writer::div($hypothisistext, 'Rtable-cell', ['style' => 'order:1;']);
         // Show effect on hypothesis.
         if ($showeffect) {
             $effecttext = $question->format_text($question->effecttext, $question->effecttext, $qa, 'qtype_tcs', 'effecttext',
                 $question->id);
-            $result .= html_writer::tag('td', $effecttext, array('class' => 'leftalign cell'));
+            $result .= html_writer::div($question->labeleffecttext, 'Rtable-cell Rtable-cell--head', ['style' => 'order:0;']);
+            $result .= html_writer::div($effecttext, 'Rtable-cell', ['style' => 'order:1;']);
+            $result .= html_writer::end_div();
+            $result .= html_writer::start_div('Rtable Rtable--collapse');
         }
-
         // Show answers.
-        $result .= html_writer::start_tag('td', array('class' => 'leftalign cell'));
-
-        $result .= $this->get_answers_result($qa, $options, $isoutsidefieldcompetencechecked);
-
-        $result .= html_writer::end_tag('td');
-        $result .= html_writer::end_tag('tr');
-        $result .= html_writer::end_tag('tbody');
-        $result .= html_writer::end_tag('table');
+        $result .= html_writer::div($newinformationeffect, 'Rtable-cell Rtable-cell--head', ['style' => 'order:0;']);
+        $formanswer = $this->get_answers_result($qa, $options, $isoutsidefieldcompetencechecked);
+        $result .= html_writer::div($formanswer, 'Rtable-cell', ['style' => 'order:1;']);
+        $result .= html_writer::end_div();
 
         // Show answer feedback.
         if (intval($question->showfeedback) === 1) {
@@ -172,7 +157,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $answer = $responseoutput->response_area_input('answerfeedback', $qa, $step, $attributes);
             } else {
                 $answer = html_writer::tag('p', $step->get_qt_var('answerfeedback'),
-                        ['id' => $inputname, 'class' => 'small p-2 whitebackground']);
+                        ['id' => $inputname, 'class' => 'p-2 whitebackground']);
             }
 
             $result .= html_writer::tag('div', $answer, array('class' => 'answerfeedback'));
@@ -183,7 +168,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                     $question->get_validation_error($qa->get_last_qt_data()),
                     array('class' => 'validationerror'));
         }
-
+        $result .= html_writer::end_div();
         return $result;
     }
 
@@ -229,12 +214,11 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 unset($inputattributes['checked']);
             }
 
-            $labelclass = $options->correctness ? 'withgauge' : '';
             $label = html_writer::tag('label',
                     $question->make_html_inline(
                         $question->format_text($ans->answer, $ans->answerformat, $qa, 'question', 'answer', $ansid)
                     ),
-                    array('for' => $inputattributes['id'], 'class' => $labelclass)
+                    array('for' => $inputattributes['id'])
                 );
             $radiobuttons[] = html_writer::empty_tag('input', $inputattributes) . $label;
 
@@ -248,10 +232,13 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 } else {
                     $percent = round(($ans->fraction / $maxfraction) * 100);
                 }
-                $feedbackstruct  = html_writer::start_tag('span', array('class' => 'gauge'));
-                $feedbackstruct .= html_writer::tag('span', '', array('style' => 'width:'.$percent.'%'));
-                $feedbackstruct .= html_writer::end_tag('span');
+                $feedbackstruct  = html_writer::start_div('progress-container');
+                $feedbackstruct .= html_writer::start_div('progress', array('style' => 'height: 20px;'));
+                $feedbackstruct .= html_writer::div('', 'progress-bar', array('style' => 'width:'.$percent.'%',
+                            'role' => 'progressbar', 'aria-valuenow' => $ans->fraction, 'aria-valuemax' => $maxfraction));
+                $feedbackstruct .= html_writer::end_div();
                 $feedbackstruct .= html_writer::tag('span', (int)$ans->fraction);
+                $feedbackstruct .= html_writer::end_div();
                 $feedback[] = $feedbackstruct;
                 if ($displayfeedback === false && $percent > 0) {
                     $displayfeedback = true;
@@ -267,12 +254,12 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
 
         foreach ($radiobuttons as $key => $radio) {
-            $result .= html_writer::tag('div', $radio . ' ' . $feedback[$key], array('class' => $classes[$key])) . "\n";
+            $radioanswer = html_writer::div($radio, 'answer-item');
+            $feedbackanswer = ($feedback[$key]) ? html_writer::div($feedback[$key], 'feedback-item') : '';
+            $result .= html_writer::tag('div', $radioanswer . ' ' . $feedbackanswer, ['class' => 'answer-line']) . "\n";
         }
 
         $result .= html_writer::end_tag('div'); // Answer.
-
-        $result .= html_writer::end_tag('div'); // Ablock.
 
         return $result;
     }
@@ -412,7 +399,6 @@ class qtype_tcs_format_plain_renderer extends plugin_renderer_base {
     protected function textarea($response, $attributes) {
         $attributes['class'] = $this->class_name() . ' qtype_tcs_response';
         $attributes['rows'] = 7;
-        $attributes['cols'] = 45;
         return html_writer::tag('textarea', s($response), $attributes);
     }
 

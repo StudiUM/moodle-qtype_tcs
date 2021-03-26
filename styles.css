@@ -1,71 +1,3 @@
-table.tcs-table.w100 {
-    width: 100%;
-}
-
-table.tcs-table th.w30 {
-    width: 30%;
-}
-
-table.tcs-table th.w40 {
-    width: 40%;
-}
-
-table.tcs-table th.w50 {
-    width: 50%;
-}
-
-table.tcs-table td.cell {
-    background: #f3f3f3;
-    border-bottom-width: 2px;
-}
-
-table.tcs-table div.answer {
-    min-width: 300px;
-}
-
-table.tcs-table div.answer div.r0,
-table.tcs-table div.answer div.r1 {
-    background-color: #f3f3f3;
-    vertical-align: middle;
-}
-
-table.tcs-table div.answer div.r0 input,
-table.tcs-table div.answer div.r1 input {
-    vertical-align: middle;
-}
-
-table.tcs-table div.answer div.r0 label,
-table.tcs-table div.answer div.r1 label {
-    vertical-align: middle;
-    display: inline-block;
-    padding-left: 5px;
-}
-
-table.tcs-table div.answer div.r0 label.withgauge,
-table.tcs-table div.answer div.r1 label.withgauge {
-    width: 130px;
-}
-
-table.tcs-table div.answer div.r0 span.gauge,
-table.tcs-table div.answer div.r1 span.gauge {
-    vertical-align: middle;
-    background-color: #f3f3f3;
-    border: 1px solid #e0e0e0;
-    height: 17px;
-    margin-left: 0;
-    width: 115px;
-    display: inline-block;
-    line-height: 0px;
-}
-
-table.tcs-table div.answer div.r0 span.gauge span,
-table.tcs-table div.answer div.r1 span.gauge span {
-    background-color: #0071b9;
-    height: 15px;
-    margin: 0;
-    display: inline-block;
-}
-
 .tcs-answerspecificfeedback {
     background-color: white;
     border: 1px solid #e0e0e0;
@@ -74,7 +6,7 @@ table.tcs-table div.answer div.r1 span.gauge span {
 }
 
 /* Editing form. */
-body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=answer_] {
+.tcs-container div[id^=fitem_id_][id*=answer_] {
     background: #eee;
     margin-top: 0;
     margin-bottom: 0;
@@ -84,18 +16,18 @@ body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=answer_] {
     border-bottom: 0;
 }
 
-body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=answer_] .fitemtitle {
+.tcs-container div[id^=fitem_id_][id*=answer_] .fitemtitle {
     font-weight: bold;
 }
 
-body[id^=page-question-type-tcs] div[id^=fitem_id_] .fitemtitle {
+.tcs-container div[id^=fitem_id_] .fitemtitle {
     margin-left: 0;
     margin-right: 0;
     padding-left: 6px;
     padding-right: 0;
 }
 
-body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=fraction_] {
+.tcs-container div[id^=fitem_id_][id*=fraction_] {
     background: #eee;
     margin-bottom: 0;
     margin-top: 0;
@@ -106,7 +38,7 @@ body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=fraction_] {
     border-bottom: 0;
 }
 
-body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=feedback_] {
+.tcs-container div[id^=fitem_id_][id*=feedback_] {
     background: #eee;
     margin-bottom: 2em;
     margin-top: 0;
@@ -116,10 +48,127 @@ body[id^=page-question-type-tcs] div[id^=fitem_id_][id*=feedback_] {
     border-top: 0;
 }
 
-p.whitebackground {
+.tcs-container p.whitebackground {
     background-color: #fff;
 }
 
-.outsidefieldcompetence {
-    margin-bottom: 1.5em;
+.tcs-container .outsidefieldcompetence {
+    margin-bottom: 0.5em;
+}
+
+.tcs-container .Rtable {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 0.5em 0;
+  padding: 0;
+}
+
+.tcs-container .Rtable-cell {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+  padding: 0.8em 0.5em;
+  overflow: hidden;
+  list-style: none; 
+  padding-bottom: 0.2em;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+}
+
+.tcs-container .Rtable--2cols > .Rtable-cell {
+  width: 50%;
+}
+
+.tcs-container .Rtable {
+  position: relative;
+  top: 3px;
+  left: 3px;
+}
+
+.tcs-container .Rtable-cell {
+  margin: -3px 0 0 -3px;
+  background-color: #f3f3f3;
+}
+
+.tcs-container .Rtable-cell--head {
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 5px solid #dee2e6;
+  font-weight: bold;
+  background-color: transparent;
+  padding-left: 0;
+}
+
+@media all and (max-width: 1400px) {
+  .drawer-open-left .tcs-container .Rtable--collapse {
+    display: block;
+  }
+  .drawer-open-left .tcs-container .Rtable--collapse > .Rtable-cell {
+    width: 100% !important;
+  }
+}
+
+.tcs-container .progress-container .progress {
+    min-width: 200px;
+    background-color: #fff;
+}
+
+@media all and (min-width: 768px) and (max-width: 780px) {
+  .drawer-open-left .tcs-container .progress-container .progress {
+    min-width: 160px;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .tcs-container .Rtable--collapse {
+    display: block;
+  }
+  .tcs-container .Rtable--collapse > .Rtable-cell {
+    width: 100% !important;
+  }
+}
+
+.tcs-container .answer-item input {
+    margin-right: 0.5rem;
+}
+
+.tcs-container .progress-container {
+    display: flex;
+    margin-top: 0.2em;
+}
+
+
+
+.tcs-container .progress-container span {
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+.tcs-container .answer .answer-line {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-flow: wrap;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+}
+
+.tcs-container .answer .answer-item,
+.tcs-container .answer .feedback-item {
+    width: 100%;
+}
+
+.tcs-container .answerfeedback,
+.tcs-container .answerfeedback textarea {
+    width: 100%;
+}
+
+.tcs-container label[for$=answerfeedback] {
+    font-weight: bold;
+    margin-top: 1em;
+    display: block;
+}
+
+.que .tcs-container .qtext {
+    margin-bottom: 0.5em;
 }

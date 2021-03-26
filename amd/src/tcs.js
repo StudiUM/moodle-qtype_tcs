@@ -52,7 +52,7 @@ define(['jquery'],
         TcsQuestion.prototype.attachEventListeners = function(checkboxid, inputhidden) {
             $('input[id="' + checkboxid + '"]').on('change', function() {
                 // Enable/disable answer and feedback.
-                var questionform = $(this).parent(".formulation");
+                var questionform = $(this).parent(".tcs-container");
                 var answers = questionform.find(SELECTORS.RADIOANSWER);
                 var feedback = questionform.find(SELECTORS.TEXTAREAFEEDBACK);
                 if ($(this).is(":checked")) {
