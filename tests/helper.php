@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
+require_once($CFG->dirroot . '/question/type/tcs/question.php');
 
 /**
  * Test helper class for the TCS question type.
@@ -179,6 +180,7 @@ class qtype_tcs_test_helper extends question_test_helper {
         $qdata->effecttext = '';
         $qdata->effecttextformat = FORMAT_PLAIN;
         $qdata->showfeedback = false;
+        $qdata->showoutsidefieldcompetence = false;
         $qdata->options->answers = [];
         for ($i = 1; $i <= 3; $i++) {
             $feedback = ($i == 3) ? "" : "Feedback for answer $i";
@@ -206,6 +208,7 @@ class qtype_tcs_test_helper extends question_test_helper {
         $qdata->labeleffecttext = '';
         $qdata->effecttext = array('text' => '', 'format' => FORMAT_PLAIN);
         $qdata->showfeedback = false;
+        $qdata->showoutsidefieldcompetence = false;
         $qdata->fraction = [];
         $qdata->answer = [];
         $qdata->feedback = [];
@@ -222,5 +225,88 @@ class qtype_tcs_test_helper extends question_test_helper {
             ];
         }
         return $qdata;
+    }
+
+    /**
+     * Makes a TCS reasoning question with some basic options.
+     * Most yes/no options are set at "yes" (true).
+     * @return qtype_tcs_question
+     */
+    public static function make_tcs_question_reasoning() {
+        question_bank::load_question_definition_classes('tcs');
+        $tcs = new qtype_tcs_question();
+        test_question_maker::initialise_a_question($tcs);
+
+        $tcs->qtype = static::$qtypename;
+        $tcs->name = 'TCS-001';
+        $tcs->questiontext = 'Here is the question';
+        $tcs->questiontextformat = FORMAT_PLAIN;
+        $tcs->generalfeedback = 'General feedback for the question';
+        $tcs->generalfeedbackformat = FORMAT_PLAIN;
+
+        $tcs->showquestiontext = true;
+        $tcs->labelsituation = 'Situation label';
+        $tcs->labelhypothisistext = 'Hypothesis label';
+        $tcs->hypothisistext = 'The hypothesis is...';
+        $tcs->hypothisistextformat = FORMAT_PLAIN;
+        if (static::$qtypename == 'tcs') {
+            $tcs->labeleffecttext = 'New information label';
+            $tcs->effecttext = 'The new information is...';
+            $tcs->effecttextformat = FORMAT_PLAIN;
+        }
+        $tcs->labelnewinformationeffect = 'Your hypothesis or option is';
+        $tcs->labelfeedback = 'Comments label';
+        $tcs->showfeedback = true;
+        $tcs->showoutsidefieldcompetence = true;
+
+        $tcs->answers = array();
+        for ($i = 1; $i <= static::$nbanswers; $i++) {
+            $answer = get_string("likertscale$i", 'qtype_' . static::$qtypename);
+            $feedback = ($i == static::$nbanswers) ? "" : "Feedback for choice $i";
+            $tcs->answers[$i] = new question_answer($i, $answer, $i - 1, $feedback, FORMAT_PLAIN);
+        }
+
+        return $tcs;
+    }
+
+    /**
+     * Makes a TCS question similar to a judgment question, with other options than the reasoning question above.
+     * Most yes/no options are set at "no" (false).
+     * @return qtype_tcs_question
+     */
+    public static function make_tcs_question_judgment() {
+        question_bank::load_question_definition_classes('tcs');
+        $tcs = new qtype_tcs_question();
+        test_question_maker::initialise_a_question($tcs);
+
+        $tcs->qtype = static::$qtypename;
+        $tcs->name = 'TCS-002';
+        $tcs->questiontext = 'Here is the question';
+        $tcs->questiontextformat = FORMAT_PLAIN;
+        $tcs->generalfeedback = 'General feedback for the question';
+        $tcs->generalfeedbackformat = FORMAT_PLAIN;
+
+        $tcs->showquestiontext = false;
+        $tcs->labelsituation = 'Situation label';
+        $tcs->labelhypothisistext = 'Hypothesis label';
+        $tcs->hypothisistext = 'The hypothesis is...';
+        $tcs->hypothisistextformat = FORMAT_PLAIN;
+        if (static::$qtypename == 'tcs') {
+            $tcs->labeleffecttext = '';
+            $tcs->effecttext = '';
+            $tcs->effecttextformat = FORMAT_PLAIN;
+        }
+        $tcs->labelnewinformationeffect = 'Your hypothesis or option is';
+        $tcs->labelfeedback = 'Comments label';
+        $tcs->showfeedback = false;
+        $tcs->showoutsidefieldcompetence = false;
+
+        $tcs->answers = array();
+        $tcs->answers[1] = new question_answer(1, "Answer 1", 0, "Feedback for choice 1", FORMAT_PLAIN);
+        $tcs->answers[2] = new question_answer(2, "Answer 2", 1, "Feedback for choice 2", FORMAT_PLAIN);
+        $tcs->answers[3] = new question_answer(3, "Answer 3", 2, "Feedback for choice 3", FORMAT_PLAIN);
+        $tcs->answers[4] = new question_answer(4, "Answer 4", 2, "Feedback for choice 4", FORMAT_PLAIN);
+
+        return $tcs;
     }
 }
