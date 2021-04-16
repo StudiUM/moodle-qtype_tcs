@@ -42,11 +42,11 @@ class qtype_tcs_test extends question_testcase {
     /** @var qtype_tcs instance of the question type class to test. */
     protected $qtype;
 
-    protected function setUp() {
+    protected function setUp(): void {
         $this->qtype = question_bank::get_qtype('tcs');
     }
 
-    protected function tearDown() {
+    protected function tearDown(): void {
         $this->qtype = null;
     }
 
