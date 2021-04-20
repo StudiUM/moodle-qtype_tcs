@@ -33,7 +33,7 @@ define(['jquery'],
         /**
          * Constructor
          *
-         * @param {String} outsidefieldcompetenceid.
+         * @param {String} outsidefieldcompetenceid
          * @param {String} inputhidden
          */
         var TcsQuestion = function(outsidefieldcompetenceid, inputhidden) {
@@ -74,7 +74,7 @@ define(['jquery'],
              * Initialise.
              *
              * @method init
-             * @param {String} outsidefieldcompetenceid.
+             * @param {String} outsidefieldcompetenceid
              * @param {String} inputhidden
              * @return {TcsQuestion}
              */

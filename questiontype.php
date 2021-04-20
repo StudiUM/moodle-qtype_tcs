@@ -67,7 +67,7 @@ class qtype_tcs extends question_type {
      *                         specific information (it is passed by reference).
      */
     public function get_question_options($question) {
-        global $DB, $OUTPUT;
+        global $DB;
         $question->options = $DB->get_record(static::$tablename . '_options',
                 array('questionid' => $question->id), '*', MUST_EXIST);
 

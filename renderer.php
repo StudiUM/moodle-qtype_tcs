@@ -181,7 +181,6 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
      */
     public function get_answers_result(question_attempt $qa, question_display_options $options, $disabled = 0) {
         $radiobuttons = array();
-        $feedbackimg = array();
         $feedback = array();
         $classes = array();
         $displayfeedback = false;
@@ -275,7 +274,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
 
         $question = $qa->get_question();
 
-        foreach ($question->get_order($qa) as $value => $ansid) {
+        foreach ($question->get_order($qa) as $ansid) {
             $answer = $question->answers[$ansid];
             $trimmedfeedback = $question->make_html_inline($answer->feedback);
             $trimmedanswer = $question->make_html_inline($answer->answer);

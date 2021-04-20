@@ -52,12 +52,12 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
     /**
      * @var array The additional columns names.
      */
-    protected static $additionalcolumnsnames = ['effecttext', 'effecttextformat', 'labeleffecttext'];
+    protected static $addcolumnsnames = ['effecttext', 'effecttextformat', 'labeleffecttext'];
 
     /**
      * @var array The additional file area mapping names.
      */
-    protected static $additionalfileareamappingnames = ['effecttext' => 'question_created'];
+    protected static $addfileareamapnames = ['effecttext' => 'question_created'];
 
     /**
      * Returns the qtype information to attach to question element
@@ -84,7 +84,7 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
             'partiallycorrectfeedback', 'partiallycorrectfeedbackformat',
             'incorrectfeedback', 'incorrectfeedbackformat',
             'showfeedback', 'labelfeedback', 'labelnewinformationeffect', 'labelsituation', 'showoutsidefieldcompetence'];
-        $columnsnames = array_unique(array_merge($columnsnames, static::$additionalcolumnsnames));
+        $columnsnames = array_unique(array_merge($columnsnames, static::$addcolumnsnames));
         // Now create the qtype own structures.
         $tcs = new backup_nested_element(static::$qtypename, array('id'), $columnsnames);
 
@@ -108,6 +108,6 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
      */
     public static function get_qtype_fileareas() {
         $fileareamappingnames = ['hypothisistext' => 'question_created'];
-        return $fileareamappingnames + static::$additionalfileareamappingnames;
+        return $fileareamappingnames + static::$addfileareamapnames;
     }
 }

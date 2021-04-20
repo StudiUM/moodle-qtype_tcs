@@ -57,55 +57,55 @@
 }
 
 .tcs-container .Rtable {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 0 0.5em 0;
-  padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 0.5em 0;
+    padding: 0;
 }
 
 .tcs-container .Rtable-cell {
-  box-sizing: border-box;
-  flex-grow: 1;
-  width: 100%;
-  padding: 0.8em 0.5em;
-  overflow: hidden;
-  list-style: none; 
-  padding-bottom: 0.2em;
-  padding-top: 0.5em;
-  padding-left: 0.5em;
+    box-sizing: border-box;
+    flex-grow: 1;
+    width: 100%;
+    padding: 0.8em 0.5em;
+    overflow: hidden;
+    list-style: none;
+    padding-bottom: 0.2em;
+    padding-top: 0.5em;
+    padding-left: 0.5em;
 }
 
 .tcs-container .Rtable--2cols > .Rtable-cell {
-  width: 50%;
+    width: 50%;
 }
 
 .tcs-container .Rtable {
-  position: relative;
-  top: 3px;
-  left: 3px;
+    position: relative;
+    top: 3px;
+    left: 3px;
 }
 
 .tcs-container .Rtable-cell {
-  margin: -3px 0 0 -3px;
-  background-color: #f3f3f3;
+    margin: -3px 0 0 -3px;
+    background-color: #f3f3f3;
 }
 
 .tcs-container .Rtable-cell--head {
-  display: flex;
-  align-items: flex-end;
-  border-bottom: 5px solid #dee2e6;
-  font-weight: bold;
-  background-color: transparent;
-  padding-left: 0;
+    display: flex;
+    align-items: flex-end;
+    border-bottom: 5px solid #dee2e6;
+    font-weight: bold;
+    background-color: transparent;
+    padding-left: 0;
 }
 
 @media all and (max-width: 1400px) {
-  .drawer-open-left .tcs-container .Rtable--collapse {
-    display: block;
-  }
-  .drawer-open-left .tcs-container .Rtable--collapse > .Rtable-cell {
-    width: 100% !important;
-  }
+    .drawer-open-left .tcs-container .Rtable--collapse {
+        display: block;
+    }
+    .drawer-open-left .tcs-container .Rtable--collapse > .Rtable-cell {
+        width: 100% !important;
+    }
 }
 
 .tcs-container .progress-container .progress {
@@ -114,18 +114,18 @@
 }
 
 @media all and (min-width: 768px) and (max-width: 780px) {
-  .drawer-open-left .tcs-container .progress-container .progress {
-    min-width: 160px;
-  }
+    .drawer-open-left .tcs-container .progress-container .progress {
+        min-width: 160px;
+    }
 }
 
 @media all and (max-width: 600px) {
-  .tcs-container .Rtable--collapse {
-    display: block;
-  }
-  .tcs-container .Rtable--collapse > .Rtable-cell {
-    width: 100% !important;
-  }
+    .tcs-container .Rtable--collapse {
+        display: block;
+    }
+    .tcs-container .Rtable--collapse > .Rtable-cell {
+        width: 100% !important;
+    }
 }
 
 .tcs-container .answer-item input {
@@ -136,8 +136,6 @@
     display: flex;
     margin-top: 0.2em;
 }
-
-
 
 .tcs-container .progress-container span {
     font-weight: bold;

@@ -51,11 +51,6 @@ class qtype_tcs_edit_form extends question_edit_form {
      * @param object $mform the form being built.
      */
     protected function definition_inner($mform) {
-
-        $menu = array(
-            get_string('caseno', 'qtype_tcs'),
-            get_string('caseyes', 'qtype_tcs')
-        );
         $mform->addElement('selectyesno', 'showquestiontext', get_string('showquestiontext', 'qtype_tcs'));
         $mform->addElement('selectyesno', 'showoutsidefieldcompetence',
                 get_string('labelshowoutsidefieldcompetence', 'qtype_tcs'));
@@ -213,7 +208,6 @@ class qtype_tcs_edit_form extends question_edit_form {
         $errors = parent::validation($data, $files);
         $answers = $data['answer'];
         $answercount = 0;
-        $totalfraction = 0;
 
         foreach ($answers as $key => $answer) {
             // Check number of choices, total fraction, etc.
@@ -234,8 +228,6 @@ class qtype_tcs_edit_form extends question_edit_form {
                 $errors['fraction['.$key.']'] = get_string('fractionshouldbenumber', 'qtype_tcs');
             }
 
-            $totalfraction += $fraction;
-
             $answercount++;
         }
 
@@ -245,7 +237,6 @@ class qtype_tcs_edit_form extends question_edit_form {
             $errors['answer[1]'] = get_string('notenoughanswers', 'qtype_tcs', 2);
         } else if ($answercount == 1) {
             $errors['answer[1]'] = get_string('notenoughanswers', 'qtype_tcs', 2);
-
         }
 
         return $errors;
