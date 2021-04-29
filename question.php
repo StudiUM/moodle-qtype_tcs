@@ -372,10 +372,10 @@ class qtype_tcs_question extends question_graded_automatically {
             return $this->check_hint_file_access($qa, $options, $args);
 
         } else if ($component == 'qtype_' . static::$qtypename && $filearea == 'hypothisistext') {
-            return $qa->get_question()->hypothisistext && $args[0] == $this->id;
+            return $qa->get_question(false)->hypothisistext && $args[0] == $this->id;
 
         } else if (static::$qtypename == 'tcs' && $component == 'qtype_tcs' && $filearea == 'effecttext') {
-            return $qa->get_question()->effecttext && $args[0] == $this->id;
+            return $qa->get_question(false)->effecttext && $args[0] == $this->id;
 
         } else {
             return parent::check_file_access($qa, $options, $component, $filearea,
