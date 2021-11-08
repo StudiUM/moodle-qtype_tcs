@@ -27,9 +27,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_tcs';
-$plugin->version   = 2021030100;
-$plugin->release = '1.0.2 (Build 2021030100)';
-
-$plugin->requires  = 2013110500;
+$plugin->version  = 2021110900;
+$plugin->requires = 2021051704;
+$plugin->release = '1.0.3 (Build 2021110900)';
 
 $plugin->maturity  = MATURITY_STABLE;

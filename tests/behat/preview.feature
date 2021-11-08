@@ -25,11 +25,11 @@ Feature: Preview a TCS question
     And I am on "Course 1" course homepage
     And I navigate to "Question bank" in current page administration
 
-  @javascript @_switch_window
+  @javascript
   Scenario: Preview a TCS reasoning question, created with all default values.
     Given I choose "Preview" action for "TCS-001" in the question bank
-    When I switch to "questionpreview" window
-    And I set the field "How questions behave" to "Immediate feedback"
+    And I switch to "questionpreview" window
+    When I set the field "How questions behave" to "Immediate feedback"
     And I press "Start again with these options"
     Then I should see "Situation"
     And I should see "Here is the question"
@@ -72,13 +72,12 @@ Feature: Preview a TCS question
     # User should still see the feedback.
     And I should see "The most popular answer is: Strongly reinforced"
     And I should see that "1" panelists have answered "Severely weakened" for question "1"
-    And I switch to the main window
 
-  @javascript @_switch_window
+  @javascript
   Scenario: Preview a TCS judgment question.
     Given I choose "Preview" action for "TCS-002" in the question bank
-    When I switch to "questionpreview" window
-    And I set the field "How questions behave" to "Immediate feedback"
+    And I switch to "questionpreview" window
+    When I set the field "How questions behave" to "Immediate feedback"
     And I press "Start again with these options"
     Then I should not see "Situation"
     And I should not see "Here is the question"
@@ -96,4 +95,3 @@ Feature: Preview a TCS question
     And I should see "Feedback for answer 2" for answer "Answer 2" of question "1"
     And I should see that "3" panelists have answered "Answer 3" for question "1"
     And I should see no comments for answer "Answer 3" of question "1"
-    And I switch to the main window
