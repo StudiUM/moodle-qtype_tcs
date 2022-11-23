@@ -23,6 +23,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace qtype_tcs;
+
+use test_question_maker;
 
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
@@ -34,16 +37,19 @@ require_once($CFG->dirroot . '/question/format/xml/format.php');
 /**
  * Unit tests for the tcs question definition class.
  *
+ * @package    qtype_tcs
  * @copyright 2021 Université de Montréal
  * @author    Issam Taboubi <issam.taboubi@umontreal.ca>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers \question_type
+ * @covers \qtype_tcs
  */
-class qtype_tcs_test extends question_testcase {
+class question_type_test extends \question_testcase {
     /** @var qtype_tcs instance of the question type class to test. */
     protected $qtype;
 
     protected function setUp(): void {
-        $this->qtype = question_bank::get_qtype('tcs');
+        $this->qtype = \question_bank::get_qtype('tcs');
     }
 
     protected function tearDown(): void {
@@ -51,7 +57,7 @@ class qtype_tcs_test extends question_testcase {
     }
 
     public function test_xml_import() {
-        $qdata = new stdClass();
+        $qdata = new \stdClass();
 
         $qdata->name = 'TCS-001';
         $qdata->questiontext = 'Here is the question';
@@ -96,22 +102,22 @@ class qtype_tcs_test extends question_testcase {
 
         $xmldata = xmlize(file_get_contents(__DIR__.'/fixtures/questiontest.xml'));
 
-        $importer = new qformat_xml();
+        $importer = new \qformat_xml();
         $q = $importer->try_importing_using_qtypes(
                 $xmldata['question'], null, null, 'tcs');
-        $this->assert(new question_check_specified_fields_expectation($qdata), $q);
+        $this->assert(new \question_check_specified_fields_expectation($qdata), $q);
     }
 
     public function test_xml_export() {
 
-        $qdata = new stdClass();
+        $qdata = new \stdClass();
 
         $qdata->name = 'TCS-001';
         $qdata->questiontext = 'Here is the question';
         $qdata->questiontextformat = FORMAT_HTML;
         $qdata->generalfeedback = 'General feedback for the question';
         $qdata->generalfeedbackformat = FORMAT_HTML;
-        $qdata->options = new stdClass();
+        $qdata->options = new \stdClass();
         $qdata->options->showquestiontext = true;
         $qdata->options->labelsituation = 'Situation label';
         $qdata->options->labelhypothisistext = 'Hypothesis label';
@@ -151,7 +157,7 @@ class qtype_tcs_test extends question_testcase {
         $qdata->hidden = 0;
         $qdata->idnumber = null;
 
-        $exporter = new qformat_xml();
+        $exporter = new \qformat_xml();
         $xml = $exporter->writequestion($qdata);
         $this->assertXmlStringEqualsXmlFile(__DIR__.'/fixtures/questiontest.xml', $xml);
     }

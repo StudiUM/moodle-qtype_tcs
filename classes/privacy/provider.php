@@ -25,8 +25,6 @@
 
 namespace qtype_tcs\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem for qtype_tcs implementing null_provider.
  *

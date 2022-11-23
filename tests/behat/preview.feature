@@ -28,7 +28,8 @@ Feature: Preview a TCS question
   @javascript
   Scenario: Preview a TCS reasoning question, created with all default values.
     Given I choose "Preview" action for "TCS-001" in the question bank
-    And I switch to "questionpreview" window
+    #And I switch to "questionpreview" window
+    And I expand all fieldsets
     When I set the field "How questions behave" to "Immediate feedback"
     And I press "Start again with these options"
     Then I should see "Situation"
@@ -76,7 +77,7 @@ Feature: Preview a TCS question
   @javascript
   Scenario: Preview a TCS judgment question.
     Given I choose "Preview" action for "TCS-002" in the question bank
-    And I switch to "questionpreview" window
+    And I expand all fieldsets
     When I set the field "How questions behave" to "Immediate feedback"
     And I press "Start again with these options"
     Then I should not see "Situation"
@@ -84,7 +85,7 @@ Feature: Preview a TCS question
     And I should see "Hypothesis label"
     And I should see "The hypothesis is..."
     And I should not see "New information"
-    And I should not see "Comments"
+    And I should not see "Comments" in the ".tcs-container" "css_element"
     And I should not see "This question is outside my field of competence"
     And I click on "Answer 1" "radio"
     And I press "Check"

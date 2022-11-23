@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Unit tests for the tcs question definition class.
  *
@@ -23,6 +22,12 @@
  * @author     Issam Taboubi <issa.taboubi@umontreal.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace qtype_tcs;
+
+use test_question_maker;
+use question_attempt_step;
+use question_state;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -36,8 +41,9 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  * @copyright  2020 Université de Montréal
  * @author     Issam Taboubi <issa.taboubi@umontreal.ca>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers \qtype_tcs_question
  */
-class qtype_tcs_question_test extends advanced_testcase {
+class question_test extends \advanced_testcase {
 
     /**
      * Test get_question_data and get_question_form_data for the two examples of questions.
