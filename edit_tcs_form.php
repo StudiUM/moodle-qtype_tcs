@@ -207,8 +207,10 @@ class qtype_tcs_edit_form extends question_edit_form {
 
         foreach ($answers as $key => $answer) {
             // Check number of choices, total fraction, etc.
-            $trimmedanswer = trim($answer['text']);
-            $fractionstring = ltrim($data['fraction'][$key], "0");
+            $trimmedanswer = trim($answer['text'] ?? '');
+            $fractionstring = is_string($data['fraction'][$key]) 
+                ? ltrim($data['fraction'][$key], "0") 
+                : $data['fraction'][$key];
             $fraction = intval($fractionstring);
             $fractionconverted = strval($fraction);
 

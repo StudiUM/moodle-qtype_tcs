@@ -38,7 +38,7 @@
 class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
     /**
      * Order.
-     * @var int $order
+     * @var array $order
      */
     protected $order;
 
@@ -79,11 +79,11 @@ class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
     /**
      * Explode answer.
      *
-     * @param array $answer
-     * @return array
+     * @param string|null $answer
+     * @return array|string
      */
-    protected function explode_answer($answer) {
-        if (strpos($answer, ':') !== false) {
+    protected function explode_answer(?string $answer) {
+        if ($answer && strpos($answer, ':') !== false) {
             list($order, $responses) = explode(':', $answer);
             return $responses;
         } else {

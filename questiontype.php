@@ -61,12 +61,12 @@ class qtype_tcs extends question_type {
      * question from the database into the question object. This information
      * is placed in the $question->options field. A question type is
      * free, however, to decide on a internal structure of the options field.
-     * @return bool            Indicates success or failure.
+     * @return void
      * @param object $question The question object for the question. This object
      *                         should be updated to include the question type
      *                         specific information (it is passed by reference).
      */
-    public function get_question_options($question) {
+    public function get_question_options($question): void {
         global $DB;
         $question->options = $DB->get_record(static::$tablename . '_options',
                 array('questionid' => $question->id), '*', MUST_EXIST);
@@ -137,7 +137,7 @@ class qtype_tcs extends question_type {
         }
 
         foreach ($question->answer as $key => $answerdata) {
-            if (trim($answerdata['text']) == '') {
+            if (!is_string($answerdata['text']) || trim($answerdata['text']) == '') {
                 continue;
             }
 
@@ -229,7 +229,7 @@ class qtype_tcs extends question_type {
      * Create an appropriate question_definition for the question of this type
      * using data loaded from the database.
      * @param object $questiondata the question data loaded from the database.
-     * @return question_definition an instance of the appropriate question_definition subclass.
+     * @return qtype_tcs_question an instance of the appropriate question_definition subclass.
      *      Still needs to be initialised.
      */
     protected function make_question_instance($questiondata) {
@@ -426,7 +426,7 @@ class qtype_tcs extends question_type {
      * @param object $question question object to fill: ignored by this function (assumed to be null)
      * @param qformat_xml $format format class exporting the question
      * @param object $extra extra information (not required for importing this question in this format)
-     * @return object question object
+     * @return object|bool question object
      */
     public function import_from_xml($data, $question, qformat_xml $format, $extra = null) {
         if (!isset($data['@']['type']) || $data['@']['type'] != static::$qtypename) {

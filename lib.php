@@ -37,9 +37,9 @@
  * @param array $args extra arguments
  * @param bool $forcedownload whether or not force download
  * @param array $options additional options affecting the file serving
- * @return bool
+ * @return void
  */
-function qtype_tcs_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+function qtype_tcs_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()): void {
     global $CFG;
     require_once($CFG->libdir . '/questionlib.php');
     question_pluginfile($course, $context, 'qtype_tcs', $filearea, $args, $forcedownload, $options);

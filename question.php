@@ -116,7 +116,7 @@ class qtype_tcs_question extends question_graded_automatically {
      */
     public $incorrectfeedbackformat;
     /**
-     * @var int
+     * @var array
      */
     protected $order = null;
 
@@ -149,7 +149,7 @@ class qtype_tcs_question extends question_graded_automatically {
      * Get order.
      *
      * @param question_attempt $qa
-     * @return int Return order
+     * @return array Return order
      */
     public function get_order(question_attempt $qa) {
         $this->init_order($qa);
@@ -193,7 +193,7 @@ class qtype_tcs_question extends question_graded_automatically {
                 $fieldname = $this->field($key);
                 if (array_key_exists($fieldname, $response) && $response[$fieldname]) {
                     $selectedchoices[] = trim($this->html_to_text($this->answers[$ans]->answer,
-                            $this->answers[$ans]->answerformat));
+                            $this->answers[$ans]->answerformat) ?? '');
                 }
             }
             if (empty($selectedchoices)) {
@@ -205,7 +205,7 @@ class qtype_tcs_question extends question_graded_automatically {
         // This is for an answer (and/or feedback) submitted by a user.
         if ($hasanswer) {
             $ansid = $this->order[$response['answer']];
-            $retval = trim($this->html_to_text($this->answers[$ansid]->answer, $this->answers[$ansid]->answerformat));
+            $retval = trim($this->html_to_text($this->answers[$ansid]->answer, $this->answers[$ansid]->answerformat) ?? '');
             if ($hasfeedback) {
                 $retval .= ":\n \n".$response['answerfeedback'];
             }
@@ -447,10 +447,13 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return string
      */
     public function make_html_inline($html) {
-        $html = preg_replace('~\s*<p>\s*~u', '', $html);
-        $html = preg_replace('~\s*</p>\s*~u', '<br />', $html);
-        $html = preg_replace('~(<br\s*/?>)+$~u', '', $html);
-        return trim($html);
+        if (is_string($html)) {
+            $html = preg_replace('~\s*<p>\s*~u', '', $html);
+            $html = preg_replace('~\s*</p>\s*~u', '<br />', $html);
+            $html = preg_replace('~(<br\s*/?>)+$~u', '', $html);
+            return trim($html);
+        }
+        return '';
     }
 
     /**
