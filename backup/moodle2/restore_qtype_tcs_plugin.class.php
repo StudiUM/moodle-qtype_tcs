@@ -56,7 +56,7 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
      * Returns the paths to be handled by the plugin at question level
      */
     protected function define_question_plugin_structure() {
-        $paths = array();
+        $paths = [];
 
         // This qtype uses question_answers, add them.
         $this->add_question_question_answers($paths);
@@ -93,7 +93,7 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
 
             // It is possible for old backup files to contain unique key violations.
             // We need to check to avoid that.
-            if (!$DB->record_exists(static::$tablename . '_options', array('questionid' => $data->questionid))) {
+            if (!$DB->record_exists(static::$tablename . '_options', ['questionid' => $data->questionid])) {
                 $newitemid = $DB->insert_record(static::$tablename . '_options', $data);
                 $this->set_mapping(static::$tablename . '_options', $oldid, $newitemid);
             }
@@ -121,7 +121,7 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
      * @return string the recoded order.
      */
     protected function recode_choice_order($order) {
-        $neworder = array();
+        $neworder = [];
         foreach (explode(',', $order) as $id) {
             if ($newid = $this->get_mappingid('question_answer', $id)) {
                 $neworder[] = $newid;
@@ -142,8 +142,8 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
      */
     public function recode_legacy_state_answer($state) {
         $answer = $state->answer;
-        $orderarr = array();
-        $responsesarr = array();
+        $orderarr = [];
+        $responsesarr = [];
         $lists = explode(':', $answer);
         // If only 1 list, answer is missing the order list, adjust.
         if (count($lists) == 1) {
@@ -180,9 +180,9 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
      * Return the contents of this qtype to be processed by the links decoder.
      */
     public static function define_decode_contents() {
-        $contents = array();
+        $contents = [];
 
-        $fields = array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback');
+        $fields = ['correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'];
         $contents[] = new restore_decode_content(static::$tablename . '_options',
                 $fields, 'qtype_tcs_options');
         $contents[] = new restore_decode_content(static::$tablename . '_options', static::$optionsdecodecontent, 'qtype_tcs');

@@ -76,7 +76,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             $labelsituation = ($question->labelsituation === null) ? get_string('situation', 'qtype_tcs') :
                 $question->labelsituation;
             $result .= html_writer::tag('p', html_writer::tag('strong', $labelsituation));
-            $result .= html_writer::tag('div', $questiontext, array('class' => 'qtext'));
+            $result .= html_writer::tag('div', $questiontext, ['class' => 'qtext']);
         }
 
         // Show "This question is outside my field of competence" field.
@@ -97,7 +97,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             $labeltext = get_string('labeloutsidefieldcompetence', 'qtype_tcs');
             $step = $qa->get_last_step_with_qt_var('outsidefieldcompetence');
             if (!$step->has_qt_var('outsidefieldcompetence')) {
-                $step = new question_attempt_step(array('outsidefieldcompetence' => 0));
+                $step = new question_attempt_step(['outsidefieldcompetence' => 0]);
             }
             $isoutsidefieldcompetencechecked = $step->get_qt_var('outsidefieldcompetence');
             if ($isoutsidefieldcompetencechecked) {
@@ -150,7 +150,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             $result .= html_writer::label($labelfeedback, $inputname);
             $step = $qa->get_last_step_with_qt_var('answerfeedback');
             if (!$step->has_qt_var('answerfeedback') && empty($options->readonly)) {
-                $step = new question_attempt_step(array('answerfeedback' => ''));
+                $step = new question_attempt_step(['answerfeedback' => '']);
             }
             if (empty($options->readonly)) {
                 $attributes = $isoutsidefieldcompetencechecked ? ['disabled' => true] : [];
@@ -160,13 +160,13 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                         ['id' => $inputname, 'class' => 'p-2 whitebackground']);
             }
 
-            $result .= html_writer::tag('div', $answer, array('class' => 'answerfeedback'));
+            $result .= html_writer::tag('div', $answer, ['class' => 'answerfeedback']);
         }
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
                     $question->get_validation_error($qa->get_last_qt_data()),
-                    array('class' => 'validationerror'));
+                    ['class' => 'validationerror']);
         }
         $result .= html_writer::end_div();
         return $result;
@@ -180,19 +180,19 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
      * @return string HTML answers
      */
     public function get_answers_result(question_attempt $qa, question_display_options $options, $disabled = 0) {
-        $radiobuttons = array();
-        $feedback = array();
-        $classes = array();
+        $radiobuttons = [];
+        $feedback = [];
+        $classes = [];
         $displayfeedback = false;
 
         $question = $qa->get_question();
         $response = $question->get_response($qa);
 
         $inputname = $qa->get_qt_field_name('answer');
-        $inputattributes = array(
+        $inputattributes = [
             'type' => 'radio',
             'name' => $inputname,
-        );
+        ];
 
         if ($options->readonly || $disabled) {
             $inputattributes['disabled'] = 'disabled';
@@ -217,7 +217,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                     $question->make_html_inline(
                         $question->format_text($ans->answer, $ans->answerformat, $qa, 'question', 'answer', $ansid)
                     ),
-                    array('for' => $inputattributes['id'])
+                    ['for' => $inputattributes['id']]
                 );
             $radiobuttons[] = html_writer::empty_tag('input', $inputattributes) . $label;
 
@@ -232,9 +232,9 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                     $percent = round(($ans->fraction / $maxfraction) * 100);
                 }
                 $feedbackstruct  = html_writer::start_div('progress-container');
-                $feedbackstruct .= html_writer::start_div('progress', array('style' => 'height: 20px;'));
-                $feedbackstruct .= html_writer::div('', 'progress-bar', array('style' => 'width:'.$percent.'%',
-                            'role' => 'progressbar', 'aria-valuenow' => $ans->fraction, 'aria-valuemax' => $maxfraction));
+                $feedbackstruct .= html_writer::start_div('progress', ['style' => 'height: 20px;']);
+                $feedbackstruct .= html_writer::div('', 'progress-bar', ['style' => 'width:'.$percent.'%',
+                            'role' => 'progressbar', 'aria-valuenow' => $ans->fraction, 'aria-valuemax' => $maxfraction]);
                 $feedbackstruct .= html_writer::end_div();
                 $feedbackstruct .= html_writer::tag('span', (int)$ans->fraction);
                 $feedbackstruct .= html_writer::end_div();
@@ -250,7 +250,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             $feedback = array_fill_keys(array_keys($feedback), '');
         }
         $result = '';
-        $result .= html_writer::start_tag('div', array('class' => 'answer'));
+        $result .= html_writer::start_tag('div', ['class' => 'answer']);
 
         foreach ($radiobuttons as $key => $radio) {
             $radioanswer = html_writer::div($radio, 'answer-item');
@@ -282,7 +282,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $str = $question->format_text($trimmedanswer, $answer->answerformat, $qa, 'question', 'answer', $answer->id);
                 $strfeedback .= html_writer::tag('p', html_writer::tag('strong', $str));
                 // Do not use $trimmedfeedback here, just a regular trim.
-                $strfeedback .= html_writer::start_tag('div', array('class' => 'tcs-answerspecificfeedback'));
+                $strfeedback .= html_writer::start_tag('div', ['class' => 'tcs-answerspecificfeedback']);
                 $strfeedback .= $question->format_text(trim($answer->feedback ?? ''), $answer->feedbackformat,
                     $qa, 'question', 'answerfeedback', $answer->id);
                 $strfeedback .= html_writer::end_tag('div');
@@ -304,7 +304,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
 
         if ($options->numpartscorrect) {
             $output .= html_writer::nonempty_tag('div', $this->num_parts_correct($qa),
-                    array('class' => 'numpartscorrect'));
+                    ['class' => 'numpartscorrect']);
         }
 
         if ($hint) {
@@ -313,18 +313,18 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
 
         if ($options->generalfeedback) {
             $output .= html_writer::nonempty_tag('div', $this->general_feedback($qa),
-                    array('class' => 'generalfeedback'));
+                    ['class' => 'generalfeedback']);
         }
 
         if ($options->rightanswer) {
             $output .= html_writer::nonempty_tag('div', $this->correct_response($qa),
-                    array('class' => 'rightanswer'));
+                    ['class' => 'rightanswer']);
         }
 
         // The specific feedback goes at the end.
         if ($options->feedback) {
             $output .= html_writer::nonempty_tag('div', $this->specific_feedback($qa),
-                    array('class' => 'specificfeedback'));
+                    ['class' => 'specificfeedback']);
             $hint = $qa->get_applicable_hint();
         }
 
@@ -342,7 +342,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
     public function correct_response(question_attempt $qa) {
         $question = $qa->get_question();
 
-        $right = array();
+        $right = [];
         $maxfraction = $this->get_max_fraction($question->answers);
 
         foreach ($question->answers as $ansid => $ans) {
@@ -423,7 +423,7 @@ class qtype_tcs_format_plain_renderer extends plugin_renderer_base {
         $inputname = $qa->get_qt_field_name($name);
         $attributes += ['name' => $inputname, 'id' => $inputname];
         return $this->textarea($step->get_qt_var($name), $attributes) .
-                html_writer::empty_tag('input', array('type' => 'hidden',
-                    'name' => $inputname . 'format', 'value' => FORMAT_PLAIN));
+                html_writer::empty_tag('input', ['type' => 'hidden',
+                    'name' => $inputname . 'format', 'value' => FORMAT_PLAIN]);
     }
 }

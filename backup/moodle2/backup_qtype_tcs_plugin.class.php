@@ -84,14 +84,14 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
             'showfeedback', 'labelfeedback', 'labelnewinformationeffect', 'labelsituation', 'showoutsidefieldcompetence'];
         $columnsnames = array_unique(array_merge($columnsnames, static::$addcolumnsnames));
         // Now create the qtype own structures.
-        $tcs = new backup_nested_element(static::$qtypename, array('id'), $columnsnames);
+        $tcs = new backup_nested_element(static::$qtypename, ['id'], $columnsnames);
 
         // Now the own qtype tree.
         $pluginwrapper->add_child($tcs);
 
         // Set source to populate the data.
         $tcs->set_source_table(static::$tablename . '_options',
-                array('questionid' => backup::VAR_PARENTID));
+                ['questionid' => backup::VAR_PARENTID]);
 
         // Don't need to annotate ids nor files.
 

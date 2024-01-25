@@ -56,7 +56,7 @@ class qtype_tcs_test_helper extends question_test_helper {
      * this question type.
      */
     public function get_test_questions() {
-        return array('reasoning', 'judgment');
+        return ['reasoning', 'judgment'];
     }
 
     /**
@@ -127,40 +127,40 @@ class qtype_tcs_test_helper extends question_test_helper {
         $qdata = new stdClass();
 
         $qdata->name = 'TCS-001';
-        $qdata->questiontext = array('text' => 'Here is the question', 'format' => FORMAT_PLAIN);
-        $qdata->generalfeedback = array('text' => 'General feedback for the question', 'format' => FORMAT_PLAIN);
+        $qdata->questiontext = ['text' => 'Here is the question', 'format' => FORMAT_PLAIN];
+        $qdata->generalfeedback = ['text' => 'General feedback for the question', 'format' => FORMAT_PLAIN];
 
         $qdata->showquestiontext = true;
         $qdata->labelsituation = 'Situation label';
         $qdata->labelhypothisistext = 'Hypothesis label';
-        $qdata->hypothisistext = array('text' => 'The hypothesis is...', 'format' => FORMAT_PLAIN);
+        $qdata->hypothisistext = ['text' => 'The hypothesis is...', 'format' => FORMAT_PLAIN];
         if (static::$qtypename == 'tcs') {
             $qdata->labeleffecttext = 'New information label';
-            $qdata->effecttext = array('text' => 'The new information is...', 'format' => FORMAT_PLAIN);
+            $qdata->effecttext = ['text' => 'The new information is...', 'format' => FORMAT_PLAIN];
         }
         $qdata->labelnewinformationeffect = 'Your hypothesis or option is';
         $qdata->labelfeedback = 'Comments label';
         $qdata->showfeedback = true;
         $qdata->showoutsidefieldcompetence = true;
 
-        $qdata->correctfeedback = array('text' => test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK,
-                                                 'format' => FORMAT_HTML);
-        $qdata->partiallycorrectfeedback = array('text' => test_question_maker::STANDARD_OVERALL_PARTIALLYCORRECT_FEEDBACK,
-                                                          'format' => FORMAT_HTML);
+        $qdata->correctfeedback = ['text' => test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK,
+                                                 'format' => FORMAT_HTML];
+        $qdata->partiallycorrectfeedback = ['text' => test_question_maker::STANDARD_OVERALL_PARTIALLYCORRECT_FEEDBACK,
+                                                          'format' => FORMAT_HTML];
         $qdata->shownumcorrect = 1;
-        $qdata->incorrectfeedback = array('text' => test_question_maker::STANDARD_OVERALL_INCORRECT_FEEDBACK,
-                                                   'format' => FORMAT_HTML);
+        $qdata->incorrectfeedback = ['text' => test_question_maker::STANDARD_OVERALL_INCORRECT_FEEDBACK,
+                                                   'format' => FORMAT_HTML];
 
         for ($i = 1; $i <= static::$nbanswers; $i++) {
             $feedback = ($i == static::$nbanswers) ? "" : "Feedback for choice $i";
             $qdata->fraction[] = $i;
             $qdata->answer[$i - 1] = [
                 'text' => get_string("likertscale$i", 'qtype_' . static::$qtypename),
-                'format' => FORMAT_PLAIN
+                'format' => FORMAT_PLAIN,
             ];
             $qdata->feedback[$i - 1] = [
                 'text' => $feedback,
-                'format' => FORMAT_PLAIN
+                'format' => FORMAT_PLAIN,
             ];
         }
 
@@ -206,7 +206,7 @@ class qtype_tcs_test_helper extends question_test_helper {
         $qdata->name = 'TCS-002';
         $qdata->showquestiontext = false;
         $qdata->labeleffecttext = '';
-        $qdata->effecttext = array('text' => '', 'format' => FORMAT_PLAIN);
+        $qdata->effecttext = ['text' => '', 'format' => FORMAT_PLAIN];
         $qdata->showfeedback = false;
         $qdata->showoutsidefieldcompetence = false;
         $qdata->fraction = [];
@@ -217,11 +217,11 @@ class qtype_tcs_test_helper extends question_test_helper {
             $qdata->fraction[] = $i;
             $qdata->answer[$i - 1] = [
                 'text' => "Answer $i",
-                'format' => FORMAT_PLAIN
+                'format' => FORMAT_PLAIN,
             ];
             $qdata->feedback[$i - 1] = [
                 'text' => $feedback,
-                'format' => FORMAT_PLAIN
+                'format' => FORMAT_PLAIN,
             ];
         }
         return $qdata;
@@ -259,7 +259,7 @@ class qtype_tcs_test_helper extends question_test_helper {
         $tcs->showfeedback = true;
         $tcs->showoutsidefieldcompetence = true;
 
-        $tcs->answers = array();
+        $tcs->answers = [];
         for ($i = 1; $i <= static::$nbanswers; $i++) {
             $answer = get_string("likertscale$i", 'qtype_' . static::$qtypename);
             $feedback = ($i == static::$nbanswers) ? "" : "Feedback for choice $i";
@@ -301,7 +301,7 @@ class qtype_tcs_test_helper extends question_test_helper {
         $tcs->showfeedback = false;
         $tcs->showoutsidefieldcompetence = false;
 
-        $tcs->answers = array();
+        $tcs->answers = [];
         $tcs->answers[1] = new question_answer(1, "Answer 1", 0, "Feedback for choice 1", FORMAT_PLAIN);
         $tcs->answers[2] = new question_answer(2, "Answer 2", 1, "Feedback for choice 2", FORMAT_PLAIN);
         $tcs->answers[3] = new question_answer(3, "Answer 3", 2, "Feedback for choice 3", FORMAT_PLAIN);

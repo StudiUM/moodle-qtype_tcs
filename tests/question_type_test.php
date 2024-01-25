@@ -68,31 +68,31 @@ class question_type_test extends \question_testcase {
         $qdata->showquestiontext = 1;
         $qdata->labelsituation = 'Situation label';
         $qdata->labelhypothisistext = 'Hypothesis label';
-        $qdata->hypothisistext = array('text' => 'The hypothesis is...', 'format' => FORMAT_HTML);
+        $qdata->hypothisistext = ['text' => 'The hypothesis is...', 'format' => FORMAT_HTML];
         $qdata->labeleffecttext = 'New information label';
-        $qdata->effecttext = array('text' => 'The new information is...', 'format' => FORMAT_HTML);
+        $qdata->effecttext = ['text' => 'The new information is...', 'format' => FORMAT_HTML];
         $qdata->labelnewinformationeffect = 'Your hypothesis or option is';
         $qdata->labelfeedback = 'Comments label';
         $qdata->showfeedback = true;
 
-        $qdata->correctfeedback = array('text' => test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK,
-                                                 'format' => FORMAT_HTML);
-        $qdata->partiallycorrectfeedback = array('text' => test_question_maker::STANDARD_OVERALL_PARTIALLYCORRECT_FEEDBACK,
-                                                          'format' => FORMAT_HTML);
+        $qdata->correctfeedback = ['text' => test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK,
+                                                 'format' => FORMAT_HTML];
+        $qdata->partiallycorrectfeedback = ['text' => test_question_maker::STANDARD_OVERALL_PARTIALLYCORRECT_FEEDBACK,
+                                                          'format' => FORMAT_HTML];
         $qdata->shownumcorrect = 1;
-        $qdata->incorrectfeedback = array('text' => test_question_maker::STANDARD_OVERALL_INCORRECT_FEEDBACK,
-                                                   'format' => FORMAT_HTML);
+        $qdata->incorrectfeedback = ['text' => test_question_maker::STANDARD_OVERALL_INCORRECT_FEEDBACK,
+                                                   'format' => FORMAT_HTML];
 
         for ($i = 1; $i <= 5; $i++) {
             $feedback = "Feedback for choice $i";
             $qdata->fractionimport[] = $i;
             $qdata->answer[$i - 1] = [
                 'text' => get_string("likertscale$i", 'qtype_tcs'),
-                'format' => FORMAT_HTML
+                'format' => FORMAT_HTML,
             ];
             $qdata->feedback[$i - 1] = [
                 'text' => $feedback,
-                'format' => FORMAT_HTML
+                'format' => FORMAT_HTML,
             ];
         }
         $qdata->qtype = 'tcs';

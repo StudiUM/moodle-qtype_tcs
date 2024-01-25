@@ -48,7 +48,7 @@ class behat_qtype_tcs extends behat_base {
         $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'formulation')]"
             . "//div[contains(@class,'answer-item') and contains(.//label, '$answer')]/following::span[1]";
         $this->execute("behat_general::assert_element_contains_text",
-            array($nbpanelists, $xpath, "xpath_element")
+            [$nbpanelists, $xpath, "xpath_element"]
         );
     }
 
@@ -64,7 +64,7 @@ class behat_qtype_tcs extends behat_base {
         $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'specificfeedback')]"
             . "/p[contains(.,'$answer')]/following::div[1]";
         $this->execute("behat_general::assert_element_contains_text",
-            array($comment, $xpath, "xpath_element")
+            [$comment, $xpath, "xpath_element"]
         );
     }
 
@@ -78,6 +78,6 @@ class behat_qtype_tcs extends behat_base {
     public function i_should_see_no_comments_for_answer_of_question($answer, $questionnb) {
         $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'specificfeedback')]"
             . "/p[contains(.,'$answer')]";
-        $this->execute("behat_general::should_not_exist", array($xpath, "xpath_element"));
+        $this->execute("behat_general::should_not_exist", [$xpath, "xpath_element"]);
     }
 }

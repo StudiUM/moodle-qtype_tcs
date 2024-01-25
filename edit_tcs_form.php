@@ -51,31 +51,31 @@ class qtype_tcs_edit_form extends question_edit_form {
         $mform->addElement('selectyesno', 'showoutsidefieldcompetence',
                 get_string('labelshowoutsidefieldcompetence', 'qtype_tcs'));
 
-        $mform->addElement('text', 'labelsituation', get_string('labelsituation', 'qtype_tcs'), array('size' => 40));
+        $mform->addElement('text', 'labelsituation', get_string('labelsituation', 'qtype_tcs'), ['size' => 40]);
         $mform->setType('labelsituation', PARAM_TEXT);
 
-        $mform->addElement('text', 'labelhypothisistext', get_string('labelhypothisistext', 'qtype_tcs'), array('size' => 40));
+        $mform->addElement('text', 'labelhypothisistext', get_string('labelhypothisistext', 'qtype_tcs'), ['size' => 40]);
         $mform->setType('labelhypothisistext', PARAM_TEXT);
 
-        $mform->addElement('editor', 'hypothisistext', get_string('hypothisistext', 'qtype_tcs'), array('rows' => 5),
+        $mform->addElement('editor', 'hypothisistext', get_string('hypothisistext', 'qtype_tcs'), ['rows' => 5],
             $this->editoroptions);
 
         if ($this->qtype() == 'tcs') {
-            $mform->addElement('text', 'labeleffecttext', get_string('labeleffecttext', 'qtype_tcs'), array('size' => 40));
+            $mform->addElement('text', 'labeleffecttext', get_string('labeleffecttext', 'qtype_tcs'), ['size' => 40]);
             $mform->setType('labeleffecttext', PARAM_TEXT);
             $mform->addHelpButton('labeleffecttext', 'labeleffecttext', 'qtype_tcs');
 
             $mform->addElement('editor', 'effecttext', get_string('effecttext', 'qtype_tcs'),
-                    array('rows' => 5), $this->editoroptions);
+                    ['rows' => 5], $this->editoroptions);
         }
 
         $mform->addElement('text', 'labelnewinformationeffect',
-                get_string('labelnewinformationeffect', 'qtype_tcs'), array('size' => 40));
+                get_string('labelnewinformationeffect', 'qtype_tcs'), ['size' => 40]);
         $mform->setType('labelnewinformationeffect', PARAM_TEXT);
 
         $mform->addElement('selectyesno', 'showfeedback', get_string('labelshowquestionfeedback', 'qtype_tcs'));
 
-        $mform->addElement('text', 'labelfeedback', get_string('labelquestionfeedback', 'qtype_tcs'), array('size' => 40));
+        $mform->addElement('text', 'labelfeedback', get_string('labelquestionfeedback', 'qtype_tcs'), ['size' => 40]);
         $mform->setType('labelfeedback', PARAM_TEXT);
 
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_tcs', '{no}'),
@@ -112,7 +112,7 @@ class qtype_tcs_edit_form extends question_edit_form {
                 'qtype_' . $this->qtype(), 'hypothisistext', empty($question->id) ? null : (int) $question->id,
                 $this->fileoptions, $hypothisistext);
 
-        $question->hypothisistext = array();
+        $question->hypothisistext = [];
         $question->hypothisistext['text'] = $hypothisistext;
         $question->hypothisistext['format'] = empty($question->options->hypothisistextformat) ?
             editors_get_preferred_format() : $question->options->hypothisistextformat;
@@ -132,7 +132,7 @@ class qtype_tcs_edit_form extends question_edit_form {
                     'qtype_tcs', 'effecttext', empty($question->id) ? null : (int) $question->id,
                     $this->fileoptions, $effecttext);
 
-            $question->effecttext = array();
+            $question->effecttext = [];
             $question->effecttext['text'] = $effecttext;
             $question->effecttext['format'] = empty($question->options->effecttextformat) ?
                 editors_get_preferred_format() : $question->options->effecttextformat;
@@ -169,10 +169,10 @@ class qtype_tcs_edit_form extends question_edit_form {
      */
     protected function get_per_answer_fields($mform, $label, $gradeoptions, &$repeatedoptions, &$answersoption) {
         global $PAGE;
-        $repeated = array();
-        $repeated[] = $mform->createElement('editor', 'answer', $label, array('rows' => 3), $this->editoroptions);
+        $repeated = [];
+        $repeated[] = $mform->createElement('editor', 'answer', $label, ['rows' => 3], $this->editoroptions);
         $repeated[] = $mform->createElement('text', 'fraction', get_string('fraction', 'qtype_tcs'), $gradeoptions);
-        $repeated[] = $mform->createElement('editor', 'feedback', get_string('feedback', 'question'), array('rows' => 3),
+        $repeated[] = $mform->createElement('editor', 'feedback', get_string('feedback', 'question'), ['rows' => 3],
             $this->editoroptions);
         $repeatedoptions['answer']['type'] = PARAM_RAW;
         $repeatedoptions['fraction']['type'] = PARAM_TEXT;
@@ -208,8 +208,8 @@ class qtype_tcs_edit_form extends question_edit_form {
         foreach ($answers as $key => $answer) {
             // Check number of choices, total fraction, etc.
             $trimmedanswer = trim($answer['text'] ?? '');
-            $fractionstring = is_string($data['fraction'][$key]) 
-                ? ltrim($data['fraction'][$key], "0") 
+            $fractionstring = is_string($data['fraction'][$key])
+                ? ltrim($data['fraction'][$key], "0")
                 : $data['fraction'][$key];
             $fraction = intval($fractionstring);
             $fractionconverted = strval($fraction);

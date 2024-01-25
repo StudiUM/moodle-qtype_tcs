@@ -84,11 +84,11 @@ class question_test extends \advanced_testcase {
      */
     public function test_is_complete_response() {
         $question = test_question_maker::make_question('tcs', 'reasoning');
-        $this->assertFalse($question->is_complete_response(array()));
-        $this->assertTrue($question->is_complete_response(array('answer' => '0')));
-        $this->assertTrue($question->is_complete_response(array('answer' => '2', 'answerfeedback' => 'Test')));
-        $this->assertFalse($question->is_complete_response(array('answer' => '1', 'answerfeedback' => '')));
-        $this->assertFalse($question->is_complete_response(array('answer' => '', 'answerfeedback' => 'Test')));
+        $this->assertFalse($question->is_complete_response([]));
+        $this->assertTrue($question->is_complete_response(['answer' => '0']));
+        $this->assertTrue($question->is_complete_response(['answer' => '2', 'answerfeedback' => 'Test']));
+        $this->assertFalse($question->is_complete_response(['answer' => '1', 'answerfeedback' => '']));
+        $this->assertFalse($question->is_complete_response(['answer' => '', 'answerfeedback' => 'Test']));
     }
 
     /**
@@ -100,28 +100,28 @@ class question_test extends \advanced_testcase {
         $question->start_attempt(new question_attempt_step(), 1);
 
         $this->assertTrue($question->is_same_response(
-                array(),
-                array()));
+                [],
+                []));
 
         $this->assertFalse($question->is_same_response(
-                array(),
-                array('answer' => '1')));
+                [],
+                ['answer' => '1']));
 
         $this->assertTrue($question->is_same_response(
-                array('answer' => '1'),
-                array('answer' => '1')));
+                ['answer' => '1'],
+                ['answer' => '1']));
 
         $this->assertFalse($question->is_same_response(
-                array('answer' => '2', 'answerfeedback' => 'Test'),
-                array('answer' => '1', 'answerfeedback' => 'Test')));
+                ['answer' => '2', 'answerfeedback' => 'Test'],
+                ['answer' => '1', 'answerfeedback' => 'Test']));
 
         $this->assertFalse($question->is_same_response(
-                array('answer' => '1', 'answerfeedback' => 'Test 1'),
-                array('answer' => '1', 'answerfeedback' => 'Test 2')));
+                ['answer' => '1', 'answerfeedback' => 'Test 1'],
+                ['answer' => '1', 'answerfeedback' => 'Test 2']));
 
         $this->assertTrue($question->is_same_response(
-                array('answer' => '1', 'answerfeedback' => 'Test'),
-                array('answer' => '1', 'answerfeedback' => 'Test')));
+                ['answer' => '1', 'answerfeedback' => 'Test'],
+                ['answer' => '1', 'answerfeedback' => 'Test']));
     }
 
     /**
@@ -134,36 +134,36 @@ class question_test extends \advanced_testcase {
         $question->start_attempt(new question_attempt_step(), 1);
 
         // Most popular answer has 4 panelists : others are based on the order of the answers (for easy testing).
-        $this->assertEquals(array(0, question_state::$gradedwrong),
-                $question->grade_response(array('answer' => 0)));
+        $this->assertEquals([0, question_state::$gradedwrong],
+                $question->grade_response(['answer' => 0]));
 
-        $this->assertEquals(array(0.25, question_state::$gradedpartial),
-                $question->grade_response(array('answer' => 1)));
+        $this->assertEquals([0.25, question_state::$gradedpartial],
+                $question->grade_response(['answer' => 1]));
 
-        $this->assertEquals(array(0.5, question_state::$gradedpartial),
-                $question->grade_response(array('answer' => 2)));
+        $this->assertEquals([0.5, question_state::$gradedpartial],
+                $question->grade_response(['answer' => 2]));
 
-        $this->assertEquals(array(0.75, question_state::$gradedpartial),
-                $question->grade_response(array('answer' => 3)));
+        $this->assertEquals([0.75, question_state::$gradedpartial],
+                $question->grade_response(['answer' => 3]));
 
-        $this->assertEquals(array(1, question_state::$gradedright),
-                $question->grade_response(array('answer' => 4)));
+        $this->assertEquals([1, question_state::$gradedright],
+                $question->grade_response(['answer' => 4]));
 
         // Question with two good answers.
         $question = test_question_maker::make_question('tcs', 'judgment');
         $question->start_attempt(new question_attempt_step(), 1);
 
-        $this->assertEquals(array(0, question_state::$gradedwrong),
-                $question->grade_response(array('answer' => 0)));
+        $this->assertEquals([0, question_state::$gradedwrong],
+                $question->grade_response(['answer' => 0]));
 
-        $this->assertEquals(array(0.5, question_state::$gradedpartial),
-                $question->grade_response(array('answer' => 1)));
+        $this->assertEquals([0.5, question_state::$gradedpartial],
+                $question->grade_response(['answer' => 1]));
 
-        $this->assertEquals(array(1, question_state::$gradedright),
-                $question->grade_response(array('answer' => 2)));
+        $this->assertEquals([1, question_state::$gradedright],
+                $question->grade_response(['answer' => 2]));
 
-        $this->assertEquals(array(1, question_state::$gradedright),
-                $question->grade_response(array('answer' => 3)));
+        $this->assertEquals([1, question_state::$gradedright],
+                $question->grade_response(['answer' => 3]));
     }
 
     /**
@@ -174,12 +174,12 @@ class question_test extends \advanced_testcase {
         // Question with only one good answer.
         $question = test_question_maker::make_question('tcs', 'reasoning');
         $question->start_attempt(new question_attempt_step(), 1);
-        $this->assertEquals(array('choice4' => 1), $question->get_correct_response());
+        $this->assertEquals(['choice4' => 1], $question->get_correct_response());
 
         // Question with two good answers.
         $question = test_question_maker::make_question('tcs', 'judgment');
         $question->start_attempt(new question_attempt_step(), 1);
-        $this->assertEquals(array('choice2' => 1, 'choice3' => 1), $question->get_correct_response());
+        $this->assertEquals(['choice2' => 1, 'choice3' => 1], $question->get_correct_response());
     }
 
     /**
@@ -190,14 +190,14 @@ class question_test extends \advanced_testcase {
         $question = test_question_maker::make_question('tcs', 'reasoning');
         $question->start_attempt(new question_attempt_step(), 1);
 
-        $summary = $question->summarise_response(array('answer' => '1', 'answerfeedback' => 'Comment 1'),
+        $summary = $question->summarise_response(['answer' => '1', 'answerfeedback' => 'Comment 1'],
             test_question_maker::get_a_qa($question));
         $this->assertEquals("Weakened:\n \nComment 1", $summary);
 
-        $summary = $question->summarise_response(array('answer' => '1'), test_question_maker::get_a_qa($question));
+        $summary = $question->summarise_response(['answer' => '1'], test_question_maker::get_a_qa($question));
         $this->assertEquals("Weakened", $summary);
 
-        $this->assertNull($question->summarise_response(array(), test_question_maker::get_a_qa($question)));
-        $this->assertNull($question->summarise_response(array('answer' => '-1'), test_question_maker::get_a_qa($question)));
+        $this->assertNull($question->summarise_response([], test_question_maker::get_a_qa($question)));
+        $this->assertNull($question->summarise_response(['answer' => '-1'], test_question_maker::get_a_qa($question)));
     }
 }

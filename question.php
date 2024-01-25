@@ -173,7 +173,7 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return array answers and feedbacks.
      */
     public function get_expected_data() {
-        return array('answer' => PARAM_INT, 'answerfeedback' => PARAM_RAW, 'outsidefieldcompetence' => PARAM_INT);
+        return ['answer' => PARAM_INT, 'answerfeedback' => PARAM_RAW, 'outsidefieldcompetence' => PARAM_INT];
     }
 
     /**
@@ -188,7 +188,7 @@ class qtype_tcs_question extends question_graded_automatically {
 
         if (!$hasfeedback && !$hasanswer) {
             // This might be for the correct answer as returned by get_correct_response.
-            $selectedchoices = array();
+            $selectedchoices = [];
             foreach ($this->order as $key => $ans) {
                 $fieldname = $this->field($key);
                 if (array_key_exists($fieldname, $response) && $response[$fieldname]) {
@@ -222,7 +222,7 @@ class qtype_tcs_question extends question_graded_automatically {
      */
     public function get_question_summary() {
         $question = $this->html_to_text($this->questiontext, $this->questiontextformat);
-        $choices = array();
+        $choices = [];
         foreach ($this->order as $ansid) {
             $choices[] = $this->html_to_text($this->answers[$ansid]->answer,
                     $this->answers[$ansid]->answerformat);
@@ -239,7 +239,7 @@ class qtype_tcs_question extends question_graded_automatically {
     public function prepare_simulated_post_data($simulatedresponse) {
         $ansnumbertoanswerid = array_keys($this->answers);
         $ansid = $ansnumbertoanswerid[$simulatedresponse['answer']];
-        return array('answer' => array_search($ansid, $this->order));
+        return ['answer' => array_search($ansid, $this->order)];
     }
 
     /**
@@ -356,7 +356,7 @@ class qtype_tcs_question extends question_graded_automatically {
      */
     public function check_file_access($qa, $options, $component, $filearea, $args, $forcedownload) {
         if ($component == 'question' && in_array($filearea,
-                array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'))) {
+                ['correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'])) {
             return $this->check_combined_feedback_file_access($qa, $options, $filearea, $args);
 
         } else if (($component == 'question' && $filearea == 'answer') ||
@@ -388,12 +388,12 @@ class qtype_tcs_question extends question_graded_automatically {
     public function classify_response(array $response) {
         if (!array_key_exists('answer', $response) ||
                 !array_key_exists($response['answer'], $this->order)) {
-            return array($this->id => question_classified_response::no_response());
+            return [$this->id => question_classified_response::no_response()];
         }
         $choiceid = $this->order[$response['answer']];
         $ans = $this->answers[$choiceid];
-        return array($this->id => new question_classified_response($choiceid,
-                $this->html_to_text($ans->answer, $ans->answerformat), $ans->fraction));
+        return [$this->id => new question_classified_response($choiceid,
+                $this->html_to_text($ans->answer, $ans->answerformat), $ans->fraction)];
     }
 
     /**
@@ -414,7 +414,7 @@ class qtype_tcs_question extends question_graded_automatically {
     public function get_correct_response() {
         $maxfraction = $this->get_max_fraction();
 
-        $response = array();
+        $response = [];
         foreach ($this->order as $key => $answerid) {
             if ((string) $this->answers[$answerid]->fraction === (string) $maxfraction) {
                 $response[$this->field($key)] = 1;
@@ -477,7 +477,7 @@ class qtype_tcs_question extends question_graded_automatically {
             $result = $fraction / $maxfraction;
         }
 
-        return array($result, question_state::graded_state_for_fraction($result));
+        return [$result, question_state::graded_state_for_fraction($result)];
     }
 
     /**
