@@ -44,19 +44,21 @@ require_once($CFG->dirroot . '/question/format/xml/format.php');
  * @covers \question_type
  * @covers \qtype_tcs
  */
-class question_type_test extends \question_testcase {
+final class question_type_test extends \question_testcase {
     /** @var qtype_tcs instance of the question type class to test. */
     protected $qtype;
 
     protected function setUp(): void {
+        parent::setUp();
         $this->qtype = \question_bank::get_qtype('tcs');
     }
 
     protected function tearDown(): void {
+        parent::tearDown();
         $this->qtype = null;
     }
 
-    public function test_xml_import() {
+    public function test_xml_import(): void {
         $qdata = new \stdClass();
 
         $qdata->name = 'TCS-001';
@@ -108,7 +110,7 @@ class question_type_test extends \question_testcase {
         $this->assert(new \question_check_specified_fields_expectation($qdata), $q);
     }
 
-    public function test_xml_export() {
+    public function test_xml_export(): void {
 
         $qdata = new \stdClass();
 

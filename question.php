@@ -64,11 +64,11 @@ class qtype_tcs_question extends question_graded_automatically {
      */
     public $labelhypothisistext;
     /**
-     * @var boolean
+     * @var bool
      */
     public $showquestiontext;
     /**
-     * @var boolean
+     * @var bool
      */
     public $shownumcorrect;
     /**
@@ -84,11 +84,11 @@ class qtype_tcs_question extends question_graded_automatically {
      */
     public $labelfeedback;
     /**
-     * @var boolean
+     * @var bool
      */
     public $showfeedback;
     /**
-     * @var boolean
+     * @var bool
      */
     public $showoutsidefieldcompetence;
     /**

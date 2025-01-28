@@ -121,7 +121,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $newinformationeffect = ($question->labelnewinformationeffect === null) ? get_string('newinformationeffect', 'qtype_tcs') :
             $question->labelnewinformationeffect;
         // Show hypothesis.
-        $hypothisistext = $question->format_text($question->hypothisistext, $question->hypothisistext, $qa,
+        $hypothisistext = $question->format_text($question->hypothisistext, $question->hypothisistextformat, $qa,
             'qtype_' . static::$qtypename, 'hypothisistext', $question->id);
 
         $result .= html_writer::start_div('Rtable Rtable--2cols Rtable--collapse');
@@ -129,7 +129,7 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $result .= html_writer::div($hypothisistext, 'Rtable-cell', ['style' => 'order:1;']);
         // Show effect on hypothesis.
         if ($showeffect) {
-            $effecttext = $question->format_text($question->effecttext, $question->effecttext, $qa, 'qtype_tcs', 'effecttext',
+            $effecttext = $question->format_text($question->effecttext, $question->effecttextformat, $qa, 'qtype_tcs', 'effecttext',
                 $question->id);
             $result .= html_writer::div($question->labeleffecttext, 'Rtable-cell Rtable-cell--head', ['style' => 'order:0;']);
             $result .= html_writer::div($effecttext, 'Rtable-cell', ['style' => 'order:1;']);

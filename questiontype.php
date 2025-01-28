@@ -293,7 +293,6 @@ class qtype_tcs extends question_type {
      *      score by guessing, or null, if it is not possible to estimate.
      */
     public function get_random_guess_score($questiondata) {
-        // TODO.
         return 0;
     }
 

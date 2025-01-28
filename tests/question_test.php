@@ -43,13 +43,13 @@ require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @covers \qtype_tcs_question
  */
-class question_test extends \advanced_testcase {
+final class question_test extends \advanced_testcase {
 
     /**
      * Test get_question_data and get_question_form_data for the two examples of questions.
      * @return void
      */
-    public function test_questiondata() {
+    public function test_questiondata(): void {
         $question = test_question_maker::get_question_data('tcs');
         $this->assertEquals('tcs', $question->qtype);
         $this->assertCount(5, $question->options->answers);
@@ -82,7 +82,7 @@ class question_test extends \advanced_testcase {
      * Test is_complete_response.
      * @return void
      */
-    public function test_is_complete_response() {
+    public function test_is_complete_response(): void {
         $question = test_question_maker::make_question('tcs', 'reasoning');
         $this->assertFalse($question->is_complete_response([]));
         $this->assertTrue($question->is_complete_response(['answer' => '0']));
@@ -95,7 +95,7 @@ class question_test extends \advanced_testcase {
      * Test is_same_response.
      * @return void
      */
-    public function test_is_same_response() {
+    public function test_is_same_response(): void {
         $question = test_question_maker::make_question('tcs', 'reasoning');
         $question->start_attempt(new question_attempt_step(), 1);
 
@@ -128,7 +128,7 @@ class question_test extends \advanced_testcase {
      * Test grade_response.
      * @return void
      */
-    public function test_grading() {
+    public function test_grading(): void {
         // Question with only one good answer.
         $question = test_question_maker::make_question('tcs', 'reasoning');
         $question->start_attempt(new question_attempt_step(), 1);
@@ -170,7 +170,7 @@ class question_test extends \advanced_testcase {
      * Test get_correct_response.
      * @return void
      */
-    public function test_get_correct_response() {
+    public function test_get_correct_response(): void {
         // Question with only one good answer.
         $question = test_question_maker::make_question('tcs', 'reasoning');
         $question->start_attempt(new question_attempt_step(), 1);
@@ -186,7 +186,7 @@ class question_test extends \advanced_testcase {
      * Test summarise_response.
      * @return void
      */
-    public function test_summarise_response() {
+    public function test_summarise_response(): void {
         $question = test_question_maker::make_question('tcs', 'reasoning');
         $question->start_attempt(new question_attempt_step(), 1);
 
