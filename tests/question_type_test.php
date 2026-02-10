@@ -41,9 +41,9 @@ require_once($CFG->dirroot . '/question/format/xml/format.php');
  * @copyright 2021 Université de Montréal
  * @author    Issam Taboubi <issam.taboubi@umontreal.ca>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \question_type
- * @covers \qtype_tcs
  */
+#[\PHPUnit\Framework\Attributes\CoversClass(\question_type::class)]
+#[\PHPUnit\Framework\Attributes\CoversClass(\qtype_tcs::class)]
 final class question_type_test extends \question_testcase {
     /** @var qtype_tcs instance of the question type class to test. */
     protected $qtype;
@@ -77,13 +77,19 @@ final class question_type_test extends \question_testcase {
         $qdata->labelfeedback = 'Comments label';
         $qdata->showfeedback = true;
 
-        $qdata->correctfeedback = ['text' => test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK,
-                                                 'format' => FORMAT_HTML];
-        $qdata->partiallycorrectfeedback = ['text' => test_question_maker::STANDARD_OVERALL_PARTIALLYCORRECT_FEEDBACK,
-                                                          'format' => FORMAT_HTML];
+        $qdata->correctfeedback = [
+            'text' => test_question_maker::STANDARD_OVERALL_CORRECT_FEEDBACK,
+            'format' => FORMAT_HTML,
+        ];
+        $qdata->partiallycorrectfeedback = [
+            'text' => test_question_maker::STANDARD_OVERALL_PARTIALLYCORRECT_FEEDBACK,
+            'format' => FORMAT_HTML,
+        ];
         $qdata->shownumcorrect = 1;
-        $qdata->incorrectfeedback = ['text' => test_question_maker::STANDARD_OVERALL_INCORRECT_FEEDBACK,
-                                                   'format' => FORMAT_HTML];
+        $qdata->incorrectfeedback = [
+            'text' => test_question_maker::STANDARD_OVERALL_INCORRECT_FEEDBACK,
+            'format' => FORMAT_HTML,
+        ];
 
         for ($i = 1; $i <= 5; $i++) {
             $feedback = "Feedback for choice $i";
@@ -102,11 +108,16 @@ final class question_type_test extends \question_testcase {
         $qdata->penalty = 0;
         $qdata->idnumber = null;
 
-        $xmldata = xmlize(file_get_contents(__DIR__.'/fixtures/questiontest.xml'));
+        $xmlparser = new \core\xml_parser();
+        $xmldata = $xmlparser->parse(file_get_contents(__DIR__ . '/fixtures/questiontest.xml'));
 
         $importer = new \qformat_xml();
         $q = $importer->try_importing_using_qtypes(
-                $xmldata['question'], null, null, 'tcs');
+            $xmldata['question'],
+            null,
+            null,
+            'tcs'
+        );
         $this->assert(new \question_check_specified_fields_expectation($qdata), $q);
     }
 
@@ -161,6 +172,6 @@ final class question_type_test extends \question_testcase {
 
         $exporter = new \qformat_xml();
         $xml = $exporter->writequestion($qdata);
-        $this->assertXmlStringEqualsXmlFile(__DIR__.'/fixtures/questiontest.xml', $xml);
+        $this->assertXmlStringEqualsXmlFile(__DIR__ . '/fixtures/questiontest.xml', $xml);
     }
 }

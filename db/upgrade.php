@@ -33,7 +33,6 @@ function xmldb_qtype_tcs_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2020071300) {
-
         // Labelfeedback.
         $table = new xmldb_table('qtype_tcs_options');
         $field = new xmldb_field('labelfeedback', XMLDB_TYPE_TEXT, null, null, null, null, null);
@@ -67,7 +66,6 @@ function xmldb_qtype_tcs_upgrade($oldversion) {
     }
 
     if ($oldversion < 2021030100) {
-
         // Labelfeedback.
         $table = new xmldb_table('qtype_tcs_options');
 

@@ -37,7 +37,6 @@ require_once($CFG->dirroot . '/question/type/tcs/question.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_tcs_test_helper extends question_test_helper {
-
     /**
      * @var string The qtype name.
      */

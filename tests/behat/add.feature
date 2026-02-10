@@ -19,7 +19,10 @@ Feature: Test creating a TCS question
     And I navigate to "Question bank" in current page administration
 
   Scenario: Create a TCS reasoning question, created with all default values.
-    Given I press "Create a new question ..."
+    Given I press "Add"
+    And I set the field "Question bank name" to "Question bank name test"
+    And I press "Save and display"
+    And I press "Create a new question ..."
     And I set the field "Concordance of reasoning" to "1"
     When I click on "Add" "button"
     Then the following fields match these values:
@@ -51,6 +54,9 @@ Feature: Test creating a TCS question
     And I should see "TCS-001"
 
   Scenario: Create a TCS judgment-like question using the main tcs plugin.
+    Given I press "Add"
+    And I set the field "Question bank name" to "Question bank name test 2"
+    And I press "Save and display"
     When I add a "Concordance of reasoning" question filling the form with:
       | Question name              | TCS-002                            |
       | Question text              | Here is the question               |

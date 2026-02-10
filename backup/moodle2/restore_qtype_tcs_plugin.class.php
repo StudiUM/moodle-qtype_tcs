@@ -36,7 +36,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_qtype_tcs_plugin extends restore_qtype_plugin {
-
     /**
      * @var string The qtype name.
      */
@@ -183,9 +182,16 @@ class restore_qtype_tcs_plugin extends restore_qtype_plugin {
         $contents = [];
 
         $fields = ['correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'];
-        $contents[] = new restore_decode_content(static::$tablename . '_options',
-                $fields, 'qtype_tcs_options');
-        $contents[] = new restore_decode_content(static::$tablename . '_options', static::$optionsdecodecontent, 'qtype_tcs');
+        $contents[] = new restore_decode_content(
+            static::$tablename . '_options',
+            $fields,
+            'qtype_tcs_options'
+        );
+        $contents[] = new restore_decode_content(
+            static::$tablename . '_options',
+            static::$optionsdecodecontent,
+            'qtype_tcs'
+        );
         return $contents;
     }
 }

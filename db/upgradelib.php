@@ -84,7 +84,7 @@ class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
      */
     protected function explode_answer(?string $answer) {
         if ($answer && strpos($answer, ':') !== false) {
-            list($order, $responses) = explode(':', $answer);
+            [$order, $responses] = explode(':', $answer);
             return $responses;
         } else {
             // Sometimes, a bug means that a state is missing the <order>: bit,
@@ -139,7 +139,7 @@ class qtype_tcs_qe2_attempt_updater extends question_qtype_attempt_updater {
         if (!$state->answer) {
             return;
         }
-        list($order, $responses) = explode(':', $state->answer);
+        [$order, $responses] = explode(':', $state->answer);
         $data['_order'] = $order;
         $this->order = explode(',', $order);
     }

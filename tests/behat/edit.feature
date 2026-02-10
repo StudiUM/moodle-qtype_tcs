@@ -25,7 +25,8 @@ Feature: Test editing a tCS question
     And I navigate to "Question bank" in current page administration
 
   Scenario: Edit a TCS reasoning question
-    When I choose "Edit question" action for "TCS-001 for editing" in the question bank
+    When I click on "System shared question bank" "link"
+    And I choose "Edit question" action for "TCS-001 for editing" in the question bank
     Then the following fields match these values:
       | id_labelsituation               | Situation label                     |
       | id_labelhypothisistext          | Hypothesis label                    |
