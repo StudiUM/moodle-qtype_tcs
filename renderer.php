@@ -25,9 +25,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 defined('MOODLE_INTERNAL') || die();
 
+require_once(__DIR__ . '/format_plain_renderer.php');
 
 /**
  * Generates the output for tcs questions.
@@ -39,7 +39,6 @@ defined('MOODLE_INTERNAL') || die();
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
-
     /**
      * @var string The qtype name.
      */
@@ -114,23 +113,38 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
             $label = html_writer::tag('label', $labeltext, ['for' => $inputattributes['id']]);
             $result .= html_writer::empty_tag('input', $inputattributes) . $label;
             $result .= html_writer::empty_tag('input', $inputattributeshidden);
-            $this->page->requires->js_call_amd('qtype_tcs/tcs', 'init',
-                ['outsidefieldcompetenceid' => $inputattributes['id'], $inputattributeshidden['id']]);
+            $this->page->requires->js_call_amd(
+                'qtype_tcs/tcs',
+                'init',
+                ['outsidefieldcompetenceid' => $inputattributes['id'], $inputattributeshidden['id']]
+            );
         }
 
         $newinformationeffect = ($question->labelnewinformationeffect === null) ? get_string('newinformationeffect', 'qtype_tcs') :
             $question->labelnewinformationeffect;
         // Show hypothesis.
-        $hypothisistext = $question->format_text($question->hypothisistext, $question->hypothisistextformat, $qa,
-            'qtype_' . static::$qtypename, 'hypothisistext', $question->id);
+        $hypothisistext = $question->format_text(
+            $question->hypothisistext,
+            $question->hypothisistextformat,
+            $qa,
+            'qtype_' . static::$qtypename,
+            'hypothisistext',
+            $question->id
+        );
 
         $result .= html_writer::start_div('Rtable Rtable--2cols Rtable--collapse');
         $result .= html_writer::div($question->labelhypothisistext, 'Rtable-cell Rtable-cell--head', ['style' => 'order:0;']);
         $result .= html_writer::div($hypothisistext, 'Rtable-cell', ['style' => 'order:1;']);
         // Show effect on hypothesis.
         if ($showeffect) {
-            $effecttext = $question->format_text($question->effecttext, $question->effecttextformat, $qa, 'qtype_tcs', 'effecttext',
-                $question->id);
+            $effecttext = $question->format_text(
+                $question->effecttext,
+                $question->effecttextformat,
+                $qa,
+                'qtype_tcs',
+                'effecttext',
+                $question->id
+            );
             $result .= html_writer::div($question->labeleffecttext, 'Rtable-cell Rtable-cell--head', ['style' => 'order:0;']);
             $result .= html_writer::div($effecttext, 'Rtable-cell', ['style' => 'order:1;']);
             $result .= html_writer::end_div();
@@ -156,17 +170,22 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $attributes = $isoutsidefieldcompetencechecked ? ['disabled' => true] : [];
                 $answer = $responseoutput->response_area_input('answerfeedback', $qa, $step, $attributes);
             } else {
-                $answer = html_writer::tag('p', $step->get_qt_var('answerfeedback'),
-                        ['id' => $inputname, 'class' => 'p-2 whitebackground']);
+                $answer = html_writer::tag(
+                    'p',
+                    $step->get_qt_var('answerfeedback'),
+                    ['id' => $inputname, 'class' => 'p-2 whitebackground']
+                );
             }
 
             $result .= html_writer::tag('div', $answer, ['class' => 'answerfeedback']);
         }
 
         if ($qa->get_state() == question_state::$invalid) {
-            $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error($qa->get_last_qt_data()),
-                    ['class' => 'validationerror']);
+            $result .= html_writer::nonempty_tag(
+                'div',
+                $question->get_validation_error($qa->get_last_qt_data()),
+                ['class' => 'validationerror']
+            );
         }
         $result .= html_writer::end_div();
         return $result;
@@ -213,12 +232,13 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 unset($inputattributes['checked']);
             }
 
-            $label = html_writer::tag('label',
-                    $question->make_html_inline(
-                        $question->format_text($ans->answer, $ans->answerformat, $qa, 'question', 'answer', $ansid)
-                    ),
-                    ['for' => $inputattributes['id']]
-                );
+            $label = html_writer::tag(
+                'label',
+                $question->make_html_inline(
+                    $question->format_text($ans->answer, $ans->answerformat, $qa, 'question', 'answer', $ansid)
+                ),
+                ['for' => $inputattributes['id']]
+            );
             $radiobuttons[] = html_writer::empty_tag('input', $inputattributes) . $label;
 
             // Param $options->suppresschoicefeedback is a hack specific to the
@@ -233,8 +253,16 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 }
                 $feedbackstruct  = html_writer::start_div('progress-container');
                 $feedbackstruct .= html_writer::start_div('progress', ['style' => 'height: 20px;']);
-                $feedbackstruct .= html_writer::div('', 'progress-bar', ['style' => 'width:'.$percent.'%',
-                            'role' => 'progressbar', 'aria-valuenow' => $ans->fraction, 'aria-valuemax' => $maxfraction]);
+                $feedbackstruct .= html_writer::div(
+                    '',
+                    'progress-bar',
+                    [
+                        'style' => 'width:' . $percent . '%',
+                        'role' => 'progressbar',
+                        'aria-valuenow' => $ans->fraction,
+                        'aria-valuemax' => $maxfraction,
+                    ]
+                );
                 $feedbackstruct .= html_writer::end_div();
                 $feedbackstruct .= html_writer::tag('span', (int)$ans->fraction);
                 $feedbackstruct .= html_writer::end_div();
@@ -283,8 +311,14 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
                 $strfeedback .= html_writer::tag('p', html_writer::tag('strong', $str));
                 // Do not use $trimmedfeedback here, just a regular trim.
                 $strfeedback .= html_writer::start_tag('div', ['class' => 'tcs-answerspecificfeedback']);
-                $strfeedback .= $question->format_text(trim($answer->feedback ?? ''), $answer->feedbackformat,
-                    $qa, 'question', 'answerfeedback', $answer->id);
+                $strfeedback .= $question->format_text(
+                    trim($answer->feedback ?? ''),
+                    $answer->feedbackformat,
+                    $qa,
+                    'question',
+                    'answerfeedback',
+                    $answer->id
+                );
                 $strfeedback .= html_writer::end_tag('div');
             }
         }
@@ -303,8 +337,11 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         $hint = null;
 
         if ($options->numpartscorrect) {
-            $output .= html_writer::nonempty_tag('div', $this->num_parts_correct($qa),
-                    ['class' => 'numpartscorrect']);
+            $output .= html_writer::nonempty_tag(
+                'div',
+                $this->num_parts_correct($qa),
+                ['class' => 'numpartscorrect']
+            );
         }
 
         if ($hint) {
@@ -312,19 +349,28 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         }
 
         if ($options->generalfeedback) {
-            $output .= html_writer::nonempty_tag('div', $this->general_feedback($qa),
-                    ['class' => 'generalfeedback']);
+            $output .= html_writer::nonempty_tag(
+                'div',
+                $this->general_feedback($qa),
+                ['class' => 'generalfeedback']
+            );
         }
 
         if ($options->rightanswer) {
-            $output .= html_writer::nonempty_tag('div', $this->correct_response($qa),
-                    ['class' => 'rightanswer']);
+            $output .= html_writer::nonempty_tag(
+                'div',
+                $this->correct_response($qa),
+                ['class' => 'rightanswer']
+            );
         }
 
         // The specific feedback goes at the end.
         if ($options->feedback) {
-            $output .= html_writer::nonempty_tag('div', $this->specific_feedback($qa),
-                    ['class' => 'specificfeedback']);
+            $output .= html_writer::nonempty_tag(
+                'div',
+                $this->specific_feedback($qa),
+                ['class' => 'specificfeedback']
+            );
             $hint = $qa->get_applicable_hint();
         }
 
@@ -347,14 +393,25 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
 
         foreach ($question->answers as $ansid => $ans) {
             if ((string) $ans->fraction === (string) $maxfraction) {
-                $right[] = $question->make_html_inline($question->format_text($ans->answer, $ans->answerformat,
-                            $qa, 'question', 'answer', $ansid));
+                $right[] = $question->make_html_inline(
+                    $question->format_text(
+                        $ans->answer,
+                        $ans->answerformat,
+                        $qa,
+                        'question',
+                        'answer',
+                        $ansid
+                    )
+                );
             }
         }
 
         if (!empty($right)) {
-                return get_string('correctansweris', 'qtype_tcs',
-                        implode(', ', $right));
+            return get_string(
+                'correctansweris',
+                'qtype_tcs',
+                implode(', ', $right)
+            );
         }
 
         return '';
@@ -375,55 +432,5 @@ class qtype_tcs_renderer extends qtype_with_combined_feedback_renderer {
         }
 
         return $max;
-    }
-}
-
-/**
- * An tcs format renderer for tcs where the student should use a plain input box.
- *
- * @package qtype_tcs
- * @copyright  2020 Université  de Montréal.
- * @author     Issam Taboubi <issam.taboubi@umontreal.ca>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class qtype_tcs_format_plain_renderer extends plugin_renderer_base {
-
-    /**
-     * Return the HTML for the textarea.
-     *
-     * @param string $response content of the textarea
-     * @param array $attributes textarea attributes
-     * @return string the HTML for the textarea.
-     */
-    protected function textarea($response, $attributes) {
-        $attributes['class'] = $this->class_name() . ' qtype_tcs_response';
-        $attributes['rows'] = 7;
-        return html_writer::tag('textarea', s($response), $attributes);
-    }
-
-    /**
-     * Return class name.
-     *
-     * @return string class name
-     */
-    protected function class_name() {
-        return 'qtype_tcs_plain';
-    }
-
-    /**
-     * Return the HTML for the textarea.
-     *
-     * @param string $name the name of the textarea
-     * @param question_attempt $qa
-     * @param question_attempt_step $step
-     * @param array $attributes textarea attributes
-     * @return string the HTML for the textarea.
-     */
-    public function response_area_input($name, $qa, $step, $attributes = []) {
-        $inputname = $qa->get_qt_field_name($name);
-        $attributes += ['name' => $inputname, 'id' => $inputname];
-        return $this->textarea($step->get_qt_var($name), $attributes) .
-                html_writer::empty_tag('input', ['type' => 'hidden',
-                    'name' => $inputname . 'format', 'value' => FORMAT_PLAIN]);
     }
 }

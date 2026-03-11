@@ -27,7 +27,8 @@ Feature: Preview a TCS question
 
   @javascript
   Scenario: Preview a TCS reasoning question, created with all default values.
-    Given I choose "Preview" action for "TCS-001" in the question bank
+    Given I click on "System shared question bank" "link"
+    When I choose "Preview" action for "TCS-001" in the question bank
     #And I switch to "questionpreview" window
     And I expand all fieldsets
     When I set the field "How questions behave" to "Immediate feedback"
@@ -76,7 +77,8 @@ Feature: Preview a TCS question
 
   @javascript
   Scenario: Preview a TCS judgment question.
-    Given I choose "Preview" action for "TCS-002" in the question bank
+    Given I click on "System shared question bank" "link"
+    When I choose "Preview" action for "TCS-002" in the question bank
     And I expand all fieldsets
     When I set the field "How questions behave" to "Immediate feedback"
     And I press "Save preview options and start again"

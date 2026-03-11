@@ -192,8 +192,12 @@ class qtype_tcs_question extends question_graded_automatically {
             foreach ($this->order as $key => $ans) {
                 $fieldname = $this->field($key);
                 if (array_key_exists($fieldname, $response) && $response[$fieldname]) {
-                    $selectedchoices[] = trim($this->html_to_text($this->answers[$ans]->answer,
-                            $this->answers[$ans]->answerformat) ?? '');
+                    $selectedchoices[] = trim(
+                        $this->html_to_text(
+                            $this->answers[$ans]->answer,
+                            $this->answers[$ans]->answerformat
+                        ) ?? ''
+                    );
                 }
             }
             if (empty($selectedchoices)) {
@@ -207,7 +211,7 @@ class qtype_tcs_question extends question_graded_automatically {
             $ansid = $this->order[$response['answer']];
             $retval = trim($this->html_to_text($this->answers[$ansid]->answer, $this->answers[$ansid]->answerformat) ?? '');
             if ($hasfeedback) {
-                $retval .= ":\n \n".$response['answerfeedback'];
+                $retval .= ":\n \n" . $response['answerfeedback'];
             }
         } else {
             $retval = $response['answerfeedback'];
@@ -224,8 +228,10 @@ class qtype_tcs_question extends question_graded_automatically {
         $question = $this->html_to_text($this->questiontext, $this->questiontextformat);
         $choices = [];
         foreach ($this->order as $ansid) {
-            $choices[] = $this->html_to_text($this->answers[$ansid]->answer,
-                    $this->answers[$ansid]->answerformat);
+            $choices[] = $this->html_to_text(
+                $this->answers[$ansid]->answer,
+                $this->answers[$ansid]->answerformat
+            );
         }
         return $question . ': ' . implode('; ', $choices);
     }
@@ -355,27 +361,34 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return boolean
      */
     public function check_file_access($qa, $options, $component, $filearea, $args, $forcedownload) {
-        if ($component == 'question' && in_array($filearea,
-                ['correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback'])) {
+        if (
+            $component == 'question' && in_array(
+                $filearea,
+                ['correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback']
+            )
+        ) {
             return $this->check_combined_feedback_file_access($qa, $options, $filearea, $args);
-
-        } else if (($component == 'question' && $filearea == 'answer') ||
-                ($component == 'question' && $filearea == 'answerfeedback')) {
+        } else if (
+            ($component == 'question' && $filearea == 'answer') ||
+                ($component == 'question' && $filearea == 'answerfeedback')
+        ) {
             $answerid = reset($args); // Itemid is answer id.
             return  in_array($answerid, $this->order);
-
         } else if ($component == 'question' && $filearea == 'hint') {
             return $this->check_hint_file_access($qa, $options, $args);
-
         } else if ($component == 'qtype_' . static::$qtypename && $filearea == 'hypothisistext') {
             return $qa->get_question(false)->hypothisistext && $args[0] == $this->id;
-
         } else if (static::$qtypename == 'tcs' && $component == 'qtype_tcs' && $filearea == 'effecttext') {
             return $qa->get_question(false)->effecttext && $args[0] == $this->id;
-
         } else {
-            return parent::check_file_access($qa, $options, $component, $filearea,
-                    $args, $forcedownload);
+            return parent::check_file_access(
+                $qa,
+                $options,
+                $component,
+                $filearea,
+                $args,
+                $forcedownload
+            );
         }
     }
 
@@ -386,14 +399,21 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return array response
      */
     public function classify_response(array $response) {
-        if (!array_key_exists('answer', $response) ||
-                !array_key_exists($response['answer'], $this->order)) {
+        if (
+            !array_key_exists('answer', $response) ||
+                !array_key_exists($response['answer'], $this->order)
+        ) {
             return [$this->id => question_classified_response::no_response()];
         }
         $choiceid = $this->order[$response['answer']];
         $ans = $this->answers[$choiceid];
-        return [$this->id => new question_classified_response($choiceid,
-                $this->html_to_text($ans->answer, $ans->answerformat), $ans->fraction)];
+        return [
+            $this->id => new question_classified_response(
+                $choiceid,
+                $this->html_to_text($ans->answer, $ans->answerformat),
+                $ans->fraction
+            ),
+        ];
     }
 
     /**
@@ -463,8 +483,10 @@ class qtype_tcs_question extends question_graded_automatically {
      * @return array
      */
     public function grade_response(array $response) {
-        if (array_key_exists('answer', $response) &&
-                array_key_exists($response['answer'], $this->order)) {
+        if (
+            array_key_exists('answer', $response) &&
+                array_key_exists($response['answer'], $this->order)
+        ) {
             $fraction = $this->answers[$this->order[$response['answer']]]->fraction;
         } else {
             $fraction = 0;

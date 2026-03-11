@@ -31,6 +31,7 @@ Feature: Test duplicating a quiz containing a TCS question
     And I restore "test_backup.mbz" backup into a new course using this options:
       | Schema | Course name | Course 2 |
     And I navigate to "Question bank" in current page administration
+    And I click on "System shared question bank" "link"
     And I choose "Edit question" action for "TCS-001" in the question bank
     Then the following fields match these values:
       | Question name                 | TCS-001                            |

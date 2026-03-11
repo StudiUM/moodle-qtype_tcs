@@ -36,7 +36,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_qtype_tcs_plugin extends backup_qtype_plugin {
-
     /**
      * @var string The qtype name.
      */
@@ -90,8 +89,10 @@ class backup_qtype_tcs_plugin extends backup_qtype_plugin {
         $pluginwrapper->add_child($tcs);
 
         // Set source to populate the data.
-        $tcs->set_source_table(static::$tablename . '_options',
-                ['questionid' => backup::VAR_PARENTID]);
+        $tcs->set_source_table(
+            static::$tablename . '_options',
+            ['questionid' => backup::VAR_PARENTID]
+        );
 
         // Don't need to annotate ids nor files.
 

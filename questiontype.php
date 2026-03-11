@@ -43,7 +43,6 @@ require_once($CFG->dirroot . '/question/type/tcs/question.php');
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_tcs extends question_type {
-
     /**
      * @var string The qtype name.
      */
@@ -68,8 +67,12 @@ class qtype_tcs extends question_type {
      */
     public function get_question_options($question): void {
         global $DB;
-        $question->options = $DB->get_record(static::$tablename . '_options',
-                ['questionid' => $question->id], '*', MUST_EXIST);
+        $question->options = $DB->get_record(
+            static::$tablename . '_options',
+            ['questionid' => $question->id],
+            '*',
+            MUST_EXIST
+        );
 
         parent::get_question_options($question);
     }
@@ -152,16 +155,26 @@ class qtype_tcs extends question_type {
             }
 
             // Doing an import.
-            $answer->answer = $this->import_or_save_files($answerdata,
-                    $context, 'question', 'answer', $answer->id);
+            $answer->answer = $this->import_or_save_files(
+                $answerdata,
+                $context,
+                'question',
+                'answer',
+                $answer->id
+            );
             $answer->answerformat = $answerdata['format'];
             if (isset($question->fractionimport[$key])) {
                 $answer->fraction = (float) $question->fractionimport[$key];
             } else {
                 $answer->fraction = (float) $question->fraction[$key];
             }
-            $answer->feedback = $this->import_or_save_files($question->feedback[$key],
-                    $context, 'question', 'answerfeedback', $answer->id);
+            $answer->feedback = $this->import_or_save_files(
+                $question->feedback[$key],
+                $context,
+                'question',
+                'answerfeedback',
+                $answer->id
+            );
             $answer->feedbackformat = $question->feedback[$key]['format'];
 
             $DB->update_record('question_answers', $answer);
@@ -202,12 +215,22 @@ class qtype_tcs extends question_type {
             $options->id = $DB->insert_record(static::$tablename . '_options', $options);
         }
 
-        $options->hypothisistext = $this->import_or_save_files($question->hypothisistext,
-                $context, 'qtype_' . static::$qtypename, 'hypothisistext', $question->id);
+        $options->hypothisistext = $this->import_or_save_files(
+            $question->hypothisistext,
+            $context,
+            'qtype_' . static::$qtypename,
+            'hypothisistext',
+            $question->id
+        );
         $options->hypothisistextformat = $question->hypothisistext['format'];
         if (static::$qtypename == 'tcs') {
-            $options->effecttext = $this->import_or_save_files($question->effecttext,
-                    $context, 'qtype_tcs', 'effecttext', $question->id);
+            $options->effecttext = $this->import_or_save_files(
+                $question->effecttext,
+                $context,
+                'qtype_tcs',
+                'effecttext',
+                $question->id
+            );
             $options->effecttextformat = $question->effecttext['format'];
             $options->labeleffecttext = $question->labeleffecttext;
         }
@@ -308,8 +331,9 @@ class qtype_tcs extends question_type {
 
         foreach ($questiondata->options->answers as $aid => $answer) {
             $responses[$aid] = new question_possible_response(
-                    question_utils::to_plain_text($answer->answer, $answer->answerformat),
-                    $answer->fraction);
+                question_utils::to_plain_text($answer->answer, $answer->answerformat),
+                $answer->fraction
+            );
         }
 
         $responses[null] = question_possible_response::no_response();
@@ -328,8 +352,13 @@ class qtype_tcs extends question_type {
         $this->move_files_in_combined_feedback($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
         $fs = get_file_storage();
-        $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_' . static::$qtypename,
-                'hypothisistext', $questionid);
+        $fs->move_area_files_to_new_context(
+            $oldcontextid,
+            $newcontextid,
+            'qtype_' . static::$qtypename,
+            'hypothisistext',
+            $questionid
+        );
         if (static::$qtypename == 'tcs') {
             $fs->move_area_files_to_new_context($oldcontextid, $newcontextid, 'qtype_tcs', 'effecttext', $questionid);
         }
@@ -366,8 +395,12 @@ class qtype_tcs extends question_type {
         $contextid = $question->contextid;
         $fs = get_file_storage();
         // Hypothisistext.
-        $files = $fs->get_area_files($contextid, $component,
-                'hypothisistext', $question->id);
+        $files = $fs->get_area_files(
+            $contextid,
+            $component,
+            'hypothisistext',
+            $question->id
+        );
         $output .= "    <hypothisistext>\n";
         $output .= $format->writetext($question->options->hypothisistext, 3);
         $output .= $format->write_files($files);
@@ -376,8 +409,12 @@ class qtype_tcs extends question_type {
 
         // Effecttext.
         if (static::$qtypename == 'tcs') {
-            $files = $fs->get_area_files($contextid, $component,
-                    'effecttext', $question->id);
+            $files = $fs->get_area_files(
+                $contextid,
+                $component,
+                'effecttext',
+                $question->id
+            );
             $output .= "    <effecttext>\n";
             $output .= $format->writetext($question->options->effecttext, 3);
             $output .= $format->write_files($files);
@@ -442,8 +479,12 @@ class qtype_tcs extends question_type {
         $question->hypothisistext['format'] = FORMAT_HTML;
         $hypothisistext = $format->getpath($data, ['#', 'hypothisistext'], []);
         if (!empty($hypothisistext)) {
-            $question->hypothisistext = $format->import_text_with_files($hypothisistext,
-                    ['0'], '', $format->get_format($question->questiontextformat));
+            $question->hypothisistext = $format->import_text_with_files(
+                $hypothisistext,
+                ['0'],
+                '',
+                $format->get_format($question->questiontextformat)
+            );
         }
 
         // Effecttext.
@@ -452,43 +493,84 @@ class qtype_tcs extends question_type {
             $question->effecttext['format'] = FORMAT_HTML;
             $effecttext = $format->getpath($data, ['#', 'effecttext'], []);
             if (!empty($effecttext)) {
-                $question->effecttext = $format->import_text_with_files($effecttext,
-                        ['0'], '', $format->get_format($question->questiontextformat));
+                $question->effecttext = $format->import_text_with_files(
+                    $effecttext,
+                    ['0'],
+                    '',
+                    $format->get_format($question->questiontextformat)
+                );
             }
-            $question->labeleffecttext = $format->getpath($data,
-                ['#', 'labeleffecttext', 0, '#'], get_string('effecttextdefault', 'qtype_tcs'));
+            $question->labeleffecttext = $format->getpath(
+                $data,
+                ['#', 'labeleffecttext', 0, '#'],
+                get_string('effecttextdefault', 'qtype_tcs')
+            );
         }
 
-        $question->labelhypothisistext = $format->getpath($data,
-                ['#', 'labelhypothisistext', 0, '#'], get_string('hypothisistextdefault', 'qtype_' . static::$qtypename));
-        $question->labelnewinformationeffect = $format->getpath($data,
-                ['#', 'labelnewinformationeffect', 0, '#'], get_string('newinformationeffect', 'qtype_' . static::$qtypename));
-        $question->labelfeedback = $format->getpath($data,
-                ['#', 'labelfeedback', 0, '#'], get_string('feedback', 'qtype_tcs'));
-        $question->labelsituation = $format->getpath($data,
-                ['#', 'labelsituation', 0, '#'], get_string('situation', 'qtype_tcs'));
-        $question->showfeedback = $format->getpath($data,
-                ['#', 'showfeedback', 0, '#'], 1);
-        $question->showoutsidefieldcompetence = $format->getpath($data,
-                ['#', 'showoutsidefieldcompetence', 0, '#'], 0);
-        $question->showquestiontext = $format->getpath($data,
-                ['#', 'showquestiontext', 0, '#'], 1);
+        $question->labelhypothisistext = $format->getpath(
+            $data,
+            ['#', 'labelhypothisistext', 0, '#'],
+            get_string('hypothisistextdefault', 'qtype_' . static::$qtypename)
+        );
+        $question->labelnewinformationeffect = $format->getpath(
+            $data,
+            ['#', 'labelnewinformationeffect', 0, '#'],
+            get_string('newinformationeffect', 'qtype_' . static::$qtypename)
+        );
+        $question->labelfeedback = $format->getpath(
+            $data,
+            ['#', 'labelfeedback', 0, '#'],
+            get_string('feedback', 'qtype_tcs')
+        );
+        $question->labelsituation = $format->getpath(
+            $data,
+            ['#', 'labelsituation', 0, '#'],
+            get_string('situation', 'qtype_tcs')
+        );
+        $question->showfeedback = $format->getpath(
+            $data,
+            ['#', 'showfeedback', 0, '#'],
+            1
+        );
+        $question->showoutsidefieldcompetence = $format->getpath(
+            $data,
+            ['#', 'showoutsidefieldcompetence', 0, '#'],
+            0
+        );
+        $question->showquestiontext = $format->getpath(
+            $data,
+            ['#', 'showquestiontext', 0, '#'],
+            1
+        );
 
         // Run through the answers.
         $answers = $data['#']['answer'];
         $acount = 0;
         foreach ($answers as $answer) {
-            $question->answer[$acount] = $format->import_text_with_files($answer, [], '',
-                    $format->get_format($question->questiontextformat));
-            $question->feedback[$acount] = $format->import_text_with_files($answer, ['#', 'feedback', 0], '',
-                    $format->get_format($question->questiontextformat));
+            $question->answer[$acount] = $format->import_text_with_files(
+                $answer,
+                [],
+                '',
+                $format->get_format($question->questiontextformat)
+            );
+            $question->feedback[$acount] = $format->import_text_with_files(
+                $answer,
+                ['#', 'feedback', 0],
+                '',
+                $format->get_format($question->questiontextformat)
+            );
             $question->fractionimport[$acount] = (float) $format->getpath($answer, ['#', 'fractionimport', 0, '#'], 0);
             ++$acount;
         }
 
         $format->import_combined_feedback($question, $data, true);
-        $format->import_hints($question, $data, true, false,
-                $format->get_format($question->questiontextformat));
+        $format->import_hints(
+            $question,
+            $data,
+            true,
+            false,
+            $format->get_format($question->questiontextformat)
+        );
 
         return $question;
     }

@@ -47,7 +47,8 @@ class behat_qtype_tcs extends behat_base {
     public function i_should_see_that_panelists_have_answered_for_question($nbpanelists, $answer, $questionnb) {
         $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'formulation')]"
             . "//div[contains(@class,'answer-item') and contains(.//label, '$answer')]/following::span[1]";
-        $this->execute("behat_general::assert_element_contains_text",
+        $this->execute(
+            "behat_general::assert_element_contains_text",
             [$nbpanelists, $xpath, "xpath_element"]
         );
     }
@@ -63,7 +64,8 @@ class behat_qtype_tcs extends behat_base {
     public function i_should_see_for_answer_of_question($comment, $answer, $questionnb) {
         $xpath = "(//div[contains(@class,'que tcs')])[$questionnb]//div[contains(@class,'specificfeedback')]"
             . "/p[contains(.,'$answer')]/following::div[1]";
-        $this->execute("behat_general::assert_element_contains_text",
+        $this->execute(
+            "behat_general::assert_element_contains_text",
             [$comment, $xpath, "xpath_element"]
         );
     }
